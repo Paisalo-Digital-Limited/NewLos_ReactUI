@@ -391,16 +391,16 @@ const [remark, setRemark] = useState("");
 const [showSuccess, setShowSuccess] = useState(false);
 
 const handleSentToBranch = async (FiCode, Creator) => {
-  debugger;
+  // debugger;
   //const { FiCode, Creator } = selectedDataBranch; // Destructure state
   const payloadRemark = remark;
   if (!FiCode || !Creator) {
       console.error("All required fields must be filled!");
       return;
   }
-debugger;
+// debugger;
     //const url = `https://localhost:7030/api/FiPostSanction/BackReadyForNeft?FiCode=${FiCode}&Creator=${Creator}`;
-  const url = `https://apiuat.paisalo.in:4015/fi/api/FiPostSanction/BackReadyForNeft?FiCode=${encodeURIComponent(FiCode)}&Creator=${encodeURIComponent(Creator)}&remark=${encodeURIComponent(payloadRemark)}&groupcode=${groupcode || ""}&cso=${cso || ""}&br=${br || ""}`;
+    const url = `https://apiuat.paisalo.in:4015/fi/api/FiPostSanction/BackReadyForNeft?FiCode=${FiCode}&Creator=${Creator}`;
   
   setLoading(true); // Set loading to true
   try {
@@ -417,7 +417,7 @@ debugger;
       );
 
       if (response.status === 200) {
-          console.log("API call successful:", response.data);
+          alert("API call successful:", response.data);
           setShowSuccess(true);
           setTimeout(() => {
               setShowSuccess(false);
@@ -476,313 +476,284 @@ debugger;
   return (
     <div>
           <Card>
-            <Grid container justifyContent="space-between" alignItems="center" marginBottom={2}>
-              <Grid item xs={6} container justifyContent="start">
-                <Typography variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '20px' }}>
-                  Ready For Audit
-                </Typography>
-              </Grid>
+      <Grid container justifyContent="space-between" alignItems="center" marginBottom={2}>
+        <Grid item xs={6} container justifyContent="start">
+          <Typography variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '20px' }}>
+            Ready For Audit
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} alignItems="center" justifyContent="flex-start">
+        <Grid item xs={12} sm={6} md={3}>
+          <FormControl fullWidth size="medium">
+            <InputLabel>Search By</InputLabel>
+            <Select value={filterOption} onChange={handleFilterChange} label="Search By" size="medium">
+              <MenuItem value="date">Date</MenuItem>
+              <MenuItem value="ficode">Creator</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+
+        {filterOption === 'date' && (
+          <>
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField
+                fullWidth
+                label="From Date"
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+                size="medium"
+              />
             </Grid>
-            <Grid container spacing={2} alignItems="center" justifyContent="flex-start">
-              <Grid item xs={12} sm={6} md={3}>
-                <FormControl fullWidth size="medium">
-                  <InputLabel>Search By</InputLabel>
-                  <Select value={filterOption} onChange={handleFilterChange} label="Search By" size="medium">
-                    <MenuItem value="date">Date</MenuItem>
-                    <MenuItem value="ficode">Creator</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              {filterOption === 'date' && (
-                <>
-                  <Grid item xs={12} sm={6} md={2}>
-                    <TextField
-                      fullWidth
-                      label="From Date"
-                      type="date"
-                      value={fromDate}
-                      onChange={(e) => setFromDate(e.target.value)}
-                      InputLabelProps={{ shrink: true }}
-                      variant="outlined"
-                      size="medium"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={2}>
-                    <TextField
-                      fullWidth
-                      label="To Date"
-                      type="date"
-                      value={toDate}
-                      onChange={(e) => setToDate(e.target.value)}
-                      InputLabelProps={{ shrink: true }}
-                      variant="outlined"
-                      size="medium"
-                    />
-                  </Grid>
-                </>
-              )}
-              {filterOption === 'ficode' && (
-                <>
-                  <Grid item xs={12} sm={6} md={2}>
-                     <FormControl fullWidth size="medium">
-                    <InputLabel>Creator</InputLabel>
-                    <Select
-                      label="Creator"
-                      size="medium"
-                      value={creator}
-                      onChange={handleCreatorChange}
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField
+                fullWidth
+                label="To Date"
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+                size="medium"
+              />
+            </Grid>
+          </>
+        )}
+
+        {filterOption === 'ficode' && (
+          <>
+            <Grid item xs={12} sm={6} md={2}>
+              <FormControl fullWidth size="medium">
+                <InputLabel>Creator</InputLabel>
+                <Select
+                  label="Creator"
+                  size="medium"
+                  value={creator}
+                  onChange={handleCreatorChange}
+                >
+                  {Creatorlist.map((index) => (
+                    <MenuItem key={index.creatorid} value={index.creator}>
+                      {index.creator}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField
+                fullWidth
+                label="Branch Code"
+                variant="outlined"
+                size="medium"
+                value={branchCode}
+                onChange={(e) => setBranchCode(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField
+                fullWidth
+                label="Group Code"
+                variant="outlined"
+                size="medium"
+                value={groupCode}
+                onChange={(e) => setGroupCode(e.target.value)}
+              />
+            </Grid>
+          </>
+        )}
+        
+        <Grid item xs={12} sm={8} md={2}>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{
+              fontWeight: 'bold',
+              bgcolor: 'grey',
+            }}
+            fullWidth
+            startIcon={<SearchIcon />}
+            onClick={handleSearch}
+          >
+            SEARCH
+          </Button>
+        </Grid>
+      </Grid>
+      
+      <TableContainer component={Paper} sx={{ marginTop: '30px' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {[
+                'SNo.',
+                'SmCode',
+                'ficode',
+                'Creator',
+                'Group',
+                'Branch',
+                'Name',
+                'SchCode',
+                'Date',
+                'A/C Verify',
+                'Model/Brand',
+                'Pinfo',
+                'Income',
+                'Doc',
+                'Document',
+                'Action',
+              ].map((header, index) => (
+                <TableCell key={index}>{header}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={16} sx={{ textAlign: 'center' }}>Loading...</TableCell>
+              </TableRow>
+            ) : (
+              data.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{row.smCode}</TableCell>
+                  <TableCell>{row.fiCode}</TableCell>
+                  <TableCell>{row.creator}</TableCell>
+                  <TableCell>{row.groupCode}</TableCell>
+                  <TableCell>{row.branch || '-'}</TableCell>
+                  <TableCell>{row.fullName}</TableCell>
+                  <TableCell>{row.schCode || '-'}</TableCell>
+                  <TableCell>{row.createdOn || '-'}</TableCell>
+                  <TableCell>{row.verify || '-'}</TableCell>
+                  <TableCell>{row.model || '-'}</TableCell>
+
+                  <TableCell align="center">
+                    <Button
+                      variant="contained"
+                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
+                      onClick={() => {
+                        if (row?.fiCode && row?.creator) {
+                          console.log('Row Data:', row);  
+                          handlePersonalInfoClick(row.fiCode.toString(), row.creator);
+                        } else {
+                          console.error('Missing FiCode or Creator in row:', row);
+                        }
+                      }}
+                      disabled={loading} 
                     >
-                      {Creatorlist.map((index) => (
-                        <MenuItem key={index.creatorid} value={index.creator}>
-                          {index.creator}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={2}>
-                    <TextField
-                      fullWidth
-                      label="Branch Code"
-                      variant="outlined"
-                      size="medium"
-                      value={branchCode}
-                      onChange={(e) => setBranchCode(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={2}>
-                    <TextField
-                      fullWidth
-                      label="Group Code"
-                      variant="outlined"
-                      size="medium"
-                      value={groupCode}
-                      onChange={(e) => setGroupCode(e.target.value)}
-                    />
-                  </Grid>
-                </>
-              )}
-              <Grid item xs={12} sm={8} md={2}>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    sx={{
-                      fontWeight: 'bold',
-                      bgcolor: 'primary.main',
-                      '&:hover': { bgcolor: 'primary.dark' }
-                    }}
-                    fullWidth
-                    startIcon={<SearchIcon />}
-                    onClick={handleSearch}
-                  >
-                    SEARCH
-                  </Button>
-              </Grid>
-            </Grid>
-            
-
-            <TableContainer component={Paper} sx={{ marginTop: '30px' }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {[
-                      'SNo.',
-                      'SmCode',
-                      'ficode',
-                      'Creator',
-                      'Group',
-                      'Branch',
-                      'Name',
-                     // 'dealerVehicleType',
-                     // 'verify',
-                      //'loanDuration',
-                      //'Loan Amount',
-                      //'Document Present',
-                      //'Account',
-                      'SchCode',
-                      'Date',
-                      'A/C Verify',
-                       'Model/Brand',
-                      'Pinfo',
-                      'Income',
-                      'Doc',
-                      'Document',
-                      'Action',
-                    ].map((header, index) => (
-                      <TableCell sx={tableCellStyle} key={index}>{header}</TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {loading ? (
-                    <TableRow>
-                      <TableCell colSpan={16} sx={{ textAlign: 'center' }}>Loading...</TableCell>
-                    </TableRow>
-                  ) : (
-                    data.map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>{row.smCode}</TableCell>
-                        <TableCell>{row.fiCode}</TableCell>
-                        <TableCell>{row.creator}</TableCell>
-                        <TableCell>{row.groupCode}</TableCell>
-                        <TableCell>{row.branch || '-'}</TableCell>
-                        <TableCell>{row.fullName}</TableCell>
-                        <TableCell>{row.schCode || '-'}</TableCell>
-                        <TableCell>{row.createdOn || '-'}</TableCell>
-                        <TableCell>{row.verify || '-'}</TableCell>
-                        <TableCell>{row.model || '-'}</TableCell>
-                        {/* <TableCell>{row.total || '-'}</TableCell> */}
-                                  <TableCell align="center">
-                      <Button
-                          variant="contained"
-                          color="red"
-                          backgroundColor="none"
-                          onClick={() => {
-                              
-                              if (row?.fiCode && row?.creator) {
-                                  console.log('Row Data:', row);  
-                                  handlePersonalInfoClick(row.fiCode.toString(), row.creator);
-                              } else {
-                                  console.error('Missing FiCode or Creator in row:', row);
-                              }
-                          }}
-                          disabled={loading} 
-                      >
-                          {loading ? 'Loading...' : <PermContactCalendarIcon sx={{color:"red"}}/>}
-                      </Button>
+                      {loading ? 'Loading...' : <PermContactCalendarIcon sx={{ color: "white" }} />}
+                    </Button>
                   </TableCell>
-                       
-                        <TableCell align="center">
-                      <Button
-                          variant="contained"
-                          color="red"
-                          onClick={() => {
-                              
-                              if (row?.fiCode && row?.creator) {
-                                  console.log('Row Data:', row);  
-                                  handleIncomeClick(row.fiCode.toString(), row.creator);
-                              } else {
-                                  console.error('Missing FiCode or Creator in row:', row);
-                              }
-                          }}
-                          disabled={loading} 
-                      >
-                           {loading ? 'Loading...' : <LocalAtmIcon sx={{color:"red"}}/>}
-                      </Button>
-                  </TableCell>
+                  
                   <TableCell align="center">
-                      <Button
-                          variant="contained"
-                          color="red"
-                          
-                          onClick={() => {
-                              
-                              if (row?.fiCode && row?.creator) {
-                                  console.log('Row Data:', row);  
-                                  handleDocClick(row.fiCode.toString(), row.creator);
-                              } else {
-                                  console.error('Missing FiCode or Creator in row:', row);
-                              }
-                          }}
-                          disabled={loading} 
-                      >
-                         {loading ? 'Loading...' : <DocumentScannerIcon sx={{color:"red"}}/>}
-                      </Button>
+                    <Button
+                      variant="contained"
+                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
+                      onClick={() => {
+                        if (row?.fiCode && row?.creator) {
+                          console.log('Row Data:', row);  
+                          handleIncomeClick(row.fiCode.toString(), row.creator);
+                        } else {
+                          console.error('Missing FiCode or Creator in row:', row);
+                        }
+                      }}
+                      disabled={loading} 
+                    >
+                      {loading ? 'Loading...' : <LocalAtmIcon sx={{ color: "white" }} />}
+                    </Button>
+                  </TableCell>
+                  
+                  <TableCell align="center">
+                    <Button
+                      variant="contained"
+                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
+                      onClick={() => {
+                        if (row?.fiCode && row?.creator) {
+                          console.log('Row Data:', row);  
+                          handleDocClick(row.fiCode.toString(), row.creator);
+                        } else {
+                          console.error('Missing FiCode or Creator in row:', row);
+                        }
+                      }}
+                      disabled={loading} 
+                    >
+                      {loading ? 'Loading...' : <DocumentScannerIcon sx={{ color: "white" }} />}
+                    </Button>
                   </TableCell>
 
                   <TableCell align="center">
-                      <Button
-                          variant="contained"
-                          color="red"
-                          onClick={() => {
-                              
-                              if (row?.fiCode && row?.creator) {
-                                  console.log('Row Data:', row);  
-                                  handleLoanAgreement(row.fiId);
-                              } else {
-                                  console.error('Missing FiCode or Creator in row:', row);
-                              }
-                          }}
-                          disabled={loading} 
-                      >
-                          {loading ? 'Loading...' : <DownloadIcon sx={{color:"red"}}/>}
-                      </Button>
-                      <Button
-                          variant="contained"
-                          color="red"
-                          onClick={() => {
-                              if (row?.fiCode && row?.creator) {
-                                  console.log('Row Data:', row);
-                                  handleGetAllDocModelOpen(row.fiCode.toString(), row.creator);
-                              } else {
-                                  console.error('Missing FiCode or Creator in row:', row);
-                              }
-                          }}
-                          disabled={loading}
-                      >
-                          {loading ? 'Loading...' : <PreviewIcon sx={{color:"red"}}/>}
-                      </Button>
+                    <Button
+                      variant="contained"
+                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
+                      onClick={() => {
+                        if (row?.fiCode && row?.creator) {
+                          console.log('Row Data:', row);  
+                          handleLoanAgreement(row.fiId);
+                        } else {
+                          console.error('Missing FiCode or Creator in row:', row);
+                        }
+                      }}
+                      disabled={loading} 
+                    >
+                      {loading ? 'Loading...' : <DownloadIcon sx={{ color: "white" }} />}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
+                      onClick={() => {
+                        if (row?.fiCode && row?.creator) {
+                          console.log('Row Data:', row);  
+                          handleGetAllDocModelOpen(row.fiCode.toString(), row.creator);
+                        } else {
+                          console.error('Missing FiCode or Creator in row:', row);
+                        }
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? 'Loading...' : <PreviewIcon sx={{ color: "white" }} />}
+                    </Button>
                   </TableCell>
 
-                       
-                       
-                        <TableCell align="center"> 
-                          {/* <Button
-                                                                color="primary"
-                                                                onClick={() => {
-                                                                    if (row?.fiCode && row?.creator) {
-                                                                        console.log("Row Data:", row); // Debugging row data
-                                                                        handleSentToNeft(row.fiCode.toString(), row.creator);
-                                                                    } else {
-                                                                        console.error("Missing FICode or Creator in row:", row);
-                                                                    }
-                                                                }}
-                                                                sx={{ fontSize: "9px", display: 'flex', alignItems: 'center' }}
-                                                            >
-                                                              
-                                                            </Button> */}
-                                                             <Button
-                                                          variant="contained"
-                                                          color="red"
-                                                          onClick={() => {
-                                                              if (row?.fiCode && row?.creator) {
-                                                                  console.log('Row Data:', row);
-                                                                  handleSentToNeft(row.fiCode.toString(), row.creator);
-                                                              } else {
-                                                                  console.error('Missing FiCode or Creator in row:', row);
-                                                              }
-                                                          }}
-                                                          disabled={loading}
-                                                      >
-                                                          {loading ? 'Loading...' : <SendIcon sx={{color:"red"}}/>}
-                                                      </Button>
-                                                      <Button
-                                                          variant="contained"
-                                                          
-                                                          onClick={() => {
-                                                              if (row?.fiCode && row?.creator) {
-                                                                  console.log('Row Data:', row);
-                                                                  handleSentToBranch(row.fiCode.toString(), row.creator);
-                                                              } else {
-                                                                  console.error('Missing FiCode or Creator in row:', row);
-                                                              }
-                                                          }}
-                                                          disabled={loading}
-                                                      >
-                                                          {loading ? 'Loading...' : <BackspaceIcon sx={{color:"red"}}/>}
-                                                      </Button>
-                                                      
-
-                                                            </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-            
-              </Table>
-            </TableContainer>
-          </Card>
+                  <TableCell align="center"> 
+                    <Button
+                      variant="contained"
+                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
+                      onClick={() => {
+                        if (row?.fiCode && row?.creator) {
+                          console.log('Row Data:', row);
+                          handleSentToNeft(row.fiCode.toString(), row.creator);
+                        } else {
+                          console.error('Missing FiCode or Creator in row:', row);
+                        }
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? 'Loading...' : <SendIcon sx={{ color: "white" }} />}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
+                      onClick={() => {
+                        if (row?.fiCode && row?.creator) {
+                          console.log('Row Data:', row);
+                          handleSentToBranch(row.fiCode.toString(), row.creator);
+                        } else {
+                          console.error('Missing FiCode or Creator in row:', row);
+                        }
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? 'Loading...' : <BackspaceIcon sx={{ color: "white" }} />}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Card>
 
           <Modal open={pinInfopen} onClose={() => setPinInfopen(false)}>
                     <Box

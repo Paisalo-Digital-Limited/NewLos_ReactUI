@@ -14,13 +14,13 @@ import {
   Select,
   MenuItem,
   TextField,
-  Card,Link ,TableFooter, 
+  Card,Link ,
   Typography,Modal ,Box,Tabs,Tab,List ,ListItem,ListItemText ,ListItemIcon ,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton,TablePagination 
+  IconButton,
 } from '@mui/material';
 import {
   Description,
@@ -28,6 +28,8 @@ import {
   Fingerprint,
   Folder,
 } from "@mui/icons-material";
+import LinearProgress from '@mui/material/LinearProgress';
+import TablePagination from '@mui/material/TablePagination';
 import PreviewIcon from '@mui/icons-material/Preview';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
@@ -38,8 +40,8 @@ import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import DownloadIcon from "@mui/icons-material/Download";
 import SendIcon from '@mui/icons-material/Send';
 import BackspaceIcon from '@mui/icons-material/Backspace';
-// import { useMode,tokens } from "../../theme";
-// import './model.css';
+import ModalComponent from './ModalComponent'; // Adjust the path as necessary
+
 
 // Document details with icons
 const documentDetails = [
@@ -55,6 +57,7 @@ const documentDetails = [
   { docName: "End Use Certificate", icon: <AccountBox /> },
   { docName: "Aadhar ID Back", icon: <Fingerprint /> },
 ];
+
 
 const style = {
   position: 'absolute',
@@ -104,7 +107,10 @@ const ReadyForAudit = () => {
     const [openModal, setOpenModal] = useState(false);
     const [documents, setDocuments] = useState([]);
     const [GetAllDocopen, setGetAllDocopen] = useState(false); 
-
+    
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10); // Default rows per page
+    
     const [open, setOpen] = useState(false);
     const [currentDoc, setCurrentDoc] = useState('');
 
@@ -466,17 +472,11 @@ const handleSentToBranch = async (FiCode, Creator) => {
   const handleSearch = () => {
     fetchData();
   };
-  const tableCellStyle = {
-    background: '#FF4C4C',
-    padding: '10px 16px',
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  };
+
   return (
     <div>
-          <Card>
-      <Grid container justifyContent="space-between" alignItems="center" marginBottom={2}>
+      <Card sx={{ boxShadow: "none", borderRadius: "7px", mb: 3, p: 2 }}>
+        <Grid container justifyContent="space-between" alignItems="center" marginBottom={2}>
         <Grid item xs={6} container justifyContent="start">
           <Typography variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '20px' }}>
             Ready For Audit
@@ -571,8 +571,9 @@ const handleSentToBranch = async (FiCode, Creator) => {
             size="large"
             sx={{
               fontWeight: 'bold',
-              bgcolor: 'grey',
-            }}
+                  bgcolor: 'green',
+                  '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
+                }}
             fullWidth
             startIcon={<SearchIcon />}
             onClick={handleSearch}
@@ -582,180 +583,182 @@ const handleSentToBranch = async (FiCode, Creator) => {
         </Grid>
       </Grid>
       
-      <TableContainer component={Paper} sx={{ marginTop: '30px' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {[
-                'SNo.',
-                'SmCode',
-                'ficode',
-                'Creator',
-                'Group',
-                'Branch',
-                'Name',
-                'SchCode',
-                'Date',
-                'A/C Verify',
-                'Model/Brand',
-                'Pinfo',
-                'Income',
-                'Doc',
-                'Document',
-                'Action',
-              ].map((header, index) => (
-                <TableCell key={index}>{header}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={16} sx={{ textAlign: 'center' }}>Loading...</TableCell>
-              </TableRow>
-            ) : (
-              data.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{row.smCode}</TableCell>
-                  <TableCell>{row.fiCode}</TableCell>
-                  <TableCell>{row.creator}</TableCell>
-                  <TableCell>{row.groupCode}</TableCell>
-                  <TableCell>{row.branch || '-'}</TableCell>
-                  <TableCell>{row.fullName}</TableCell>
-                  <TableCell>{row.schCode || '-'}</TableCell>
-                  <TableCell>{row.createdOn || '-'}</TableCell>
-                  <TableCell>{row.verify || '-'}</TableCell>
-                  <TableCell>{row.model || '-'}</TableCell>
 
-                  <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
-                      onClick={() => {
-                        if (row?.fiCode && row?.creator) {
-                          console.log('Row Data:', row);  
-                          handlePersonalInfoClick(row.fiCode.toString(), row.creator);
-                        } else {
-                          console.error('Missing FiCode or Creator in row:', row);
-                        }
-                      }}
-                      disabled={loading} 
-                    >
-                      {loading ? 'Loading...' : <PermContactCalendarIcon sx={{ color: "white" }} />}
-                    </Button>
-                  </TableCell>
-                  
-                  <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
-                      onClick={() => {
-                        if (row?.fiCode && row?.creator) {
-                          console.log('Row Data:', row);  
-                          handleIncomeClick(row.fiCode.toString(), row.creator);
-                        } else {
-                          console.error('Missing FiCode or Creator in row:', row);
-                        }
-                      }}
-                      disabled={loading} 
-                    >
-                      {loading ? 'Loading...' : <LocalAtmIcon sx={{ color: "white" }} />}
-                    </Button>
-                  </TableCell>
-                  
-                  <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
-                      onClick={() => {
-                        if (row?.fiCode && row?.creator) {
-                          console.log('Row Data:', row);  
-                          handleDocClick(row.fiCode.toString(), row.creator);
-                        } else {
-                          console.error('Missing FiCode or Creator in row:', row);
-                        }
-                      }}
-                      disabled={loading} 
-                    >
-                      {loading ? 'Loading...' : <DocumentScannerIcon sx={{ color: "white" }} />}
-                    </Button>
-                  </TableCell>
 
-                  <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
-                      onClick={() => {
-                        if (row?.fiCode && row?.creator) {
-                          console.log('Row Data:', row);  
-                          handleLoanAgreement(row.fiId);
-                        } else {
-                          console.error('Missing FiCode or Creator in row:', row);
-                        }
-                      }}
-                      disabled={loading} 
-                    >
-                      {loading ? 'Loading...' : <DownloadIcon sx={{ color: "white" }} />}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
-                      onClick={() => {
-                        if (row?.fiCode && row?.creator) {
-                          console.log('Row Data:', row);  
-                          handleGetAllDocModelOpen(row.fiCode.toString(), row.creator);
-                        } else {
-                          console.error('Missing FiCode or Creator in row:', row);
-                        }
-                      }}
-                      disabled={loading}
-                    >
-                      {loading ? 'Loading...' : <PreviewIcon sx={{ color: "white" }} />}
-                    </Button>
-                  </TableCell>
 
-                  <TableCell align="center"> 
-                    <Button
-                      variant="contained"
-                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
-                      onClick={() => {
-                        if (row?.fiCode && row?.creator) {
-                          console.log('Row Data:', row);
-                          handleSentToNeft(row.fiCode.toString(), row.creator);
-                        } else {
-                          console.error('Missing FiCode or Creator in row:', row);
-                        }
-                      }}
-                      disabled={loading}
-                    >
-                      {loading ? 'Loading...' : <SendIcon sx={{ color: "white" }} />}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      sx={{ bgcolor: 'red', color: 'white' }} // Static color for the button
-                      onClick={() => {
-                        if (row?.fiCode && row?.creator) {
-                          console.log('Row Data:', row);
-                          handleSentToBranch(row.fiCode.toString(), row.creator);
-                        } else {
-                          console.error('Missing FiCode or Creator in row:', row);
-                        }
-                      }}
-                      disabled={loading}
-                    >
-                      {loading ? 'Loading...' : <BackspaceIcon sx={{ color: "white" }} />}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Card>
+      <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
+  {/* {loading && <LinearProgress />} */}
+  <Table>
+    <TableHead>
+      <TableRow sx={{ backgroundColor: '#ff4c4c', color: 'white' }}>
+        {[
+          'SNo.',
+          'SmCode',
+          'ficode',
+          'Creator',
+          'Group',
+          'Branch',
+          'Name',
+          'SchCode',
+          'Date',
+          'A/C Verify',
+          'Model/Brand',
+          'Pinfo',
+          'Income',
+          'Doc',
+          'Document',
+          'Action',
+        ].map((header, index) => (
+          <TableCell sx={{ color: 'white' }} key={index}>{header}</TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+    
+    <TableBody>
+      {data.length === 0 ? (
+        <TableRow>
+          <TableCell colSpan={16} sx={{ textAlign: 'center' }}>No Data Available</TableCell>
+        </TableRow>
+      ) : (
+        data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+          <TableRow key={index}>
+            <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+            <TableCell>{row.smCode}</TableCell>
+            <TableCell>{row.fiCode}</TableCell>
+            <TableCell>{row.creator}</TableCell>
+            <TableCell>{row.groupCode}</TableCell>
+            <TableCell>{row.branch || '-'}</TableCell>
+            <TableCell>{row.fullName}</TableCell>
+            <TableCell>{row.schCode || '-'}</TableCell>
+            <TableCell>{row.createdOn || '-'}</TableCell>
+            <TableCell>{row.verify || '-'}</TableCell>
+            <TableCell>{row.model || '-'}</TableCell>
 
-          <Modal open={pinInfopen} onClose={() => setPinInfopen(false)}>
+            <TableCell align="center">
+              <IconButton aria-label="" size="small"
+                onClick={() => {
+                  if (row?.fiCode && row?.creator) {
+                    console.log('Row Data:', row);  
+                    handlePersonalInfoClick(row.fiCode.toString(), row.creator);
+                  } else {
+                    console.error('Missing FiCode or Creator in row:', row);
+                  }
+                }}
+              >
+                <PermContactCalendarIcon sx={{ color: "red" }} />
+                </IconButton>
+            </TableCell>
+              
+            <TableCell align="center">
+               <IconButton aria-label="" size="small"
+                onClick={() => {
+                  if (row?.fiCode && row?.creator) {
+                    console.log('Row Data:', row);  
+                    handleIncomeClick(row.fiCode.toString(), row.creator);
+                  } else {
+                    console.error('Missing FiCode or Creator in row:', row);
+                  }
+                }}
+              >
+                <LocalAtmIcon sx={{ color: "blue" }} />
+                </IconButton>
+            </TableCell>
+            
+            <TableCell align="center">
+              <IconButton aria-label="" size="small"
+                onClick={() => {
+                  if (row?.fiCode && row?.creator) {
+                    console.log('Row Data:', row);  
+                    handleDocClick(row.fiCode.toString(), row.creator);
+                  } else {
+                    console.error('Missing FiCode or Creator in row:', row);
+                  }
+                }}
+              >
+                <DocumentScannerIcon sx={{ color: "green" }} />
+                </IconButton>
+            </TableCell>
+
+            <TableCell align="center">
+            <IconButton aria-label="" size="small"
+                onClick={() => {
+                  if (row?.fiCode && row?.creator) {
+                    console.log('Row Data:', row);  
+                    handleLoanAgreement(row.fiId);
+                  } else {
+                    console.error('Missing FiCode or Creator in row:', row);
+                  }
+                }}
+              >
+                <DownloadIcon sx={{ color: "orange" }} />
+                </IconButton>
+              <IconButton aria-label="" size="small"
+                onClick={() => {
+                  if (row?.fiCode && row?.creator) {
+                    console.log('Row Data:', row);  
+                    handleGetAllDocModelOpen(row.fiCode.toString(), row.creator);
+                  } else {
+                    console.error('Missing FiCode or Creator in row:', row);
+                  }
+                }}
+              >
+                <PreviewIcon sx={{ color: "purple" }} />
+                </IconButton>
+            </TableCell>
+
+            <TableCell align="center"> 
+                <IconButton aria-label="" size="small"
+                onClick={() => {
+                  if (row?.fiCode && row?.creator) {
+                    console.log('Row Data:', row);
+                    handleSentToNeft(row.fiCode.toString(), row.creator);
+                  } else {
+                    console.error('Missing FiCode or Creator in row:', row);
+                  }
+                }}
+              >
+                <SendIcon sx={{ color: "teal" }} />
+                </IconButton>
+                <IconButton aria-label="" size="small"
+                onClick={() => {
+                  if (row?.fiCode && row?.creator) {
+                    console.log('Row Data:', row);
+                    handleSentToBranch(row.fiCode.toString(), row.creator);
+                  } else {
+                    console.error('Missing FiCode or Creator in row:', row);
+                  }
+                }}
+              >
+                <BackspaceIcon sx={{ color: "grey" }}  fontSize="small" />
+                </IconButton>
+            </TableCell>
+            
+          </TableRow>
+        ))
+      )}
+    </TableBody>
+  </Table>
+  
+  {/* Pagination Component */}
+  <TablePagination
+    rowsPerPageOptions={[5, 10, 25]}
+    component="div"
+    count={data.length}
+    rowsPerPage={rowsPerPage}
+    page={page}
+    onPageChange={(event, newPage) => setPage(newPage)}  // Update current page
+    onRowsPerPageChange={(event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));  // Update rows per page
+      setPage(0);  // Reset to first page
+    }}
+  />
+</TableContainer>
+
+
+</Card>
+
+
+<Modal open={pinInfopen} onClose={() => setPinInfopen(false)}>
                     <Box
                         sx={{
                             position: "absolute",
@@ -900,8 +903,9 @@ const handleSentToBranch = async (FiCode, Creator) => {
                             </Button>
                         </Box>
                     </Box>
-                </Modal>
-                <Modal open={IncomeDataopen} onClose={() => setIncomeopen(false)}>
+</Modal>
+
+<Modal open={IncomeDataopen} onClose={() => setIncomeopen(false)}>
                            <Box
                                sx={{
                                    position: "absolute",
@@ -1034,9 +1038,9 @@ const handleSentToBranch = async (FiCode, Creator) => {
                                    </Button>
                                </Box>
                            </Box>
-                       </Modal>
+</Modal>
 
-            <Modal open={PronoteDocopen} onClose={() => setPronoteDocopen(false)}>
+<Modal open={PronoteDocopen} onClose={() => setPronoteDocopen(false)}>
 
 <Box sx={{
     position: "absolute",
@@ -1126,7 +1130,8 @@ const handleSentToBranch = async (FiCode, Creator) => {
 </Box>
 </Modal>
 
-    <Modal open={GetAllDocopen} onClose={handleGetAllDocClose}>
+
+<Modal open={GetAllDocopen} onClose={handleGetAllDocClose}>
       <Box
         sx={{
           position: 'absolute',
@@ -1228,86 +1233,9 @@ const handleSentToBranch = async (FiCode, Creator) => {
           </Button>
         </Box>
       </Box>
-    </Modal>
-          
-          
-    {/* <Modal open={BackToNeftopen} onClose={() => setBackToNeftopen(false)}>
-                <Box
-                    sx={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        backgroundColor: "white",
-                        borderRadius: "8px",
-                        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
-                        width: "50%",
-                        padding: "16px",
-                    }}
-                >
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            fontWeight: "bold",
-                            marginBottom: "16px",
-                            textAlign: "center",
-                            color: "#1976D2",
-                        }}
-                    >
-                        Update Remarks
-                    </Typography>
+</Modal>
 
-                  
-                    <input type="hidden" value={selectedDataBranch.FiCode} id="ficode" />
-                    <input type="hidden" value={selectedDataBranch.Creator} id="creator" />
-
-                
-                    <Typography>FiCode: {selectedDataBranch.FiCode}</Typography>
-                    <Typography>Creator: {selectedDataBranch.Creator}</Typography>
-
-                 
-                    <textarea
-                        className="form-control"
-                        id="remark"
-                        name="remark"
-                        rows={4}
-                        style={{ width: "100%", marginTop: "16px" }}
-                        value={remark}
-                        onChange={(e) => setRemark(e.target.value)}
-                    ></textarea>
-
-                 
-                    <Box sx={{ textAlign: "center", marginTop: "16px" }}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={SaveBackNeftToBranch}
-                            sx={{
-                                textTransform: "uppercase",
-                                fontWeight: "bold",
-                                padding: "8px 16px",
-                            }}
-                        >
-                            Save
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => setBackToNeftopen(false)}
-                            sx={{
-                                textTransform: "uppercase",
-                                fontWeight: "bold",
-                                padding: "8px 16px",
-                                marginLeft: "8px",
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal> */}
-            {/* Modal to display PDF */}
-      <Dialog
+<Dialog
         open={openModal}
         onClose={handleCloseModal}
         maxWidth="md"
@@ -1328,9 +1256,9 @@ const handleSentToBranch = async (FiCode, Creator) => {
         <DialogActions>
           <Button onClick={handleCloseModal}>Close</Button>
         </DialogActions>
-      </Dialog>
+</Dialog>
     
-    </div>
+</div>
   );
 };
 export default ReadyForAudit;

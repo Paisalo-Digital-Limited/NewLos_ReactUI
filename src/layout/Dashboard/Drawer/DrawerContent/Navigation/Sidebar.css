@@ -1,9 +1,15 @@
 .react-slidedown.pro-inner-list-item {
-    background: #ffecec !important;
+    background: #ffffff !important;
 }
 .popper-inner {
-    background: #ffecec !important;
+    background: #fafafa !important;
 }
 .pro-sidebar-inner {
-    background: #fdc8c8 !important;
+    background: #fdfdfd !important;
 }
+.pro-inner-item{
+    /* color:'#ed1c24'; */
+}
+/* .pro-inner-item {
+   color: #f26167 !important;
+} */

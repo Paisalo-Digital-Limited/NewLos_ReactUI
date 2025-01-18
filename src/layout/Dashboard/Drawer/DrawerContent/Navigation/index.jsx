@@ -155,6 +155,10 @@ const Sidebar = () => {
                 "& .pro-menu-item.active": {
                     color: "#db4f4a !important",
                 },
+                "& .react-slidedown.pro-inner-list-item": {
+                    paddingLeft:"5px !important",
+                },
+
             }}
         >
             <ProSidebar collapsed={isCollapsed}>

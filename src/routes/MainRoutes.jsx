@@ -28,6 +28,12 @@ const Upadtefidoc = Loadable(lazy(() => import('pages/credit/upadtefidoc')));
 const AddEmployee = Loadable(lazy(() => import('pages/Hrms/addemployee')));
 const Employee = Loadable(lazy(() => import('pages/Hrms/employee')));
 // const AuthLogin = Loadable(lazy(() => import('pages/authentication/login')));
+const Documentupload = Loadable(lazy(() => import('pages/Documentupload/Pages')));
+const Sanction = Loadable(lazy(() => import('pages/sanction/Master')));
+const DeleteRecord = Loadable(lazy(() => import('pages/Delete/DeleteRecords')));
+const PddDocument = Loadable(lazy(() => import('pages/Pdddocument/PddDocument')));
+
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -107,6 +113,22 @@ const MainRoutes = {
     {
       path: 'employee',
       element: <Employee />
+    },
+    {
+      path: 'uploaddocument',
+      element: <Documentupload/>
+    },
+    {
+      path: 'sanction',
+      element: <Sanction/>
+    },
+    {
+      path: 'delete',
+      element: <DeleteRecord/>
+    },
+    {
+      path: 'pdddocument',
+      element: <PddDocument/>
     }
   ]
 };

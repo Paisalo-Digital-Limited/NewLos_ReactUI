@@ -37,26 +37,12 @@ const PddDocument = Loadable(lazy(() => import('pages/Pdddocument/PddDocument'))
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
-  path: '/dashboard',
+  path: '/',
   element: <Dashboard />,
   children: [
     {
       path: '/dashboard',
       element: <DashboardDefault />
-    },
-
-    {
-      path: 'Postsanction',
-      element: <Postsanction />
-    },
-    {
-      path: 'dashboard',
-      children: [
-        {
-          path: 'default',
-          element: <DashboardDefault />
-        }
-      ]
     },
     {
       path: 'sample-page',
@@ -67,7 +53,7 @@ const MainRoutes = {
       element: <Index />
     },
     {
-      path: 'readyforneft',
+      path: 'readyforaudit',
       element: <Readyforneft />
     },
     {
@@ -75,11 +61,11 @@ const MainRoutes = {
       element: <Neftdone />
     },
     {
-      path: 'role',
+      path: 'getrole',
       element: <Role />
     },
     {
-      path: 'vechicles',
+      path: 'vehicledetails',
       element: <Vechicles />
     },
     {
@@ -129,7 +115,11 @@ const MainRoutes = {
     {
       path: 'pdddocument',
       element: <PddDocument/>
-    }
+    },
+    {
+      path: 'Postsanction',
+      element: <Postsanction />
+    },
   ]
 };
 

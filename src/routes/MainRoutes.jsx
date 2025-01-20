@@ -19,7 +19,8 @@ const Role = Loadable(lazy(() => import('pages/role/role')));
 const Vechicles = Loadable(lazy(() => import('pages/vechicles/vechicles')));
 const Menu = Loadable(lazy(() => import('pages/menu/menu')));
 const Groupmaster = Loadable(lazy(() => import('pages/groupmaster/groupmaster')));
-const Mastercreator = Loadable(lazy(() => import('pages/mastercreator/mastercreator')));
+// const Mastercreator = Loadable(lazy(() => import('pages/mastercreator/mastercreator')));
+const Mastercreator = Loadable(lazy(() => import('pages/mastercreator/Creator/CreatorMaster')));
 const Apiendpoints = Loadable(lazy(() => import('pages/apiendpoints/apiendpoints')));
 // render - Credit page
 const Fidocument = Loadable(lazy(() => import('pages/credit/fidocument')));

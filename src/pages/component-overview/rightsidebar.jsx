@@ -57,7 +57,7 @@ const staticDocuments = documentDetails.map((detail, index) => ({
   icon: detail.icon,
 }));
 
-const Rightsidebar = () => {
+const Rightsidebar = ({ ficode, creator }) => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('borrower');
@@ -65,38 +65,38 @@ const Rightsidebar = () => {
   const [selectedDocument, setSelectedDocument] = useState(null);
 
   useEffect(() => {
-    const fetchDocuments = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetching documents from API
-        const response = await fetch('https://apiuat.paisalo.in:4015/fi/api/FIIndex/GetAllDoc?creator=BAREILLY&ficode=261863');
-        const data = await response.json();
+    if (ficode && creator) {
+      const fetchDocuments = async () => {
+        try {
+          setLoading(true);
+          const response = await fetch(
+            `https://apiuat.paisalo.in:4015/fi/api/FIIndex/GetAllDoc?creator=${creator}&ficode=${ficode}`
+          );
+          const data = await response.json();
+          
+          if (data.statuscode === 200) {
+            const mergedDocuments = data.data.map((doc) => ({
+              ...doc,
+              icon: doc.icon || <Description />,
+            }));
 
-        if (data.statuscode === 200) {
-          // Merging static documents and fetched documents
-          const mergedDocuments = data.data.map((doc) => ({
-            ...doc,
-            icon: doc.icon || <Description />,
-          }));
+            const borrowerDocuments = mergedDocuments.filter((doc) => doc.grNo <= 0);
+            const coBorrowerDocuments = mergedDocuments.filter((doc) => doc.grNo > 0);
 
-          // Filter documents based on `grNo`
-          const borrowerDocuments = mergedDocuments.filter((doc) => doc.grNo <= 0);
-          const coBorrowerDocuments = mergedDocuments.filter((doc) => doc.grNo > 0);
-
-          // Set documents based on selected type
-          setDocuments(selectedType === 'borrower' ? borrowerDocuments : coBorrowerDocuments);
-        } else {
-          console.error('Error fetching documents:', data.message);
+            setDocuments(selectedType === 'borrower' ? borrowerDocuments : coBorrowerDocuments);
+          } else {
+            console.error('Error fetching documents:', data.message);
+          }
+        } catch (error) {
+          console.error('Failed to fetch documents', error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error("Failed to fetch documents", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDocuments();
-  }, [selectedType]);
+      };
+
+      fetchDocuments();
+    }
+  }, [ficode, creator, selectedType]);
 
   // Function to get sorted documents
   const getSortedDocuments = () => {
@@ -211,3 +211,6 @@ const Rightsidebar = () => {
 };
 
 export default Rightsidebar;
+
+
+

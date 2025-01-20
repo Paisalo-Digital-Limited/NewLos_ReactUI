@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 // project import
-import MainCard from 'components/MainCard';
-import ComponentSkeleton from '../component-overview/ComponentSkeleton';
+
 
 import {
   Card,
@@ -28,8 +27,7 @@ export default function UserAccess() {
 
   return (
     <>
-     <ComponentSkeleton>
-      <MainCard>
+
       <Box sx={{ margin: "0 auto" }}>
       <Grid sx={{ mb: 2,}}>
         <FormControl component="fieldset" fullWidth>
@@ -97,8 +95,7 @@ export default function UserAccess() {
         {selectedPage === "page" && <AddMenuMaster />}
       </Box>
       </Box>
-      </MainCard>
-      </ComponentSkeleton>
+     
       </>
   );
 }

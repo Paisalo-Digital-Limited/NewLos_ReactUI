@@ -17,14 +17,14 @@ import axios from 'axios';
 import axiosInstance from "./axiosInstance";
 import Swal from "sweetalert2"; 
 
-const Details = () => {
+const Details = ({ ficode, creator }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditable, setIsEditable] = useState(false); // State to toggle edit mode
   const [formValues, setFormValues] = useState({
-    ID: 10094, // Assuming ID is known
+    ID: 10094, // Assuming this is known
     Bank_Ac: "3746786234",
     Bank_IFCS: "8324686234",
     Bank_address: "",
@@ -35,10 +35,8 @@ const Details = () => {
     
     try {
       // First API Call - GET
-      const fiCurrentStatusResponse = await axios.get('https://apiuat.paisalo.in:4015/fi/api/FIIndex/FiCurrentStatus', {
+      const fiCurrentStatusResponse = await axios.get(`https://apiuat.paisalo.in:4015/fi/api/FIIndex/FiCurrentStatus?creator=${creator}&ficode=${ficode}`, {
         params: {
-          creator: "BAREILLY",
-          ficode: "261863",
           Id: formValues.ID,
         },
       });
@@ -46,7 +44,7 @@ const Details = () => {
       if (fiCurrentStatusResponse.status === 200) {
         const data = JSON.parse(fiCurrentStatusResponse.data.data)[0]; // Parse the response data
         console.log(data); // You can see the response
-
+        
         // Prepare payload for the second API call
         const payload = {
           Id: formValues.ID, // Same ID from the previous response
@@ -102,7 +100,7 @@ const Details = () => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(
-          "/FIIndex/FiMasterData?ficode=261863&creator=BAREILLY"
+          `/FIIndex/FiMasterData?ficode=${ficode}&creator=${creator}`
         );
         if (response.status === 200) {
           const data = JSON.parse(response.data.data)[0]; // Assuming the data is an array
@@ -115,9 +113,12 @@ const Details = () => {
       }
     };
 
-    fetchData();
-  }, []);
-
+    // Fetch data only if ficode and creator are provided
+    if (ficode && creator) {
+      fetchData();
+    }
+  }, [ficode, creator]);
+  
   // General Details Fields
   const generalDetailsFields = [
     { label: "Full Name", name: "FNAME", type: "text" },

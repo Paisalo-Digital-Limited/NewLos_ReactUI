@@ -32,6 +32,7 @@ const Documentupload = Loadable(lazy(() => import('pages/Documentupload/Pages'))
 const Sanction = Loadable(lazy(() => import('pages/sanction/Master')));
 const DeleteRecord = Loadable(lazy(() => import('pages/Delete/DeleteRecords')));
 const PddDocument = Loadable(lazy(() => import('pages/Pdddocument/PddDocument')));
+const BranchMaster = Loadable(lazy(() => import('pages/BranchMaster/AddBranch')));
 
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -117,8 +118,12 @@ const MainRoutes = {
       element: <PddDocument/>
     },
     {
-      path: 'Postsanction',
+      path: 'postsanction',
       element: <Postsanction />
+    },
+    {
+      path: 'branchmaster',
+      element: <BranchMaster />
     },
   ]
 };

@@ -291,29 +291,33 @@ function LoanTrackerPage() {
     
     //     fetchData();
     //   }, []);
-    const handleSubmit = async e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
         try {
-          const response = await axiosInstance.get(
-            `/FIIndex/FiMasterData?ficode=${ficode}&creator=${creator}`,
-          );
-          if (response.status === 200) {
-            const data = JSON.parse(response.data.data)[0];
-            setFormData(prev => ({ ...prev, ...data }));
-          }
+            const response = await axiosInstance.get(
+                `/FIIndex/FiMasterData?ficode=${ficode}&creator=${creator}`,
+            );
+            if (response.status === 200) {
+                const data = JSON.parse(response.data.data)[0];
+                setFormData(prev => ({ ...prev, ...data }));
+
+                // Here, we're directly using the updated ficode and creator
+                // Since Rightsidebar will be listening to these values
+            }
         } catch (err) {
-          console.error(err);
-          setError("Failed to fetch data");
+            console.error(err);
+            setError("Failed to fetch data");
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
-      };
+    };
     
+
     const fetchCloneStatus = async () => {
         try {
-            const response = await axios.get('https://apiuat.paisalo.in:4015/fi/api/FIIndex/GetCloneStatus?Code=250004&Creator=BAREILLY');
+            const response = await axios.get(`https://apiuat.paisalo.in:4015/fi/api/FIIndex/GetCloneStatus?Code=${ficode}&Creator=${creator}`);
             if (response.data.statuscode === 200) {
                 setCloneData(response.data.data); // Assuming data is under response.data.data
                 setOpenPopup(true); // Open dialog
@@ -325,15 +329,15 @@ function LoanTrackerPage() {
         }
     };
 
+
     const handleReadyToPush = async () => {
         try {
-            const response = await axios.get('https://apiuat.paisalo.in:4015/fi/api/FIIndex/CheckDocumentsAndReturnStatus?FiCode=261863&Creator=BAREILLY');
-            
+            const response = await axios.get(`https://apiuat.paisalo.in:4015/fi/api/FIIndex/CheckDocumentsAndReturnStatus?FiCode=${ficode}&Creator=${creator}`);
             if (response.status === 200) {
                 const data = response.data;
                 Swal.fire({
                     title: 'Success',
-                    text: response.data.message, // Process the data as needed
+                    text: response.data.message,
                     icon: 'success',
                 });
             } else {
@@ -357,16 +361,11 @@ function LoanTrackerPage() {
 
     const handlePDDDocs = async () => {
         try {
-            const response = await axios.get('https://apiuat.paisalo.in:4015/fi/api/FIIndex/GetVehicleDocuments?FiCode=261863&Creator=BAREILLY');
-    
+            const response = await axios.get(`https://apiuat.paisalo.in:4015/fi/api/FIIndex/GetVehicleDocuments?FiCode=${ficode}&Creator=${creator}`);
             if (response.status === 200) {
-                const data = response.data;
-    
-                // Depending on the response structure, you can process the data accordingly
-                // Here we show it in an alert, but you may want to replace this with your desired functionality
                 Swal.fire({
                     title: 'Documents Retrieved',
-                    text: response.data.message, // You can present this differently based on your UI needs
+                    text: response.data.message,
                     icon: 'success',
                 });
             } else {
@@ -385,6 +384,7 @@ function LoanTrackerPage() {
             });
         }
     };
+
 
 
     const actionConfigurations = [
@@ -510,7 +510,7 @@ function LoanTrackerPage() {
                                 startIcon={<SearchIcon />}
                                 onClick={handleSubmit}
                             >
-                                Search
+                                SEARCH
                             </Button>
                                 </AnimateButton>
                             </Grid>
@@ -750,7 +750,7 @@ function LoanTrackerPage() {
                     </Grid>
 
                     {/* Right Sidebar */}
-                    <Sidebar activeList={activeList} handleToggleList={handleToggleList} />
+                    <Sidebar activeList={activeList} handleToggleList={handleToggleList} ficode={ficode} creator={creator} />
                 </Grid>
 
                 {/* Sticky Action Bar */}
@@ -762,8 +762,8 @@ function LoanTrackerPage() {
                 cloneData={cloneData} 
             />
                 <Box>
-                    <Details isEditable={isEditable} />
-                </Box>
+                    <Details isEditable={isEditable}  ficode={ficode} creator={creator}  />
+                </Box> 
             </Grid>
         </ComponentSkeleton>
     );

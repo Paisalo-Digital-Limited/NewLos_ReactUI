@@ -1,30 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Card,
-  Typography,
-  Grid,
-  TextField,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Box,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TablePagination,
-  Paper,
-} from '@mui/material';
+import { Typography, Grid, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, Switch } from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import EditIcon from '@mui/icons-material/Edit';
 import Swal from 'sweetalert2';
-import AnimateButton from 'components/@extended/AnimateButton';
 import { getVehicleTypes, createVehicleType, updateVehicleType, toggleVehicleTypeStatus } from '../../../../api/apiVheicle';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import 'primereact/resources/themes/lara-light-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 const VehicleType = () => {
   const [name, setName] = useState('');
@@ -36,16 +20,7 @@ const VehicleType = () => {
   const [fetchError, setFetchError] = useState('');
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editData, setEditData] = useState(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const tableCellStyle = {
-    background: '#ff4c4c',
-    padding: '10px 16px',
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: 'bold'
-  };
+  const [first] = useState(0);
 
   const validateInputs = () => {
     let isValid = true;
@@ -77,7 +52,7 @@ const VehicleType = () => {
         icon: 'success',
         title: 'Success!',
         text: 'Vehicle type created successfully.',
-        confirmButtonText: 'OK',
+        confirmButtonText: 'OK'
       });
       setName('');
       setDescription('');
@@ -87,7 +62,7 @@ const VehicleType = () => {
         icon: 'error',
         title: 'Error',
         text: apiError.message || 'An error occurred while creating the vehicle type.',
-        confirmButtonText: 'OK',
+        confirmButtonText: 'OK'
       });
     } finally {
       setLoading(false);
@@ -99,7 +74,7 @@ const VehicleType = () => {
     try {
       const data = await getVehicleTypes();
       if (data.statuscode === 200) {
-        setVehicleTypes(data.data);
+        setVehicleTypes(data.data.map((item, index) => ({ id: index + 1, ...item })));
       } else {
         setFetchError(data.message || 'Failed to fetch vehicle types.');
       }
@@ -136,16 +111,22 @@ const VehicleType = () => {
           icon: 'success',
           title: 'Updated!',
           text: 'Vehicle type updated successfully.',
-          confirmButtonText: 'OK',
+          confirmButtonText: 'OK'
         });
+
+        // Clear fields
+        setName('');
+        setDescription('');
+        setEditData(null);
+
         setEditDialogOpen(false);
-        fetchVehicleTypes();
+        fetchVehicleTypes(); // Refresh the data table
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: response.message || 'Failed to update the vehicle type.',
-          confirmButtonText: 'OK',
+          confirmButtonText: 'OK'
         });
       }
     } catch (error) {
@@ -153,7 +134,7 @@ const VehicleType = () => {
         icon: 'error',
         title: 'Error',
         text: error.message || 'An error occurred while updating the vehicle type.',
-        confirmButtonText: 'OK',
+        confirmButtonText: 'OK'
       });
     } finally {
       setLoading(false);
@@ -163,29 +144,42 @@ const VehicleType = () => {
   const toggleStatus = async (rowData) => {
     setLoading(true);
     try {
+      // Call the API utility function to toggle the status
       const result = await toggleVehicleTypeStatus(rowData.id);
+
+      console.log('API Response:', result); // Debugging: Check the API response
+
       if (result.statuscode === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Success!',
           text: `Vehicle type has been ${!rowData.isActive ? 'activated' : 'deactivated'}.`,
-          confirmButtonText: 'OK',
+          confirmButtonText: 'OK'
         });
-        fetchVehicleTypes();
+
+        // Update the local state to reflect the changes
+        const updatedVehicleTypes = vehicleTypes.map((type) =>
+          type.id === rowData.id
+            ? { ...type, isActive: !rowData.isActive, isDeleted: false } // Toggle only isActive; ensure isDeleted remains false
+            : type
+        );
+
+        setVehicleTypes(updatedVehicleTypes); // Update the UI
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: result.message || 'Failed to update vehicle type status.',
-          confirmButtonText: 'OK',
+          confirmButtonText: 'OK'
         });
       }
     } catch (error) {
+      console.error('Error toggling status:', error); // Debugging: Check for errors
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: error.message || 'An error occurred while updating vehicle type status.',
-        confirmButtonText: 'OK',
+        confirmButtonText: 'OK'
       });
     } finally {
       setLoading(false);
@@ -194,7 +188,7 @@ const VehicleType = () => {
 
   const actionTemplate = (rowData) => {
     return (
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent:'center' }}>
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         <EditIcon
           onClick={() => handleEdit(rowData)}
           sx={{
@@ -202,8 +196,8 @@ const VehicleType = () => {
             color: '#1976d2',
             cursor: 'pointer',
             '&:hover': {
-              color: '#115293',
-            },
+              color: '#115293'
+            }
           }}
         />
         <Switch
@@ -211,14 +205,14 @@ const VehicleType = () => {
           onChange={() => toggleStatus(rowData)}
           sx={{
             '& .MuiSwitch-switchBase.Mui-checked': {
-              color: '#4caf50',
+              color: '#4caf50'
             },
             '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-              backgroundColor: '#81c784',
+              backgroundColor: '#81c784'
             },
             '& .MuiSwitch-track': {
-              backgroundColor: rowData.isActive ? '#81c784' : '#ef9a9a',
-            },
+              backgroundColor: rowData.isActive ? '#81c784' : '#ef9a9a'
+            }
           }}
         />
       </div>
@@ -256,76 +250,95 @@ const VehicleType = () => {
           />
         </Grid>
         <Grid item xs={12} md={2}>
-          <AnimateButton>
           <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              fullWidth
-              sx={{
-                fontWeight: 'bold',
-                    bgcolor: 'green',
-                    '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
-                  }}
-              startIcon={<CheckBoxIcon />} // Adding Submit Icon
-              onClick={handleSubmit}
-            >
-              SUBMIT
-            </Button>
-            </AnimateButton>
+            variant="contained"
+            size="large"
+            type="button"
+            onClick={handleSubmit}
+            sx={{ bgcolor: 'green', borderRadius: '0px', color: 'white', fontWeight: 'bold' }}
+            startIcon={<CheckBoxIcon />}
+          >
+            {loading ? 'Saving...' : 'SUBMIT'}
+          </Button>
         </Grid>
       </Grid>
+
       {fetchError && <Typography color="error">{fetchError}</Typography>}
-      <Box sx={{ marginTop: '10px' }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell  sx={tableCellStyle}>Sr. No.</TableCell>
-                <TableCell  sx={tableCellStyle}>ID</TableCell>
-                <TableCell  sx={tableCellStyle}>Vehicle Name</TableCell>
-                <TableCell  sx={tableCellStyle}>Description</TableCell>
-                <TableCell  sx={tableCellStyle}>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {(rowsPerPage > 0
-                ? vehicleTypes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                : vehicleTypes
-              ).map((rowData, index) => (
-                <TableRow key={rowData.id}>
-                  <TableCell  sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>{rowData.id}</TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>{rowData.name}</TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>{rowData.description}</TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>{actionTemplate(rowData)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-      
-        <TablePagination
+      <Box className="card" sx={{ marginTop: '10px' }}>
+        <DataTable
+          value={vehicleTypes}
+          paginator
+          paginatorPosition="bottom"
+          paginatorTemplate="RowsPerPageDropdown CurrentPageReport PrevPageLink PageLinks NextPageLink"
+          rows={5}
           rowsPerPageOptions={[5, 10, 20]}
-          component="div"
-          count={vehicleTypes.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={(event, newPage) => setPage(newPage)}
-          onRowsPerPageChange={(event) => {
-            setRowsPerPage(parseInt(event.target.value, 10));
-            setPage(0);
-          }}
-        />
-         </TableContainer>
+          responsiveLayout="scroll"
+          loading={loading}
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          style={{ textAlign: 'left' }}
+        >
+          <Column
+            header="Sr. No."
+            body={(rowData, { rowIndex }) => first + rowIndex + 1}
+            style={{ width: '100px' }}
+            headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} // Set header background to red
+          />
+          <Column
+            field="id"
+            header="ID"
+            headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} // Set header background to red
+          />
+          <Column
+            field="name"
+            header="Vehicle Name"
+            headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} // Set header background to red
+          />
+          <Column
+            field="description"
+            header="Description"
+            headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} // Set header background to red
+          />
+          <Column
+            header="Actions"
+            body={actionTemplate}
+            headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} // Set header background to red
+          />
+        </DataTable>
       </Box>
+
       <Dialog
         open={editDialogOpen}
         onClose={() => setEditDialogOpen(false)}
         fullWidth
         maxWidth="sm"
+        sx={{
+          '& .MuiDialog-paper': {
+            borderRadius: '16px',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
+          }
+        }}
       >
-        <DialogTitle>Edit Vehicle Type</DialogTitle>
-        <DialogContent>
+        <DialogTitle
+          sx={{
+            textAlign: 'center',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            background: 'linear-gradient(135deg, #2196f3, #21cbf3)',
+            color: 'white',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            padding: '16px 24px',
+            marginBottom: '30px'
+          }}
+        >
+          Edit Vehicle Type
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            padding: '24px',
+            backgroundColor: '#ffff'
+          }}
+        >
           <TextField
             label="Vehicle Name"
             variant="outlined"
@@ -335,6 +348,17 @@ const VehicleType = () => {
             onChange={(e) => setName(e.target.value)}
             error={!!nameError}
             helperText={nameError}
+            sx={{
+              marginBottom: 3,
+              marginTop: '10px',
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px'
+              },
+              '& .MuiInputLabel-root': {
+                fontWeight: 500,
+                fontSize: '1rem'
+              }
+            }}
           />
           <TextField
             label="Description"
@@ -345,13 +369,60 @@ const VehicleType = () => {
             onChange={(e) => setDescription(e.target.value)}
             error={!!descriptionError}
             helperText={descriptionError}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px'
+              },
+              '& .MuiInputLabel-root': {
+                fontWeight: 500,
+                fontSize: '1rem'
+              }
+            }}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setEditDialogOpen(false)} variant="outlined">
+        <DialogActions
+          sx={{
+            justifyContent: 'center',
+            padding: '16px',
+            background: '#f9f9f9',
+            borderBottomLeftRadius: '16px',
+            borderBottomRightRadius: '16px'
+          }}
+        >
+          <Button
+            onClick={() => setEditDialogOpen(false)}
+            variant="outlined"
+            size="large"
+            sx={{
+              borderRadius: '12px',
+              padding: '8px 24px',
+              fontSize: '1rem',
+              textTransform: 'none',
+              borderColor: '#d32f2f',
+              color: '#d32f2f',
+              '&:hover': {
+                background: '#ffd2d2'
+              }
+            }}
+          >
             Cancel
           </Button>
-          <Button onClick={saveEdit} variant="contained">
+          <Button
+            onClick={saveEdit}
+            variant="contained"
+            size="large"
+            sx={{
+              borderRadius: '12px',
+              padding: '8px 24px',
+              fontSize: '1rem',
+              textTransform: 'none',
+              background: 'linear-gradient(135deg, #21cbf3, #2196f3)',
+              color: 'white',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #1a78c2, #1976d2)'
+              }
+            }}
+          >
             Save
           </Button>
         </DialogActions>

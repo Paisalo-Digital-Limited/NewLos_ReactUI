@@ -8,7 +8,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 const SanctionUpdate = () => {
   const [creator, setCreator] = useState('');
   const [code, setCode] = useState('');
- 
 
   return (
     <>
@@ -102,7 +101,7 @@ const SanctionUpdate = () => {
             </LocalizationProvider>
           </Grid>
           <Grid item xs={12} sm={2}>
-          <Button
+            <Button
               variant="contained"
               size="medium"
               sx={{

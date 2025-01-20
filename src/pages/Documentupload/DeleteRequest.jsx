@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Box,
   Grid,
@@ -18,46 +18,39 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
-} from "@mui/material";
-import { CheckBox } from "@mui/icons-material";
+  MenuItem
+} from '@mui/material';
+import { CheckBox } from '@mui/icons-material';
 
 const DeleteRequest = () => {
-  const [fiCode, setFiCode] = useState("");
-  const [creator, setCreator] = useState("");
+  const [fiCode, setFiCode] = useState('');
+  const [creator, setCreator] = useState('');
   const [rows, setRows] = useState([]);
 
- 
   return (
     <>
       <Card
         sx={{
-          boxShadow: "none",
-          borderRadius: "7px",
-          mb: "10px",
+          boxShadow: 'none',
+          borderRadius: '7px',
+          mb: '10px'
         }}
         className="rmui-card"
       >
         <Typography
           variant="h5"
           sx={{
-            marginBottom: "20px",
-            fontWeight: "bold",
-            fontSize: "20px",
-            marginTop: "10px",
+            marginBottom: '20px',
+            fontWeight: 'bold',
+            fontSize: '20px',
+            marginTop: '10px'
           }}
         >
           Fi Delete Request
         </Typography>
         <form>
-          <Grid
-            container
-            spacing={2}
-            alignItems="center"
-            justifyContent="flex-start"
-            sx={{ marginBottom: "5px" }}
-          >
-             <Grid item xs={12} sm={5} md={3}>
+          <Grid container spacing={2} alignItems="center" justifyContent="flex-start" sx={{ marginBottom: '5px' }}>
+            <Grid item xs={12} sm={5} md={3}>
               <FormControl fullWidth size="medium">
                 <InputLabel id="product-type-label">Creator</InputLabel>
                 <Select
@@ -74,7 +67,6 @@ const DeleteRequest = () => {
               </FormControl>
             </Grid>
 
-
             <Grid item xs={12} sm={5} md={3}>
               <TextField
                 label="Fi Code"
@@ -85,15 +77,15 @@ const DeleteRequest = () => {
                 size="medium"
               />
             </Grid>
-           
+
             <Grid item xs={12} md={4} sm={6}>
-            <Button
+              <Button
                 type="submit"
                 variant="contained"
-                size="large" 
+                size="large"
                 sx={{
                   bgcolor: 'green',
-                  padding:'6px 35px',
+                  padding: '6px 35px'
                 }}
               >
                 Submit
@@ -104,24 +96,20 @@ const DeleteRequest = () => {
       </Card>
       <Card
         sx={{
-          boxShadow: "none",
-          mb: "10px",
-          marginTop:"10px"
+          boxShadow: 'none',
+          mb: '10px',
+          marginTop: '10px'
         }}
         className="rmui-card"
       >
-        <Grid
-          container
-          alignItems="center"
-          sx={{ marginBottom: "5px", marginLeft: "4px", marginTop:"10px" }}
-        >
+        <Grid container alignItems="center" sx={{ marginBottom: '5px', marginLeft: '4px', marginTop: '10px' }}>
           <Grid item xs={12} sm={3} md={2}>
             <Box>
               <TextField
                 variant="standard"
                 label="Document ID:"
                 InputProps={{
-                  disableUnderline: true,
+                  disableUnderline: true
                 }}
               />
             </Box>
@@ -132,7 +120,7 @@ const DeleteRequest = () => {
                 variant="standard"
                 label="Data Desc:"
                 InputProps={{
-                  disableUnderline: true,
+                  disableUnderline: true
                 }}
               />
             </Box>
@@ -144,13 +132,13 @@ const DeleteRequest = () => {
           </Grid>
           <Grid item xs={12} sm={2} md={1} marginTop={2}>
             <Box>
-            <Button
+              <Button
                 type="submit"
                 variant="contained"
                 size="medium"
                 sx={{
                   bgcolor: 'RGB(79, 121, 66)',
-                  padding:"4px 30px",
+                  padding: '4px 30px'
                 }}
               >
                 Send
@@ -159,8 +147,6 @@ const DeleteRequest = () => {
           </Grid>
         </Grid>
       </Card>
-
-      
     </>
   );
 };

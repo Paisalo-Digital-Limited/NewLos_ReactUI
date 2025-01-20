@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Grid,
-  Typography,
-  Button,
-  Card,
-  Paper,
-  Checkbox,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from '@mui/material';
+import { Grid, Typography, Button, Card, Paper, Checkbox, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { CheckBox as CheckBoxIcon } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,13 +10,13 @@ import AnimateButton from 'components/@extended/AnimateButton';
 const roles = [
   { id: 1, name: 'Admin' },
   { id: 2, name: 'Editor' },
-  { id: 3, name: 'Viewer' },
+  { id: 3, name: 'Viewer' }
 ];
 
 const subMenus = [
   { id: 1, title: 'Dashboard' },
   { id: 2, title: 'Settings' },
-  { id: 3, title: 'Profile' },
+  { id: 3, title: 'Profile' }
 ];
 
 const Permission = () => {
@@ -67,13 +56,13 @@ const Permission = () => {
       <ToastContainer />
       <Card
         sx={{
-          boxShadow: "none",
-          borderRadius: "7px",
-          mb: "10px",
+          boxShadow: 'none',
+          borderRadius: '7px',
+          mb: '10px'
         }}
         className="rmui-card"
       >
-        <Typography variant="h5"  sx={{ marginBottom: "20px", fontWeight: "bold" }}>
+        <Typography variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold' }}>
           Role Permission
         </Typography>
 
@@ -121,47 +110,46 @@ const Permission = () => {
           </Grid>
 
           <Grid item xs={12} sm={3} md={3}>
-      <Grid container spacing={1}>
-        <Grid item xs={6}>
-        <AnimateButton>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            onClick={handleSearch}
-            fullWidth
-            startIcon={<SearchIcon />} // Adding Search Icon
-          >
-            Search
-          </Button>
-          </AnimateButton>
-        </Grid>
-        <Grid item xs={6}>
-        <AnimateButton>
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-            size="large"
-            sx={{
-              fontWeight: 'bold',
-              bgcolor: 'green',
-              '&:hover': { bgcolor: 'primary.success' }
-            }}
-            fullWidth
-            startIcon={<SendIcon />} // Adding Submit Icon
-          >
-           SUBMIT
-          </Button>
-          </AnimateButton>
-        </Grid>
-      </Grid>
-    </Grid>
-
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <AnimateButton>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={handleSearch}
+                    fullWidth
+                    startIcon={<SearchIcon />} // Adding Search Icon
+                  >
+                    Search
+                  </Button>
+                </AnimateButton>
+              </Grid>
+              <Grid item xs={6}>
+                <AnimateButton>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="success"
+                    size="large"
+                    sx={{
+                      fontWeight: 'bold',
+                      bgcolor: 'green',
+                      '&:hover': { bgcolor: 'primary.success' }
+                    }}
+                    fullWidth
+                    startIcon={<SendIcon />} // Adding Submit Icon
+                  >
+                    SUBMIT
+                  </Button>
+                </AnimateButton>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
       </Card>
 
-        {/* <Grid container spacing={2} marginTop={5}>
+      {/* <Grid container spacing={2} marginTop={5}>
           {subMenus.map((submenu) => (
             <Grid item xs={12} sm={6} md={4} key={submenu.id}>
               <Paper elevation={3} sx={{ display: 'flex', alignItems: 'center', p: 2, borderRadius: '5px' , justifyContent:"space-between"}}>
@@ -181,7 +169,6 @@ const Permission = () => {
 };
 
 export default Permission;
-
 
 // import React, { useState } from 'react';
 // import { Grid, Typography, TextField, Button, Card, Paper, FormControl, InputLabel, Select, Table, TableCell, TableHead, TableRow, TableContainer, TableBody, FormGroup, FormControlLabel, Radio } from '@mui/material';
@@ -208,15 +195,15 @@ export default Permission;
 //             </Typography>
 //             <Grid sx={{ marginLeft: "5px", marginTop: "20px" }}>
 //                 <FormGroup sx={{ display: "inline-block" }}>
-//                     <FormControlLabel 
-//                         control={<Radio checked={option === 'deleteCode'} onChange={() => setOption('deleteCode')} />} 
-//                         label="Delete Sm Code" 
-//                         sx={{ fontSize: "27px" }} 
+//                     <FormControlLabel
+//                         control={<Radio checked={option === 'deleteCode'} onChange={() => setOption('deleteCode')} />}
+//                         label="Delete Sm Code"
+//                         sx={{ fontSize: "27px" }}
 //                     />
-//                     <FormControlLabel 
-//                         control={<Radio checked={option === 'sanction'} onChange={() => setOption('sanction')} />} 
-//                         label="Sanction" 
-//                         sx={{ fontSize: "27px" }} 
+//                     <FormControlLabel
+//                         control={<Radio checked={option === 'sanction'} onChange={() => setOption('sanction')} />}
+//                         label="Sanction"
+//                         sx={{ fontSize: "27px" }}
 //                     />
 //                 </FormGroup>
 //             </Grid>

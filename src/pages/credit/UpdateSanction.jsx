@@ -72,22 +72,22 @@ const UpdateSanction = () => {
 
           {/* Update Button */}
           <Grid item xs={12} sm={6} md={2}>
-                    <AnimateButton>
-                        <Button
-                        type="submit"
-                        variant="contained"
-                        size="large"
-                        sx={{
-                            fontWeight: 'bold',
-                                bgcolor: 'red',
-                                '&:hover': { bgcolor: 'red' } // Ensuring it stays green on hover
-                            }}
-                        fullWidth
-                        startIcon={<FormOutlined  />} // Adding Submit Icon
-                        >
-                        UPDATE
-                        </Button>
-                        </AnimateButton>
+            <AnimateButton>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                sx={{
+                  fontWeight: 'bold',
+                  bgcolor: 'red',
+                  '&:hover': { bgcolor: 'red' } // Ensuring it stays green on hover
+                }}
+                fullWidth
+                startIcon={<FormOutlined />} // Adding Submit Icon
+              >
+                UPDATE
+              </Button>
+            </AnimateButton>
           </Grid>
         </Grid>
       </Card>

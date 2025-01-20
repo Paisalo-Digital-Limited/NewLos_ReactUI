@@ -56,15 +56,13 @@ const UpdateScheme = () => {
   ];
   return (
     <>
-     <Box
-             sx={{
-              
-               borderRadius: "7px",
-               mb: "10px",
-             }}
-            
-           >
-        <Typography variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold', fontSize:"20px" }}>
+      <Box
+        sx={{
+          borderRadius: '7px',
+          mb: '10px'
+        }}
+      >
+        <Typography variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '20px' }}>
           Update Scheme Code
         </Typography>
 
@@ -95,88 +93,88 @@ const UpdateScheme = () => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={2}>
-          <AnimateButton>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{
-                fontWeight: 'bold',
-                    bgcolor: 'green',
-                    '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
-                  }}
-              fullWidth
-              startIcon={<SendIcon />} // Adding Submit Icon
-            >
-              SUBMIT
-            </Button>
+            <AnimateButton>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                sx={{
+                  fontWeight: 'bold',
+                  bgcolor: 'green',
+                  '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
+                }}
+                fullWidth
+                startIcon={<SendIcon />} // Adding Submit Icon
+              >
+                SUBMIT
+              </Button>
             </AnimateButton>
           </Grid>
         </Grid>
       </Box>
 
-        <TableContainer component={Paper} sx={{marginTop:"30px"}}>
-          <Table>
-            <TableHead>
-              <TableRow
-                sx={{
-                  textTransform: 'uppercase',
-                  background: '#ff4c4c',
-                  color: 'white',
-                  textAlign: 'center',
-                  fontSize: '10px'
-                }}
-              >
-                <TableCell sx={{ color: 'white' }}>S.No</TableCell>
-                <TableCell sx={{ color: 'white' }}>Code</TableCell>
-                <TableCell sx={{ color: 'white' }}>Creator Name</TableCell>
-                <TableCell sx={{ color: 'white' }}>Aadhar ID</TableCell>
-                <TableCell sx={{ color: 'white' }}>Scheme Code</TableCell>
-                <TableCell sx={{ color: 'white' }}>Address</TableCell>
-                <TableCell sx={{ color: 'white' }}>Loan Amount</TableCell>
-                <TableCell sx={{ color: 'white' }}>Loan Reason</TableCell>
-                <TableCell sx={{ color: 'white' }}>Loan Duration</TableCell>
-                <TableCell sx={{ color: 'white' }}>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableData.length > 0 ? (
-                tableData.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{row.fiCode}</TableCell>
-                    <TableCell>{row.creator}</TableCell>
-                    <TableCell>{row.aadharId}</TableCell>
-                    <TableCell>{row.p_Phone}</TableCell>
-                    <TableCell>{row.permanentAddress}</TableCell>
-                    <TableCell>{row.loanAmount}</TableCell>
-                    <TableCell>{row.loanReason}</TableCell>
-                    <TableCell>{row.loanDuration}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        sx={{
-                          background: '#64B5F6',
-                          '&:hover': { background: '#2196F3' }
-                        }}
-                        // onClick={() => handleAction(row.fiCode)} // Un-comment and implement if needed
-                      >
-                        Action
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={10} align="center">
-                    No Data Found
+      <TableContainer component={Paper} sx={{ marginTop: '30px' }}>
+        <Table>
+          <TableHead>
+            <TableRow
+              sx={{
+                textTransform: 'uppercase',
+                background: '#ff4c4c',
+                color: 'white',
+                textAlign: 'center',
+                fontSize: '10px'
+              }}
+            >
+              <TableCell sx={{ color: 'white' }}>S.No</TableCell>
+              <TableCell sx={{ color: 'white' }}>Code</TableCell>
+              <TableCell sx={{ color: 'white' }}>Creator Name</TableCell>
+              <TableCell sx={{ color: 'white' }}>Aadhar ID</TableCell>
+              <TableCell sx={{ color: 'white' }}>Scheme Code</TableCell>
+              <TableCell sx={{ color: 'white' }}>Address</TableCell>
+              <TableCell sx={{ color: 'white' }}>Loan Amount</TableCell>
+              <TableCell sx={{ color: 'white' }}>Loan Reason</TableCell>
+              <TableCell sx={{ color: 'white' }}>Loan Duration</TableCell>
+              <TableCell sx={{ color: 'white' }}>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tableData.length > 0 ? (
+              tableData.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{row.fiCode}</TableCell>
+                  <TableCell>{row.creator}</TableCell>
+                  <TableCell>{row.aadharId}</TableCell>
+                  <TableCell>{row.p_Phone}</TableCell>
+                  <TableCell>{row.permanentAddress}</TableCell>
+                  <TableCell>{row.loanAmount}</TableCell>
+                  <TableCell>{row.loanReason}</TableCell>
+                  <TableCell>{row.loanDuration}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      sx={{
+                        background: '#64B5F6',
+                        '&:hover': { background: '#2196F3' }
+                      }}
+                      // onClick={() => handleAction(row.fiCode)} // Un-comment and implement if needed
+                    >
+                      Action
+                    </Button>
                   </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={10} align="center">
+                  No Data Found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

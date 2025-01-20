@@ -63,8 +63,8 @@ const DeleteEsign = () => {
             variant="contained"
             size="medium"
             sx={{
-              background:"#D22B2B",
-              marginTop:"30px"
+              background: '#D22B2B',
+              marginTop: '30px'
             }}
             fullWidth
           >

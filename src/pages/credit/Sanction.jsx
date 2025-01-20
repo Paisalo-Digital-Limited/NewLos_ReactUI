@@ -1,61 +1,33 @@
-import React, { useState } from "react";
-import {
-  Card,
-  Grid,
-  FormControl,
-  TextField,
-  MenuItem,
-  Typography,
-  Button,
-} from "@mui/material";
+import React, { useState } from 'react';
+import { Card, Grid, FormControl, TextField, MenuItem, Typography, Button } from '@mui/material';
 import AnimateButton from 'components/@extended/AnimateButton';
 import SearchIcon from '@mui/icons-material/Search';
 
-const Sanction  = () => {
-  const [creator, setCreator] = useState("");
-  const [Fi_Id, setFiId] = useState(""); 
-  const [creatorList] = useState([
-    { creator: "John Doe" },
-    { creator: "Jane Smith" },
-    { creator: "Alice Johnson" },
-  ]);
-  const [amount, setAmount] = useState("");
-  const [showSanctionDetails, setShowSanctionDetails] = useState(false); 
+const Sanction = () => {
+  const [creator, setCreator] = useState('');
+  const [Fi_Id, setFiId] = useState('');
+  const [creatorList] = useState([{ creator: 'John Doe' }, { creator: 'Jane Smith' }, { creator: 'Alice Johnson' }]);
+  const [amount, setAmount] = useState('');
+  const [showSanctionDetails, setShowSanctionDetails] = useState(false);
 
   return (
     <>
       {/* Search Section */}
       <Card
-              sx={{
-                boxShadow: "none",
-                borderRadius: "7px",
-                mb: "10px",
-              }}
-              className="rmui-card"
-            >
-        <Typography
-          variant="h5"
-          sx={{ marginBottom: "20px", fontWeight: "bold", fontSize:"20px" }}
-        >
-          Modify Sanction 
+        sx={{
+          boxShadow: 'none',
+          borderRadius: '7px',
+          mb: '10px'
+        }}
+        className="rmui-card"
+      >
+        <Typography variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '20px' }}>
+          Modify Sanction
         </Typography>
-        <Grid
-          container
-          spacing={2}
-          alignItems="center"
-          justifyContent="flex-start"
-          sx={{ marginBottom: "5px" }}
-        >
+        <Grid container spacing={2} alignItems="center" justifyContent="flex-start" sx={{ marginBottom: '5px' }}>
           <Grid item xs={12} md={3} sm={3}>
             <FormControl fullWidth>
-              <TextField
-                select
-                value={creator}
-                onChange={(e) => setCreator(e.target.value)}
-                label="Creator"
-                fullWidth
-                size="medium"
-              >
+              <TextField select value={creator} onChange={(e) => setCreator(e.target.value)} label="Creator" fullWidth size="medium">
                 {creatorList.map((creatorItem, index) => (
                   <MenuItem key={index} value={creatorItem.creator}>
                     {creatorItem.creator}
@@ -65,31 +37,24 @@ const Sanction  = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12} md={3} sm={3}>
-            <TextField
-              fullWidth
-              label="FI_Id"
-              variant="outlined"
-              size="medium"
-              value={Fi_Id} 
-              onChange={(e) => setFiId(e.target.value)}
-            />
+            <TextField fullWidth label="FI_Id" variant="outlined" size="medium" value={Fi_Id} onChange={(e) => setFiId(e.target.value)} />
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
-          <AnimateButton>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{
-                fontWeight: 'bold',
-                    bgcolor: 'primary',
-                    '&:hover': { bgcolor: 'primary' } // Ensuring it stays green on hover
-                  }}
-              fullWidth
-              startIcon={<SearchIcon />} // Adding Submit Icon
-            >
-              SERACH
-            </Button>
+            <AnimateButton>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                sx={{
+                  fontWeight: 'bold',
+                  bgcolor: 'primary',
+                  '&:hover': { bgcolor: 'primary' } // Ensuring it stays green on hover
+                }}
+                fullWidth
+                startIcon={<SearchIcon />} // Adding Submit Icon
+              >
+                SERACH
+              </Button>
             </AnimateButton>
           </Grid>
         </Grid>

@@ -19,7 +19,8 @@ const Role = Loadable(lazy(() => import('pages/role/role')));
 const Vechicles = Loadable(lazy(() => import('pages/vechicles/vechicles')));
 const Menu = Loadable(lazy(() => import('pages/menu/menu')));
 const Groupmaster = Loadable(lazy(() => import('pages/groupmaster/groupmaster')));
-const Mastercreator = Loadable(lazy(() => import('pages/mastercreator/mastercreator')));
+// const Mastercreator = Loadable(lazy(() => import('pages/mastercreator/mastercreator')));
+const Mastercreator = Loadable(lazy(() => import('pages/mastercreator/Creator/CreatorMaster')));
 const Apiendpoints = Loadable(lazy(() => import('pages/apiendpoints/apiendpoints')));
 // render - Credit page
 const Fidocument = Loadable(lazy(() => import('pages/credit/fidocument')));
@@ -32,7 +33,7 @@ const Documentupload = Loadable(lazy(() => import('pages/Documentupload/Pages'))
 const Sanction = Loadable(lazy(() => import('pages/sanction/Master')));
 const DeleteRecord = Loadable(lazy(() => import('pages/Delete/DeleteRecords')));
 const PddDocument = Loadable(lazy(() => import('pages/Pdddocument/PddDocument')));
-
+const BranchMaster = Loadable(lazy(() => import('pages/BranchMaster/AddBranch')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -102,24 +103,28 @@ const MainRoutes = {
     },
     {
       path: 'uploaddocument',
-      element: <Documentupload/>
+      element: <Documentupload />
     },
     {
       path: 'sanction',
-      element: <Sanction/>
+      element: <Sanction />
     },
     {
       path: 'delete',
-      element: <DeleteRecord/>
+      element: <DeleteRecord />
     },
     {
       path: 'pdddocument',
-      element: <PddDocument/>
+      element: <PddDocument />
     },
     {
-      path: 'Postsanction',
+      path: 'postsanction',
       element: <Postsanction />
     },
+    {
+      path: 'branchmaster',
+      element: <BranchMaster />
+    }
   ]
 };
 

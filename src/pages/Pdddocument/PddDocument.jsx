@@ -1,6 +1,21 @@
 import React, { useState } from 'react';
-import { Grid, Typography, TextField, Button, Card, FormControl, InputLabel, Table, Select, 
-  TableContainer, TableCell, TableRow, TableHead, Paper, Box } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Card,
+  FormControl,
+  InputLabel,
+  Table,
+  Select,
+  TableContainer,
+  TableCell,
+  TableRow,
+  TableHead,
+  Paper,
+  Box
+} from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 
@@ -27,13 +42,13 @@ const PddDocument = () => {
 
   return (
     <Card
-    sx={{
-      boxShadow: 'none',
-      borderRadius: '7px',
-      mb: 2,
-      padding: { xs: '18px', sm: '20px', lg: '25px' }
-    }}
-  >
+      sx={{
+        boxShadow: 'none',
+        borderRadius: '7px',
+        mb: 2,
+        padding: { xs: '18px', sm: '20px', lg: '25px' }
+      }}
+    >
       <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
         Upload Vehicle Documents
       </Typography>
@@ -44,53 +59,53 @@ const PddDocument = () => {
             <InputLabel id="sub-menu-label">Creator</InputLabel>
             <Select label="Sub Menu" labelId="sub-menu-label" id="sub-menu-select"></Select>
           </FormControl>
-        </Grid> 
+        </Grid>
         <Grid item xs={12} sm={5} md={3}>
           <TextField variant="outlined" label="Fi Code" fullWidth />
         </Grid>
 
         <Grid item xs={12} sm={5} md={6}>
-          <Box sx={{display:'flex', gap:'20px'}}>
-          <Button
-            component="label"
-            variant="outlined"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
-            sx={{ border: '1px solid grey', color: 'gray', fontSize: '16px' }}
-          >
-            Image With Vehicle
-            <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
-          </Button>
-          <Button
-            component="label"
-            variant="outlined"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
-            sx={{ border: '1px solid grey', color: 'gray', fontSize: '16px' }}
-          >
-            Invoice
-            <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
-          </Button>
-          <Button
-            component="label"
-            variant="outlined"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
-            sx={{ border: '1px solid grey', color: 'gray', fontSize: '16px' }}
-          >
-            Insurance
-            <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
-          </Button>
-          <Button
-            component="label"
-            variant="outlined"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
-            sx={{ border: '1px solid grey', color: 'gray', fontSize: '16px' }}
-          >
-             Vehicle Rc
-            <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
-          </Button>
+          <Box sx={{ display: 'flex', gap: '20px' }}>
+            <Button
+              component="label"
+              variant="outlined"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
+              sx={{ border: '1px solid grey', color: 'gray', fontSize: '16px' }}
+            >
+              Image With Vehicle
+              <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
+            </Button>
+            <Button
+              component="label"
+              variant="outlined"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
+              sx={{ border: '1px solid grey', color: 'gray', fontSize: '16px' }}
+            >
+              Invoice
+              <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
+            </Button>
+            <Button
+              component="label"
+              variant="outlined"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
+              sx={{ border: '1px solid grey', color: 'gray', fontSize: '16px' }}
+            >
+              Insurance
+              <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
+            </Button>
+            <Button
+              component="label"
+              variant="outlined"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
+              sx={{ border: '1px solid grey', color: 'gray', fontSize: '16px' }}
+            >
+              Vehicle Rc
+              <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
+            </Button>
           </Box>
         </Grid>
       </Grid>

@@ -5,10 +5,7 @@ import logo from './logo.svg'; // Adjust the path as necessary
 const Logo = () => {
   const theme = useTheme();
 
-  return (
-    
-    <img src={logo} alt="Logo" width="100" style={{marginLeft:'1.5rem'}} />
-  );
+  return <img src={logo} alt="Logo" width="100" style={{ marginLeft: '1.5rem' }} />;
 };
 
 export default Logo;

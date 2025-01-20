@@ -4,7 +4,7 @@ import { UserAddOutlined, UserOutlined } from '@ant-design/icons';
 // icons
 const icons = {
   UserAddOutlined,
-  UserOutlined,
+  UserOutlined
 };
 
 // ==============================|| MENU ITEMS - SAMPLE PAGE & DOCUMENTATION ||============================== //
@@ -20,7 +20,7 @@ const hrms = {
       type: 'item',
       url: '/addemployee',
       icon: icons.UserAddOutlined, // Assigning the new icon for Add Employee
-      breadcrumbs: true,
+      breadcrumbs: true
     },
     {
       id: 'employee',
@@ -28,9 +28,9 @@ const hrms = {
       type: 'item',
       url: './employee',
       icon: icons.UserOutlined, // Assigning the new icon for Employee
-      breadcrumbs: true,
-    },
-  ],
+      breadcrumbs: true
+    }
+  ]
 };
 
 export default hrms;

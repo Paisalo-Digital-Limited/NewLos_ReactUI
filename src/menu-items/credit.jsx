@@ -3,8 +3,8 @@ import { RiseOutlined, PieChartOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
-    PieChartOutlined,
-    RiseOutlined
+  PieChartOutlined,
+  RiseOutlined
 };
 
 // ==============================|| MENU ITEMS - SAMPLE PAGE & DOCUMENTATION ||============================== //
@@ -26,10 +26,9 @@ const credit = {
       title: 'Update Fi Details',
       type: 'item',
       url: '/upadtefidoc',
-      icon: icons.PieChartOutlined,
+      icon: icons.PieChartOutlined
     }
   ]
 };
 
 export default credit;
-

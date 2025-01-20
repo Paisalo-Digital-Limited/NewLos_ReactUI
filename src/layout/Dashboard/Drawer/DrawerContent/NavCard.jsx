@@ -9,7 +9,7 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 export default function NavCard() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'1rem'}}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }}>
       <AnimateButton>
         <Button variant="contained" color="success" size="small">
           Logout

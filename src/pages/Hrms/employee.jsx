@@ -12,7 +12,7 @@ import {
   TablePagination,
   Tooltip,
   Switch,
-  Card,
+  Card
 } from '@mui/material';
 import { Check as CheckIcon } from '@mui/icons-material';
 import MainCard from 'components/MainCard';
@@ -29,7 +29,7 @@ const columns = [
   { id: 'reportingName', label: 'Manager Name' },
   { id: 'MobileNo', label: 'Mobile No' },
   { id: 'isActive', label: 'Active Status' },
-  { id: 'action', label: 'Actions' },
+  { id: 'action', label: 'Actions' }
 ];
 
 const EmployeeList = () => {
@@ -49,7 +49,7 @@ const EmployeeList = () => {
           setError(response.data.message);
         }
       } catch (error) {
-        setError("Error fetching employees: " + error.message);
+        setError('Error fetching employees: ' + error.message);
       } finally {
         setLoading(false);
       }
@@ -71,10 +71,10 @@ const EmployeeList = () => {
           sx={{
             boxShadow: 'none',
             borderRadius: '7px',
-            mb: '10px',
+            mb: '10px'
           }}
         >
-          <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
+          <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
             {loading ? (
               <div>Loading...</div>
             ) : error ? (
@@ -91,7 +91,7 @@ const EmployeeList = () => {
                           textTransform: 'uppercase',
                           background: '#ff4c4c',
                           color: 'white',
-                          textAlign: 'center',
+                          textAlign: 'center'
                         }}
                       >
                         {col.label}
@@ -117,13 +117,13 @@ const EmployeeList = () => {
                             '& .MuiSwitch-switchBase': {
                               '&.Mui-checked': {
                                 '& .MuiSwitch-thumb': {
-                                  background: 'linear-gradient(135deg, #4CAF50, #8BC34A)',
-                                },
+                                  background: 'linear-gradient(135deg, #4CAF50, #8BC34A)'
+                                }
                               },
                               '&:not(.Mui-checked) .MuiSwitch-thumb': {
-                                background: 'red',
-                              },
-                            },
+                                background: 'red'
+                              }
+                            }
                           }}
                         />
                       </TableCell>

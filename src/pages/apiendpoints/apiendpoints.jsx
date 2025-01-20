@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Grid,
@@ -22,38 +22,38 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
-} from "@mui/material";
+  MenuItem
+} from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import EditCalendarIcon from "@mui/icons-material/EditCalendar";
-import { Switch } from "@mui/material";
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import { Switch } from '@mui/material';
 import MainCard from 'components/MainCard';
 import ComponentSkeleton from '../component-overview/ComponentSkeleton';
 import SendIcon from '@mui/icons-material/Send';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 const PermissionAccess = () => {
-  const headers = ["S.No", "Controller", "Action Name", "Service Name", "Title", "Action"];
+  const headers = ['S.No', 'Controller', 'Action Name', 'Service Name', 'Title', 'Action'];
   const rows = [
-    { id: 1, controller: "Controller1", actionName: "Action1", serviceName: "Service1", title: "Page 1", isActive: true },
-    { id: 2, controller: "Controller2", actionName: "Action2", serviceName: "Service2", title: "Page 2", isActive: false },
-    { id: 3, controller: "Controller3", actionName: "Action3", serviceName: "Service3", title: "Page 3", isActive: true },
+    { id: 1, controller: 'Controller1', actionName: 'Action1', serviceName: 'Service1', title: 'Page 1', isActive: true },
+    { id: 2, controller: 'Controller2', actionName: 'Action2', serviceName: 'Service2', title: 'Page 2', isActive: false },
+    { id: 3, controller: 'Controller3', actionName: 'Action3', serviceName: 'Service3', title: 'Page 3', isActive: true }
   ];
 
   const menuItems = [
-    { id: 1, title: "Page 1" },
-    { id: 2, title: "Page 2" },
-    { id: 3, title: "Page 3" },
-    { id: 1, title: "Page 4" },
-    { id: 2, title: "Page 5" },
-    { id: 3, title: "Page 6" },
+    { id: 1, title: 'Page 1' },
+    { id: 2, title: 'Page 2' },
+    { id: 3, title: 'Page 3' },
+    { id: 1, title: 'Page 4' },
+    { id: 2, title: 'Page 5' },
+    { id: 3, title: 'Page 6' }
   ];
 
   return (
     <ComponentSkeleton>
       <MainCard>
         {/* Form Card */}
-        <Card sx={{ boxShadow: "none", borderRadius: "7px", mb: 2, padding: 2 }}>
+        <Card sx={{ boxShadow: 'none', borderRadius: '7px', mb: 2, padding: 2 }}>
           <Grid container spacing={2} sx={{ marginBottom: 2 }}>
             <Grid item xs={12} md={3}>
               <TextField label="Controller Name" variant="outlined" fullWidth />
@@ -77,22 +77,22 @@ const PermissionAccess = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} mt={2} md={2}>
-            <AnimateButton>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{
-                fontWeight: 'bold',
+              <AnimateButton>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    fontWeight: 'bold',
                     bgcolor: 'green',
                     '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
                   }}
-              fullWidth
-              startIcon={<SendIcon />} // Adding Submit Icon
-            >
-              SUBMIT
-            </Button>
-            </AnimateButton>
+                  fullWidth
+                  startIcon={<SendIcon />} // Adding Submit Icon
+                >
+                  SUBMIT
+                </Button>
+              </AnimateButton>
             </Grid>
           </Grid>
         </Card>
@@ -106,10 +106,10 @@ const PermissionAccess = () => {
                   <TableCell
                     key={header}
                     sx={{
-                      fontWeight: "bold",
-                      background: '#ff4c4c', 
-                      color: "white",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      background: '#ff4c4c',
+                      color: 'white',
+                      textAlign: 'center'
                     }}
                   >
                     {header}
@@ -126,10 +126,10 @@ const PermissionAccess = () => {
                     <TableCell sx={{ textAlign: 'center' }}>{row.actionName}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{row.serviceName}</TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>{row.title}</TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
+                    <TableCell sx={{ textAlign: 'center' }}>
                       <Tooltip title="Edit">
                         <IconButton>
-                          <EditCalendarIcon sx={{ color: 'red', fontSize: "24px" }} />
+                          <EditCalendarIcon sx={{ color: 'red', fontSize: '24px' }} />
                         </IconButton>
                       </Tooltip>
                       <Switch
@@ -139,16 +139,16 @@ const PermissionAccess = () => {
                           '& .MuiSwitch-switchBase': {
                             '&.Mui-checked': {
                               '& .MuiSwitch-thumb': {
-                                background: "green",
-                              },
+                                background: 'green'
+                              }
                             },
                             '&:not(.Mui-checked) .MuiSwitch-thumb': {
-                              background: 'red',
+                              background: 'red'
                             },
                             '&.Mui-checked + .MuiSwitch-track': {
-                              border: '1px solid black',
-                            },
-                          },
+                              border: '1px solid black'
+                            }
+                          }
                         }}
                       />
                     </TableCell>

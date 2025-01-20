@@ -3,12 +3,12 @@ import { MenuUnfoldOutlined, UserOutlined, ApiOutlined, TeamOutlined, BuildOutli
 
 // icons
 const icons = {
-    MenuUnfoldOutlined,
-    UserOutlined,
-    ApiOutlined,
-    TeamOutlined,
-    BuildOutlined,
-    CarOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+  ApiOutlined,
+  TeamOutlined,
+  BuildOutlined,
+  CarOutlined
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -24,7 +24,7 @@ const role = {
       type: 'item',
       url: '/menu',
       icon: icons.MenuUnfoldOutlined,
-      breadcrumbs: true,
+      breadcrumbs: true
     },
     {
       id: 'role',
@@ -32,7 +32,7 @@ const role = {
       type: 'item',
       url: '/role',
       icon: icons.UserOutlined, // changed icon
-      breadcrumbs: true,
+      breadcrumbs: true
     },
     {
       id: 'apiendpoints',
@@ -40,7 +40,7 @@ const role = {
       type: 'item',
       url: '/apiendpoints',
       icon: icons.ApiOutlined, // changed icon
-      breadcrumbs: true,
+      breadcrumbs: true
     },
     {
       id: 'groupmaster',
@@ -48,7 +48,7 @@ const role = {
       type: 'item',
       url: '/groupmaster',
       icon: icons.TeamOutlined, // changed icon
-      breadcrumbs: true,
+      breadcrumbs: true
     },
     {
       id: 'mastercreator',
@@ -56,7 +56,7 @@ const role = {
       type: 'item',
       url: '/mastercreator',
       icon: icons.BuildOutlined, // changed icon
-      breadcrumbs: true,
+      breadcrumbs: true
     },
     {
       id: 'vechicles',
@@ -64,9 +64,9 @@ const role = {
       type: 'item',
       url: '/vechicles',
       icon: icons.CarOutlined, // changed icon
-      breadcrumbs: true,
-    },
-  ],
+      breadcrumbs: true
+    }
+  ]
 };
 
 export default role;

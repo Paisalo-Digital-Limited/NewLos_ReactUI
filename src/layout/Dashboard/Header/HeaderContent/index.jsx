@@ -12,7 +12,6 @@ import MobileSection from './MobileSection';
 
 // project import
 
-
 // ==============================|| HEADER - CONTENT ||============================== //
 
 export default function HeaderContent() {

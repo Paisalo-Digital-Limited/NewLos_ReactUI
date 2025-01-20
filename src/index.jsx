@@ -27,6 +27,15 @@ import '@fontsource/public-sans/500.css';
 import '@fontsource/public-sans/600.css';
 import '@fontsource/public-sans/700.css';
 
+/* PrimeReact core styles */
+import 'primereact/resources/primereact.min.css';
+
+/* Theme styles (choose one) */
+import 'primereact/resources/themes/saga-blue/theme.css';
+
+/* PrimeIcons styles (for icons) */
+import 'primeicons/primeicons.css';
+
 // project import
 import App from './App';
 import reportWebVitals from './reportWebVitals';

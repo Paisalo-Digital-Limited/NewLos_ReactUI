@@ -1,10 +1,5 @@
 // assets
-import {
-  BarcodeOutlined,
-  BgColorsOutlined,
-  FontSizeOutlined,
-  SwapOutlined
-} from '@ant-design/icons';
+import { BarcodeOutlined, BgColorsOutlined, FontSizeOutlined, SwapOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {

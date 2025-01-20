@@ -67,27 +67,27 @@ const MainPage = () => {
             <TextField label="Icon" variant="outlined" value={mainMenuIcon} onChange={(e) => setMainMenuIcon(e.target.value)} fullWidth />
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
-          <AnimateButton>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{
-                fontWeight: 'bold',
-                    bgcolor: 'green',
-                    '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
-                  }}
-              fullWidth
-              startIcon={<SendIcon />} // Adding Submit Icon
-            >
-              SUBMIT
-            </Button>
+            <AnimateButton>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                sx={{
+                  fontWeight: 'bold',
+                  bgcolor: 'green',
+                  '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
+                }}
+                fullWidth
+                startIcon={<SendIcon />} // Adding Submit Icon
+              >
+                SUBMIT
+              </Button>
             </AnimateButton>
           </Grid>
         </Grid>
       </Card>
 
-      <TableContainer component={Paper} sx={{marginTop:"20px"}}>
+      <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
         <Table>
           <TableHead>
             <TableRow>

@@ -14,8 +14,8 @@ import Collapse from '@mui/material/Collapse'; // Import Collapse for smooth tra
 import NavItem from './NavItem';
 
 export default function NavGroup({ item }) {
-const { menuMaster } = useGetMenuMaster();
-const drawerOpen = menuMaster.isDashboardDrawerOpened;
+  const { menuMaster } = useGetMenuMaster();
+  const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
   // Local state for managing open/collapse state of the group
   const [open, setOpen] = useState(false);
@@ -28,19 +28,11 @@ const drawerOpen = menuMaster.isDashboardDrawerOpened;
   const navCollapse = item.children?.map((menuItem) => {
     switch (menuItem.type) {
       case 'collapse':
-        return (
-          <Typography key={menuItem.id} variant="caption" color="error" sx={{ p: 2.5 }}>
-           
-          </Typography>
-        );
+        return <Typography key={menuItem.id} variant="caption" color="error" sx={{ p: 2.5 }}></Typography>;
       case 'item':
         return <NavItem key={menuItem.id} item={menuItem} level={1} />;
       default:
-        return (
-          <Typography key={menuItem.id} variant="h6" color="error" align="center">
-        
-          </Typography>
-        );
+        return <Typography key={menuItem.id} variant="h6" color="error" align="center"></Typography>;
     }
   });
 
@@ -50,12 +42,7 @@ const drawerOpen = menuMaster.isDashboardDrawerOpened;
         item.title &&
         drawerOpen && (
           <Box sx={{ pl: 3, mb: 1.5 }}>
-            <Typography 
-              variant="subtitle2" 
-              color="textSecondary" 
-              onClick={handleToggle} 
-              style={{ cursor: 'pointer' }}
-            >
+            <Typography variant="subtitle2" color="textSecondary" onClick={handleToggle} style={{ cursor: 'pointer' }}>
               {item.title} {open ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />} {/* Adjust size */}
             </Typography>
           </Box>

@@ -43,12 +43,12 @@ export default function NavItem({ item, level }) {
   // active menu item on page load
   useEffect(() => {
     if (pathname === item.url) handlerActiveItem(item.id);
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [pathname]);
 
   const textColor = 'text.primary';
   const iconSelectedColor = 'primary.main';
-  
+
   // State for handling expanded/collapsed state
   const [open, setOpen] = useState(false);
 
@@ -114,12 +114,13 @@ export default function NavItem({ item, level }) {
                   bgcolor: 'secondary.lighter'
                 }
               }),
-              ...(!drawerOpen && isSelected && {
-                bgcolor: 'primary.lighter',
-                '&:hover': {
-                  bgcolor: 'primary.lighter'
-                }
-              })
+              ...(!drawerOpen &&
+                isSelected && {
+                  bgcolor: 'primary.lighter',
+                  '&:hover': {
+                    bgcolor: 'primary.lighter'
+                  }
+                })
             }}
           >
             {itemIcon}
@@ -143,16 +144,10 @@ export default function NavItem({ item, level }) {
             avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
           />
         )}
-        {item.children && (
-          <ListItemIcon>
-            {open ? <ExpandLess /> : <ExpandMore />}
-          </ListItemIcon>
-        )}
+        {item.children && <ListItemIcon>{open ? <ExpandLess /> : <ExpandMore />}</ListItemIcon>}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        {item.children && item.children.map((child) => (
-          <NavItem key={child.id} item={child} level={level + 1} />
-        ))}
+        {item.children && item.children.map((child) => <NavItem key={child.id} item={child} level={level + 1} />)}
       </Collapse>
     </>
   );

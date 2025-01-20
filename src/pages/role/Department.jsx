@@ -28,9 +28,9 @@ import AnimateButton from 'components/@extended/AnimateButton';
 import SendIcon from '@mui/icons-material/Send';
 
 const initialDepartment = [
-  { SNo:1, name: 'Admin' },
-  { SNo:2, name: 'User' },
-  { SNo:3, name:"user"}
+  { SNo: 1, name: 'Admin' },
+  { SNo: 2, name: 'User' },
+  { SNo: 3, name: 'user' }
 ];
 
 const Department = () => {
@@ -75,14 +75,14 @@ const Department = () => {
   };
 
   return (
-     <Card
-            sx={{
-              boxShadow: "none",
-              borderRadius: "7px",
-              mb: "10px",
-            }}
-            className="rmui-card"
-          >
+    <Card
+      sx={{
+        boxShadow: 'none',
+        borderRadius: '7px',
+        mb: '10px'
+      }}
+      className="rmui-card"
+    >
       <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
         Department Master
       </Typography>
@@ -104,21 +104,21 @@ const Department = () => {
             />
           </Grid>
           <Grid item xs={12} md={2}>
-          <AnimateButton>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{
-                fontWeight: 'bold',
-                bgcolor: 'green',
-                '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
-              }}
-              fullWidth
-              startIcon={<SendIcon />} // Adding Submit Icon
-            >
-              SUBMIT
-            </Button>
+            <AnimateButton>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                sx={{
+                  fontWeight: 'bold',
+                  bgcolor: 'green',
+                  '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
+                }}
+                fullWidth
+                startIcon={<SendIcon />} // Adding Submit Icon
+              >
+                SUBMIT
+              </Button>
             </AnimateButton>
           </Grid>
         </Grid>
@@ -195,29 +195,28 @@ const Department = () => {
             />
           </DialogContent>
           <DialogActions>
-          <Button
-        variant="contained"
-        startIcon={<UpdateIcon />}
-        sx={{
-          textTransform: "none",
-          borderRadius: "18px",
-          fontWeight: "bold",
-          fontSize: "16px",
-          padding: "12px 12px",
-          backgroundColor: "#42A5F5",
-          color: "white",
-          boxShadow: "0px 4px 15px rgba(66, 165, 245, 0.3)",
-          transition: "all 0.3s ease-in-out",
-          "&:hover": {
-            backgroundColor: "#1E88E5",
-            boxShadow: "0px 6px 20px rgba(30, 136, 229, 0.4)",
-          },
-        }}
-        onClick={handleUpdate}
-      >
-        Update
-      </Button>
-
+            <Button
+              variant="contained"
+              startIcon={<UpdateIcon />}
+              sx={{
+                textTransform: 'none',
+                borderRadius: '18px',
+                fontWeight: 'bold',
+                fontSize: '16px',
+                padding: '12px 12px',
+                backgroundColor: '#42A5F5',
+                color: 'white',
+                boxShadow: '0px 4px 15px rgba(66, 165, 245, 0.3)',
+                transition: 'all 0.3s ease-in-out',
+                '&:hover': {
+                  backgroundColor: '#1E88E5',
+                  boxShadow: '0px 6px 20px rgba(30, 136, 229, 0.4)'
+                }
+              }}
+              onClick={handleUpdate}
+            >
+              Update
+            </Button>
           </DialogActions>
         </Dialog>
       )}
@@ -226,8 +225,6 @@ const Department = () => {
 };
 
 export default Department;
-
-
 
 // import React, { useState, useEffect } from 'react';
 // import {
@@ -250,7 +247,7 @@ export default Department;
 // } from '@mui/material';
 // import CheckBoxIcon from '@mui/icons-material/CheckBox';
 // import EditCalendarIcon from "@mui/icons-material/EditCalendar";
-// import Tooltip from '@mui/material/Tooltip'; 
+// import Tooltip from '@mui/material/Tooltip';
 // import MuiAlert from '@mui/material/Alert';
 // import CloseIcon from '@mui/icons-material/Close';
 // import axiosInstance from './apidepartment'; // Import your axios instance// Adjust the import path accordingly// Import Loader component
@@ -265,7 +262,7 @@ export default Department;
 //   const [snackbarOpen, setSnackbarOpen] = useState(false);
 //   const [snackbarMessage, setSnackbarMessage] = useState('');
 //   const [editedDepartmentId, setEditedDepartmentId] = useState(null);
-  
+
 //   const [showLoader, setShowLoader] = useState(true);
 //   const [page, setPage] = useState(0);
 //   const [rowsPerPage, setRowsPerPage] = useState(5); // Default rows per page
@@ -275,7 +272,7 @@ export default Department;
 //       await getDepartments();
 //       setShowLoader(false);
 //     };
-    
+
 //     loadDepartments();
 //   }, []);
 
@@ -285,7 +282,7 @@ export default Department;
 
 //   const handleSubmit = async (event) => {
 //     event.preventDefault();
-  
+
 //     const result = await Swal.fire({
 //       title: 'Are you sure?',
 //       text: 'Do you want to create this department?',
@@ -296,7 +293,7 @@ export default Department;
 //       confirmButtonText: 'Yes, create it!',
 //       cancelButtonText: 'No, cancel!',
 //     });
-  
+
 //     if (result.isConfirmed) {
 //       const data = { name, id: 0 };
 //       try {
@@ -325,12 +322,12 @@ export default Department;
 //         confirmButtonText: 'Yes, update it!',
 //         cancelButtonText: 'No, cancel!',
 //       });
-  
+
 //       if (result.isConfirmed) {
 //         try {
-//           await axiosInstance.post('/UpdateDepartment', { 
-//             id: editedDepartmentId, 
-//             name: editedDepartmentName 
+//           await axiosInstance.post('/UpdateDepartment', {
+//             id: editedDepartmentId,
+//             name: editedDepartmentName
 //           }); // Removed header since it's being set in the axios instance
 //           setSnackbarMessage('Department updated successfully.');
 //           getDepartments();
@@ -376,13 +373,13 @@ export default Department;
 //       confirmButtonText: 'Yes, delete it!',
 //       cancelButtonText: 'No, cancel!',
 //     });
-    
+
 //     if (result.isConfirmed) {
 //       try {
 //         await axiosInstance.get(`/DeleteDepartment?DepartmentId=${id}`); // Removed header since it's being set in the axios instance
 //         setSnackbarMessage('Department deleted successfully.');
 //         setSnackbarOpen(true);
-//         await getDepartments(); 
+//         await getDepartments();
 //       } catch (error) {
 //         console.error(error);
 //         setSnackbarMessage('Failed to delete department.');
@@ -404,9 +401,6 @@ export default Department;
 
 //   return (
 //     <Grid container spacing={2} justifyContent="center">
-
-      
-
 
 //           <Grid item xs={12}>
 //             <Card>
@@ -468,10 +462,10 @@ export default Department;
 //                       <TableCell sx={{padding: "10px 16px", textAlign:'center'}}>{(page * rowsPerPage) + index + 1}</TableCell>
 //                       <TableCell sx={{padding: "10px 16px", textAlign:'center'}}>{department.name}</TableCell>
 //                       <TableCell sx={{padding: "10px 16px", textAlign:'center'}}>
-//                         <Button color="secondary" onClick={() => { 
-//                           setEditedDepartmentName(department.name); 
-//                           setEditedDepartmentId(department.id); 
-//                           setOpenModal(true); 
+//                         <Button color="secondary" onClick={() => {
+//                           setEditedDepartmentName(department.name);
+//                           setEditedDepartmentId(department.id);
+//                           setOpenModal(true);
 //                         }}>
 //                           <Tooltip title="Edit Designation" arrow>
 //                             <EditCalendarIcon sx={{color:'red'}} />
@@ -520,17 +514,17 @@ export default Department;
 
 // const Modal = ({ onClose, onUpdate, editedDepartmentName, setEditedDepartmentName }) => {
 //   return (
-//     <Paper 
-//       elevation={6} 
-//       square 
-//       sx={{ 
-//         position: 'absolute', 
-//         top: '50%', 
-//         left: '50%', 
-//         transform: 'translate(-50%, -50%)', 
-//         padding: '16px', 
-//         maxWidth: '500px', 
-//         width: { xs: '90%', sm: '500px' }, 
+//     <Paper
+//       elevation={6}
+//       square
+//       sx={{
+//         position: 'absolute',
+//         top: '50%',
+//         left: '50%',
+//         transform: 'translate(-50%, -50%)',
+//         padding: '16px',
+//         maxWidth: '500px',
+//         width: { xs: '90%', sm: '500px' },
 //       }}
 //     >
 //       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -545,7 +539,7 @@ export default Department;
 //         variant="outlined"
 //         label="Name"
 //         fullWidth
-//         margin="normal" 
+//         margin="normal"
 //       />
 //       <Button onClick={onUpdate} variant="contained" color="primary" style={{ float: 'inline-end', marginTop: '16px' }}>Update</Button>
 //     </Paper>
@@ -553,4 +547,3 @@ export default Department;
 // };
 
 // export default Department;
-

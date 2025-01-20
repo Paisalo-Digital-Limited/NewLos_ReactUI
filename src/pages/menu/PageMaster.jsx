@@ -75,30 +75,28 @@ const AddMenuMaster = () => {
             <TextField label="Page URL" variant="outlined" fullWidth />
           </Grid>
 
-         <Grid item xs={12} sm={4} md={2}>
-           
+          <Grid item xs={12} sm={4} md={2}>
             <AnimateButton>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{
-                fontWeight: 'bold',
-                    bgcolor: 'green',
-                    '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
-                  }}
-              fullWidth
-              startIcon={<SendIcon />} // Adding Submit Icon
-            >
-              SUBMIT
-            </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                sx={{
+                  fontWeight: 'bold',
+                  bgcolor: 'green',
+                  '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
+                }}
+                fullWidth
+                startIcon={<SendIcon />} // Adding Submit Icon
+              >
+                SUBMIT
+              </Button>
             </AnimateButton>
-            
           </Grid>
         </Grid>
       </Card>
 
-      <TableContainer component={Paper} sx={{ borderRadius: '5px' , marginTop:"20px"}}>
+      <TableContainer component={Paper} sx={{ borderRadius: '5px', marginTop: '20px' }}>
         <Table>
           <TableHead>
             <TableRow>

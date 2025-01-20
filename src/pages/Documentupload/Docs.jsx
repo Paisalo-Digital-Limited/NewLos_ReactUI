@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Box,
   Grid,
@@ -18,58 +18,52 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
-} from "@mui/material";
+  MenuItem
+} from '@mui/material';
 
 const Document = () => {
-  const [fiCode, setFiCode] = useState("");
-  const [creator, setCreator] = useState("");
+  const [fiCode, setFiCode] = useState('');
+  const [creator, setCreator] = useState('');
   const [rows, setRows] = useState([]);
 
   const headers = [
-    { label: "ID", key: "id" },
-    { label: " DOC Name", key: "doc" },
-    { label: "SELECT DOCUMENT", key: "document" },
-    { label: "Action", key: "action" },
+    { label: 'ID', key: 'id' },
+    { label: ' DOC Name', key: 'doc' },
+    { label: 'SELECT DOCUMENT', key: 'document' },
+    { label: 'Action', key: 'action' }
   ];
 
   const tableCellStyle = {
-    background: "linear-gradient(90deg,#ed1c24,#ed1c24)",
-    padding: "10px 16px",
-    color: "white",
-    textAlign: "center",
-    fontWeight: "bold",
+    background: 'linear-gradient(90deg,#ed1c24,#ed1c24)',
+    padding: '10px 16px',
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold'
   };
 
   return (
     <>
       <Card
         sx={{
-          boxShadow: "none",
-          borderRadius: "7px",
-          mb: "10px",
+          boxShadow: 'none',
+          borderRadius: '7px',
+          mb: '10px'
         }}
         className="rmui-card"
       >
         <Typography
           variant="h5"
           sx={{
-            marginBottom: "20px",
-            fontWeight: "bold",
-            fontSize: "20px",
-            marginTop: "10px",
+            marginBottom: '20px',
+            fontWeight: 'bold',
+            fontSize: '20px',
+            marginTop: '10px'
           }}
         >
           Fi Docs Upload
         </Typography>
         <form>
-          <Grid
-            container
-            spacing={2}
-            alignItems="center"
-            justifyContent="flex-start"
-            sx={{ marginBottom: "5px" }}
-          >
+          <Grid container spacing={2} alignItems="center" justifyContent="flex-start" sx={{ marginBottom: '5px' }}>
             <Grid item xs={12} sm={5} md={3}>
               <TextField
                 label="Fi Code"
@@ -89,7 +83,6 @@ const Document = () => {
                   label="Creator"
                   labelId="product-type-label"
                   id="product-type"
-                  
                 >
                   <MenuItem value="001">Agra</MenuItem>
                   <MenuItem value="002">Delhi</MenuItem>
@@ -102,9 +95,9 @@ const Document = () => {
                 variant="contained"
                 size="large"
                 sx={{
-                  padding: "6px 35px",
-                  fontSize: "15px",
-                  marginRight: "8px",
+                  padding: '6px 35px',
+                  fontSize: '15px',
+                  marginRight: '8px'
                 }}
               >
                 Search
@@ -115,25 +108,21 @@ const Document = () => {
       </Card>
       <Card
         sx={{
-          boxShadow: "none",
-          mb: "10px",
-          background:"#E9FCE9",
-          marginTop:"30px"
+          boxShadow: 'none',
+          mb: '10px',
+          background: '#E9FCE9',
+          marginTop: '30px'
         }}
         className="rmui-card"
       >
-        <Grid
-          container
-          alignItems="center"
-          sx={{ marginBottom: "5px", marginLeft: "4px" }}
-        >
+        <Grid container alignItems="center" sx={{ marginBottom: '5px', marginLeft: '4px' }}>
           <Grid item xs={12} sm={5} md={3}>
             <Box>
               <TextField
                 variant="standard"
                 label="User ID:"
                 InputProps={{
-                  disableUnderline: true,
+                  disableUnderline: true
                 }}
               />
             </Box>
@@ -144,7 +133,7 @@ const Document = () => {
                 variant="standard"
                 label="Borrower Name:"
                 InputProps={{
-                  disableUnderline: true,
+                  disableUnderline: true
                 }}
               />
             </Box>
@@ -155,7 +144,7 @@ const Document = () => {
                 variant="standard"
                 label="Father Name:"
                 InputProps={{
-                  disableUnderline: true,
+                  disableUnderline: true
                 }}
               />
             </Box>
@@ -166,7 +155,7 @@ const Document = () => {
                 variant="standard"
                 label="Mobile:"
                 InputProps={{
-                  disableUnderline: true,
+                  disableUnderline: true
                 }}
               />
             </Box>
@@ -174,14 +163,11 @@ const Document = () => {
         </Grid>
       </Card>
 
-      <Card sx={{ boxShadow: "none", borderRadius: "7px", mb: "25px" }}>
-        <TableContainer
-          component={Paper}
-          sx={{ borderRadius: "5px", marginTop: "20px" }}
-        >
+      <Card sx={{ boxShadow: 'none', borderRadius: '7px', mb: '25px' }}>
+        <TableContainer component={Paper} sx={{ borderRadius: '5px', marginTop: '20px' }}>
           <Table>
             <TableHead>
-            <TableRow>
+              <TableRow>
                 <TableCell sx={tableCellStyle}>Id</TableCell>
                 <TableCell sx={tableCellStyle}>Doc Name</TableCell>
                 <TableCell sx={tableCellStyle}>Select Document</TableCell>

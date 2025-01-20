@@ -116,7 +116,6 @@
 //   );
 // }
 
- 
 import React, { useState, useEffect } from 'react';
 import {
   Card,
@@ -230,7 +229,7 @@ const ListData = () => {
                 ':hover': {
                   background: 'linear-gradient(135deg,rgb(120, 170, 4),rgb(90, 140, 2))',
                   transform: 'scale(1.05)',
-                  transition: 'all 0.3s',
+                  transition: 'all 0.3s'
                 }
               }}
             >
@@ -259,9 +258,9 @@ const ListData = () => {
               onClick={() => console.log('Export Clicked')}
               style={{
                 background: 'linear-gradient(90deg, #FF4E50,rgb(233, 195, 9))',
-                border:"none",
-                color:"white",
-                marginRight:"8",
+                border: 'none',
+                color: 'white',
+                marginRight: '8'
               }}
             >
               Export
@@ -382,7 +381,7 @@ const ListData = () => {
             <Input />
           </Form.Item>
           <Form.Item>
-          <Button
+            <Button
               size="large"
               icon={<SaveOutlined />}
               style={{
@@ -394,16 +393,17 @@ const ListData = () => {
             >
               Save
             </Button>
-            <Button 
-               size="large"
-               icon={<CloseCircleOutlined />}
-               onClick={() => setEditModalVisible(false)} 
-               style={{ 
-                marginLeft: 8 ,
+            <Button
+              size="large"
+              icon={<CloseCircleOutlined />}
+              onClick={() => setEditModalVisible(false)}
+              style={{
+                marginLeft: 8,
                 background: 'linear-gradient(135deg,rgb(224, 43, 36),rgba(240, 37, 37, 0.99))',
                 border: 'none',
-                color: 'white',
-                }}>
+                color: 'white'
+              }}
+            >
               Cancel
             </Button>
           </Form.Item>
@@ -493,8 +493,6 @@ const ListData = () => {
 
 export default ListData;
 
-
-
 // import  React,{useState, useEffect} from "react";
 // import {
 //     Card,
@@ -551,9 +549,8 @@ export default ListData;
 // import Brand from "../vechicles/Brand";
 // import Modeltype from "../vechicles/Modeltype";
 // import Fuel from "../vechicles/Fuel";
-// import Vehicle from "../vechicles/vehicle"; 
+// import Vehicle from "../vechicles/vehicle";
 // // import UpdateIcon from '@mui/icons-material/Update';
-
 
 // const ListData  = () => {
 //     const [selectedRows, setSelectedRows] = useState([]);
@@ -578,7 +575,6 @@ export default ListData;
 //     const [loading, setLoading] = useState(true);
 //     const [progress, setProgress] = useState(0);
 //      const [selectedPage, setSelectedPage] = useState("brand");
-
 
 //      const handlePageChange = (event) => {
 //         setSelectedPage(event.target.value);
@@ -691,7 +687,6 @@ export default ListData;
 //         fetchData();
 //     }, []);
 
-
 //     useEffect(() => {
 //         const timer = setInterval(() => {
 //             setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
@@ -701,7 +696,6 @@ export default ListData;
 //             clearInterval(timer);
 //         };
 //     }, []);
-
 
 //     return (
 //         <>
@@ -755,7 +749,6 @@ export default ListData;
 //                                 },
 //                             }}
 //                             startIcon={<CheckBoxIcon />}
-
 
 //                             onClick={handleSubmit}
 
@@ -927,7 +920,7 @@ export default ListData;
 //                 </Grid>
 //                  {/* <Grid item xs={12} sm={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
 //                      <Typography variant="body2" sx={{ fontSize: "14px" }}>Select All</Typography>
-//                      <Checkbox 
+//                      <Checkbox
 //                          checked={selectAll}
 //                          onChange={handleSelectAll}
 //                          color="primary"
@@ -990,7 +983,7 @@ export default ListData;
 //                                     textAlign: "center",
 //                                     fontSize: "10px",
 //                                     letterSpacing: "1px",
-                                      
+
 //                                 }}
 //                             >
 //                                 {['S.No', 'ID', 'Name', 'Description', 'Code', 'Head', 'Action'].map((header, index) => (
@@ -1098,7 +1091,7 @@ export default ListData;
 //                                         setPage(newPage);
 
 //                                     }}
-                                    
+
 //                                 />
 //                             </TableRow>
 //                         </TableFooter>
@@ -1189,7 +1182,7 @@ export default ListData;
 //                                             }}
 //                                             startIcon={<FileUploadIcon />}
 //                                             onClick={() => console.log("Upload Clicked")}
-                                        
+
 //                                         >
 //                                             UPLOAD
 //                                         </Button>
@@ -1220,7 +1213,7 @@ export default ListData;
 //                                             }}
 //                                             startIcon={<AttachFileIcon />}
 //                                             onClick={() => console.log("Sample Clicked")}
-                                        
+
 //                                         >
 //                                             SAMPLE
 //                                         </Button>
@@ -1231,7 +1224,6 @@ export default ListData;
 //                     })}
 //                 </Box>
 //             </Card>
-
 
 //             <Card
 //                 sx={{
@@ -1299,7 +1291,6 @@ export default ListData;
 //                     )}
 //                 </Box>
 //             </Card>
-
 
 //             <Box sx={{ margin: "0 auto" }}>
 //       <Card
@@ -1565,14 +1556,8 @@ export default ListData;
 //                 </Box>
 //             </Dialog>
 
-
-
 //         </>
 //     );
 // };
 
-// export default ListData; 
-
-
-
-
+// export default ListData;

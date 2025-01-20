@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Typography,
   Grid,
@@ -15,17 +15,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TablePagination ,
-  Paper
-} from "@mui/material";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+  Switch
+} from '@mui/material';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import {
   getVehicleTypes,
   getFuelTypeDetails,
@@ -34,30 +26,26 @@ import {
   getModelDetails,
   updateModel,
   deleteModel
-} from "../../../../api/apiVheicle";
-import Swal from "sweetalert2";
+} from '../../../../api/apiVheicle';
+import Swal from 'sweetalert2';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import EditIcon from '@mui/icons-material/Edit';
-
 const ModelType = () => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [dropdown1, setDropdown1] = useState("");
-  const [dropdown2, setDropdown2] = useState("");
-  const [dropdown3, setDropdown3] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [dropdown1, setDropdown1] = useState('');
+  const [dropdown2, setDropdown2] = useState('');
+  const [dropdown3, setDropdown3] = useState('');
   const [loading, setLoading] = useState(false);
   const [models, setModels] = useState([]);
 
-    // Pagination states
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5); // Number of rows per page
-  
-  
   const [vehicleTypes, setVehicleTypes] = useState([]);
   const [fuelTypes, setFuelTypes] = useState([]);
   const [brandDetails, setBrandDetails] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false); // Dialog state
-  const [dialogMode, setDialogMode] = useState("create"); // "create" or "edit"
+  const [dialogMode, setDialogMode] = useState('create'); // "create" or "edit"
 
   // Error states
   const [nameError, setNameError] = useState(false);
@@ -74,7 +62,7 @@ const ModelType = () => {
           getVehicleTypes(),
           getFuelTypeDetails(),
           getBrandDetails(),
-          getModelDetails(),
+          getModelDetails()
         ]);
 
         if (vehicleResponse.statuscode === 200) {
@@ -93,29 +81,29 @@ const ModelType = () => {
           setModels(modelResponse.data);
         }
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error('Error fetching data:', error.message);
       }
     };
 
     fetchData();
   }, []);
 
-  const handleDialogOpen = (mode = "create", rowData = {}) => {
+  const handleDialogOpen = (mode = 'create', rowData = {}) => {
     setDialogMode(mode);
-    if (mode === "edit") {
-      setName(rowData.modelName || "");
-      setDescription(rowData.description || "");
-      setDropdown1(rowData.vehicleTypeId || "");
-      setDropdown2(rowData.fuelTypeId || "");
-      setDropdown3(rowData.brandId || "");
-      setDialogOpen(true); // Store the ID for editing
+    if (mode === 'edit') {
+      setName(rowData.modelName || '');
+      setDescription(rowData.description || '');
+      setDropdown1(rowData.vehicleTypeId || '');
+      setDropdown2(rowData.fuelTypeId || '');
+      setDropdown3(rowData.brandId || '');
+      setDialogOpen({ open: true, id: rowData.id }); // Store the ID for editing
     } else {
-      setName("");
-      setDescription("");
-      setDropdown1("");
-      setDropdown2("");
-      setDropdown3("");
-      setDialogOpen(true);
+      setName('');
+      setDescription('');
+      setDropdown1('');
+      setDropdown2('');
+      setDropdown3('');
+      setDialogOpen({ open: true, id: null });
     }
   };
 
@@ -123,6 +111,59 @@ const ModelType = () => {
     setDialogOpen(false);
   };
 
+  // const handleSubmit = async () => {
+  //   setNameError(!name.trim());
+  //   setDescriptionError(!description.trim());
+  //   setDropdown1Error(!dropdown1);
+  //   setDropdown2Error(!dropdown2);
+  //   setDropdown3Error(!dropdown3);
+
+  //   if (!name.trim() || !description.trim() || !dropdown1 || !dropdown2 || !dropdown3) return;
+
+  //   setLoading(true);
+  //   try {
+  //     const modelData = {
+  //       Name: name,
+  //       Description: description,
+  //       VehicleTypeId: dropdown1,
+  //       FuelTypeId: dropdown2,
+  //       BrandId: dropdown3
+  //     };
+
+  //     if (dialogMode === 'create') {
+  //       // Create new model
+  //       const response = await createNewModel(modelData);
+  //       if (response.statuscode === 200) {
+  //         alert('Model created successfully!');
+  //         const updatedModelsResponse = await getModelDetails();
+  //         if (updatedModelsResponse.statuscode === 200) {
+  //           setModels(updatedModelsResponse.data);
+  //         }
+  //       } else {
+  //         alert(response.message || 'Failed to create model.');
+  //       }
+  //     } else if (dialogMode === 'edit') {
+  //       // Update existing model
+  //       modelData.Id = dialogOpen.id; // Pass the `id` of the model being updated
+  //       const response = await updateModel(modelData);
+  //       if (response.statuscode === 200) {
+  //         alert('Model updated successfully!');
+  //         const updatedModelsResponse = await getModelDetails();
+  //         if (updatedModelsResponse.statuscode === 200) {
+  //           setModels(updatedModelsResponse.data);
+  //         }
+  //       } else {
+  //         alert(response.message || 'Failed to update model.');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     alert('An error occurred.');
+  //     console.error('Error:', error.message);
+  //   } finally {
+  //     setLoading(false);
+  //     handleDialogClose();
+  //   }
+  // };
   const handleSubmit = async () => {
     setNameError(!name.trim());
     setDescriptionError(!description.trim());
@@ -139,78 +180,91 @@ const ModelType = () => {
         Description: description,
         VehicleTypeId: dropdown1,
         FuelTypeId: dropdown2,
-        BrandId: dropdown3,
+        BrandId: dropdown3
       };
 
-      if (dialogMode === "create") {
+      if (dialogMode === 'create') {
         // Create new model
         const response = await createNewModel(modelData);
         if (response.statuscode === 200) {
-          alert("Model created successfully!");
+          Swal.fire({
+            icon: 'success',
+            title: 'Model Created',
+            text: 'The model has been created successfully!'
+          });
           const updatedModelsResponse = await getModelDetails();
           if (updatedModelsResponse.statuscode === 200) {
             setModels(updatedModelsResponse.data);
           }
         } else {
-          alert(response.message || "Failed to create model.");
+          Swal.fire('Error', response.message || 'Failed to create model.', 'error');
         }
-      } else if (dialogMode === "edit") {
+      } else if (dialogMode === 'edit') {
         // Update existing model
-        modelData.Id = rowData.id; // Pass the `id` of the model being updated
+        modelData.Id = dialogOpen.id; // Pass the `id` of the model being updated
         const response = await updateModel(modelData);
         if (response.statuscode === 200) {
-          alert("Model updated successfully!");
+          Swal.fire({
+            icon: 'success',
+            title: 'Model Updated',
+            text: 'The model has been updated successfully!'
+          });
           const updatedModelsResponse = await getModelDetails();
           if (updatedModelsResponse.statuscode === 200) {
             setModels(updatedModelsResponse.data);
           }
         } else {
-          alert(response.message || "Failed to update model.");
+          Swal.fire('Error', response.message || 'Failed to update model.', 'error');
         }
       }
+
+      // Clear form fields after success
+      setName('');
+      setDescription('');
+      setDropdown1('');
+      setDropdown2('');
+      setDropdown3('');
     } catch (error) {
-      alert("An error occurred.");
-      console.error("Error:", error.message);
+      Swal.fire('Error', error.message || 'An error occurred.', 'error');
+      console.error('Error:', error.message);
     } finally {
       setLoading(false);
       handleDialogClose();
     }
   };
 
+  const dropdownMenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 300,
+        overflow: 'auto'
+      }
+    }
+  };
   const toggleStatus = async (rowData) => {
     const toggleTo = !rowData.isActive; // Determine the new state
     Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to ${rowData.isActive ? "deactivate" : "activate"} this model?`,
-      icon: "warning",
+      title: 'Are you sure?',
+      text: `Do you want to ${rowData.isActive ? 'deactivate' : 'activate'} this model?`,
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           setLoading(true); // Start loading
           const response = await deleteModel(rowData.id); // Call the API
           if (response.statuscode === 200) {
-            Swal.fire(
-              "Success",
-              rowData.isActive
-                ? "Model deactivated successfully!"
-                : "Model activated successfully!",
-              "success"
-            );
+            Swal.fire('Success', rowData.isActive ? 'Model deactivated successfully!' : 'Model activated successfully!', 'success');
 
             // Update local state to reflect the change
-            setModels((prevModels) =>
-              prevModels.map((model) =>
-                model.id === rowData.id ? { ...model, isActive: toggleTo } : model
-              )
-            );
+            setModels((prevModels) => prevModels.map((model) => (model.id === rowData.id ? { ...model, isActive: toggleTo } : model)));
           } else {
-            Swal.fire("Error", response.message || "Failed to toggle status.", "error");
+            Swal.fire('Error', response.message || 'Failed to toggle status.', 'error');
           }
         } catch (error) {
-          Swal.fire("Error", error.message || "An error occurred.", "error");
+          Swal.fire('Error', error.message || 'An error occurred.', 'error');
         } finally {
           setLoading(false); // Stop loading
         }
@@ -218,22 +272,43 @@ const ModelType = () => {
     });
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const actionTemplate = (rowData) => (
+    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+      <EditIcon
+        onClick={() => handleDialogOpen('edit', rowData)}
+        sx={{
+          fontSize: '24px',
+          color: '#1976d2',
+          cursor: 'pointer',
+          '&:hover': { color: '#115293' }
+        }}
+      />
 
-
+      {/* Switch Button */}
+      <Switch
+        checked={rowData.isActive}
+        onChange={() => toggleStatus(rowData)}
+        sx={{
+          '& .MuiSwitch-switchBase.Mui-checked': {
+            color: '#4caf50'
+          },
+          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+            backgroundColor: '#81c784'
+          },
+          '& .MuiSwitch-track': {
+            backgroundColor: rowData.isActive ? '#81c784' : '#ef9a9a'
+          }
+        }}
+      />
+    </div>
+  );
 
   return (
     <>
       <Typography variant="h5" sx={{ marginBottom: '15px', fontWeight: 'bold', color: 'black' }}>
         Model Master
       </Typography>
-      <Grid container spacing={2} alignItems="center" justifyContent="flex-start" sx={{ marginBottom: "5px" }}>
+      <Grid container spacing={2} alignItems="center" justifyContent="flex-start" sx={{ marginBottom: '5px' }}>
         {/* Vehicle Type Dropdown */}
         <Grid item xs={12} md={2} sm={3}>
           <FormControl fullWidth error={dropdown1Error}>
@@ -244,6 +319,7 @@ const ModelType = () => {
               value={dropdown1}
               onChange={(e) => setDropdown1(e.target.value)}
               label="Vehicle Type"
+              MenuProps={dropdownMenuProps}
             >
               {vehicleTypes.map((type) => (
                 <MenuItem key={type.id} value={type.id}>
@@ -265,6 +341,7 @@ const ModelType = () => {
               value={dropdown2}
               onChange={(e) => setDropdown2(e.target.value)}
               label="Fuel Type"
+              MenuProps={dropdownMenuProps}
             >
               {fuelTypes.map((type) => (
                 <MenuItem key={type.id} value={type.id}>
@@ -286,6 +363,7 @@ const ModelType = () => {
               value={dropdown3}
               onChange={(e) => setDropdown3(e.target.value)}
               label="Brand"
+              MenuProps={dropdownMenuProps}
             >
               {brandDetails.map((brand) => (
                 <MenuItem key={brand.id} value={brand.id}>
@@ -307,7 +385,7 @@ const ModelType = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             error={nameError}
-            helperText={nameError && "Model Name is required"}
+            helperText={nameError && 'Model Name is required'}
           />
         </Grid>
 
@@ -321,7 +399,7 @@ const ModelType = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             error={descriptionError}
-            helperText={descriptionError && "Description is required"}
+            helperText={descriptionError && 'Description is required'}
           />
         </Grid>
 
@@ -336,110 +414,76 @@ const ModelType = () => {
             onClick={handleSubmit}
             disabled={loading}
           >
-            {loading ? "Saving..." : "Submit"}
+            {loading ? 'Saving...' : 'Submit'}
           </Button>
         </Grid>
       </Grid>
 
       {/* Data Table */}
-      <Box className="card" sx={{ marginTop: "10px" }}>
-      
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow sx={{ backgroundColor: '#ff4c4c', color: 'white' }}>
-                  <TableCell style={{ color: 'white',  textAlign: 'center' }}>Sr. No.</TableCell>
-                  <TableCell style={{ color: 'white',  textAlign: 'center' }}>ID</TableCell>
-                  <TableCell style={{ color: 'white',  textAlign: 'center' }}>Model Name</TableCell>
-                  <TableCell style={{ color: 'white',  textAlign: 'center' }}>Description</TableCell>
-                  <TableCell style={{ color: 'white',  textAlign: 'center' }}>Vehicle Name</TableCell>
-                  <TableCell style={{ color: 'white',  textAlign: 'center' }}>Brand Name</TableCell>
-                  <TableCell style={{ color: 'white',  textAlign: 'center' }}>Fuel Type</TableCell>
-                  <TableCell style={{ color: 'white',  textAlign: 'center' }}>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {models.map((model, index) => (
-                  <TableRow key={model.id}>
-                    <TableCell style={{textAlign: 'center' }}>{index + 1}</TableCell>
-                    <TableCell style={{textAlign: 'center' }}>{model.id}</TableCell>
-                    <TableCell style={{textAlign: 'center' }}>{model.modelName}</TableCell>
-                    <TableCell style={{textAlign: 'center' }}>{model.description}</TableCell>
-                    <TableCell style={{textAlign: 'center' }}>{model.vehicleName}</TableCell>
-                    <TableCell style={{textAlign: 'center' }}>{model.brandName}</TableCell>
-                    <TableCell style={{textAlign: 'center' }}>{model.fuelType}</TableCell>
-                    <TableCell>
-                      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                        <EditIcon
-                          onClick={() => handleDialogOpen("edit", model)}
-                          sx={{
-                            fontSize: "24px",
-                            color: "#1976d2",
-                            cursor: "pointer",
-                            "&:hover": { color: "#115293" },
-                          }}
-                        />
-                        {/* Switch Button */}
-                        <Switch
-                          checked={model.isActive}
-                          onChange={() => toggleStatus(model)}
-                          sx={{
-                            '& .MuiSwitch-switchBase.Mui-checked': {
-                              color: '#4caf50',
-                            },
-                            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#81c784',
-                            },
-                            '& .MuiSwitch-track': {
-                              backgroundColor: model.isActive ? '#81c784' : '#ef9a9a',
-                            },
-                          }}
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 20]}
-              component="div"
-              count={models.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+      <Box className="card" sx={{ marginTop: '50px' }}>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <DataTable
+            value={models}
+            paginator
+            paginatorPosition="bottom"
+            paginatorTemplate="RowsPerPageDropdown CurrentPageReport PrevPageLink PageLinks NextPageLink"
+            rows={5}
+            rowsPerPageOptions={[5, 10, 20]}
+            responsiveLayout="scroll"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          >
+            <Column
+              header="Sr. No."
+              body={(rowData, { rowIndex }) => rowIndex + 1}
+              style={{ width: '100px' }}
+              headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }}
             />
-          </TableContainer>
-  
+            <Column field="id" header="ID" headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} />
+            <Column field="modelName" header="Model Name" headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} />
+            <Column field="description" header="Description" headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} />
+            <Column field="vehicleName" header="Vehicle Name" headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} />
+            <Column field="brandName" header="Brand Name" headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} />
+            <Column field="fuelType" header="Fuel Type" headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} />
+            <Column header="Actions" body={actionTemplate} headerStyle={{ backgroundColor: '#ff4c4c', color: 'white' }} />
+          </DataTable>
+        )}
       </Box>
 
       {/* Dialog */}
-      <Dialog 
-        open={dialogOpen} 
-        onClose={handleDialogClose} 
+      <Dialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
         fullWidth
         sx={{
           '& .MuiDialog-paper': {
             borderRadius: '16px',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-          },
+            boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
+          }
         }}
       >
-        <DialogTitle sx={{
-          textAlign: 'center',
-          fontSize: '1.5rem',
-          fontWeight: 'bold',
-          background: 'linear-gradient(135deg, #2196f3, #21cbf3)',
-          color: 'white',
-          borderTopLeftRadius: '16px',
-          borderTopRightRadius: '16px',
-          padding: '16px 24px',
-          marginBottom: '30px'
-        }}>
-          {dialogMode === "create" ? "Add New Model" : "Edit Model"}
+        <DialogTitle
+          sx={{
+            textAlign: 'center',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            background: 'linear-gradient(135deg, #2196f3, #21cbf3)',
+            color: 'white',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            padding: '16px 24px',
+            marginBottom: '30px'
+          }}
+        >
+          {dialogMode === 'create' ? 'Add New Model' : 'Edit Model'}
         </DialogTitle>
-        <DialogContent sx={{ padding: '24px', backgroundColor: '#ffff' }}>
+        <DialogContent
+          sx={{
+            padding: '24px',
+            backgroundColor: '#ffff'
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -448,8 +492,8 @@ const ModelType = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 error={nameError}
-                helperText={nameError && "Model Name is required"}
-                sx={{ marginBottom: "15px", marginTop: '10px', }}
+                helperText={nameError && 'Model Name is required'}
+                sx={{ marginBottom: '15px', marginTop: '10px' }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -459,7 +503,7 @@ const ModelType = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 error={descriptionError}
-                helperText={descriptionError && "Description is required"}
+                helperText={descriptionError && 'Description is required'}
               />
             </Grid>
             <Grid item xs={12}>
@@ -471,6 +515,7 @@ const ModelType = () => {
                   value={dropdown1}
                   onChange={(e) => setDropdown1(e.target.value)}
                   label="Vehicle Type"
+                  MenuProps={dropdownMenuProps}
                 >
                   {vehicleTypes.map((type) => (
                     <MenuItem key={type.id} value={type.id}>
@@ -490,6 +535,7 @@ const ModelType = () => {
                   value={dropdown2}
                   onChange={(e) => setDropdown2(e.target.value)}
                   label="Fuel Type"
+                  MenuProps={dropdownMenuProps}
                 >
                   {fuelTypes.map((type) => (
                     <MenuItem key={type.id} value={type.id}>
@@ -509,6 +555,7 @@ const ModelType = () => {
                   value={dropdown3}
                   onChange={(e) => setDropdown3(e.target.value)}
                   label="Brand"
+                  MenuProps={dropdownMenuProps}
                 >
                   {brandDetails.map((brand) => (
                     <MenuItem key={brand.id} value={brand.id}>
@@ -522,7 +569,8 @@ const ModelType = () => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogClose}
+          <Button
+            onClick={handleDialogClose}
             sx={{
               borderRadius: '12px',
               padding: '8px 24px',
@@ -531,11 +579,16 @@ const ModelType = () => {
               borderColor: '#d32f2f',
               color: '#d32f2f',
               '&:hover': {
-                background: '#ffd2d2',
-              },
+                background: '#ffd2d2'
+              }
             }}
-          >Cancel</Button>
-          <Button onClick={handleSubmit} variant="contained" disabled={loading}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            disabled={loading}
             sx={{
               borderRadius: '12px',
               padding: '8px 24px',
@@ -544,11 +597,11 @@ const ModelType = () => {
               background: 'linear-gradient(135deg, #21cbf3, #2196f3)',
               color: 'white',
               '&:hover': {
-                background: 'linear-gradient(135deg, #1a78c2, #1976d2)',
-              },
+                background: 'linear-gradient(135deg, #1a78c2, #1976d2)'
+              }
             }}
           >
-            {loading ? "Saving..." : "Save"}
+            {loading ? 'Saving...' : 'Save'}
           </Button>
         </DialogActions>
       </Dialog>

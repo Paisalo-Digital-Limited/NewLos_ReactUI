@@ -229,9 +229,6 @@
 
 // export default GetRole;
 
-
-
-
 import React, { useState, useEffect } from 'react';
 import {
   Grid,
@@ -391,22 +388,23 @@ const GetRole = () => {
   return (
     <Grid container spacing={2} justifyContent="center">
       <Grid item xs={12}>
-   
-          <Typography variant="h5" sx={{ marginBottom: "5px", fontWeight: "bold" }}>Role Master</Typography>
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={5} md={3}>
-                <TextField
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  variant="outlined"
-                  label="Enter Role Name"
-                  fullWidth
-                  size="medium"
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <Button
+        <Typography variant="h5" sx={{ marginBottom: '5px', fontWeight: 'bold' }}>
+          Role Master
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={5} md={3}>
+              <TextField
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                variant="outlined"
+                label="Enter Role Name"
+                fullWidth
+                size="medium"
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Button
                 type="submit"
                 variant="contained"
                 size="large"
@@ -416,15 +414,14 @@ const GetRole = () => {
                   '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
                 }}
                 fullWidth
-                  startIcon={<SendIcon />}
-                  onClick={handleSubmit}
-                >
-                  SUBMIT
-                </Button>
-              </Grid>
+                startIcon={<SendIcon />}
+                onClick={handleSubmit}
+              >
+                SUBMIT
+              </Button>
             </Grid>
-          </form>
-       
+          </Grid>
+        </form>
       </Grid>
 
       <Grid item xs={12} mb={2} mt={2}>
@@ -450,11 +447,7 @@ const GetRole = () => {
                         <EditCalendarIcon sx={{ color: 'red' }} />
                       </Tooltip>
                     </IconButton>
-                    <Switch
-                      checked={true}
-                      onChange={() => handleToggleActive(role.id, true)}
-                      color="success"
-                    />
+                    <Switch checked={true} onChange={() => handleToggleActive(role.id, true)} color="success" />
                   </TableCell>
                 </TableRow>
               ))}
@@ -493,7 +486,9 @@ const GetRole = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleUpdate} variant="contained" color="primary">Update</Button>
+            <Button onClick={handleUpdate} variant="contained" color="primary">
+              Update
+            </Button>
           </DialogActions>
         </Dialog>
       )}

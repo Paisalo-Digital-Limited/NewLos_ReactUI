@@ -31,7 +31,12 @@ import {
   DialogActions,
   IconButton
 } from '@mui/material';
-import { Description, AccountBox, Fingerprint, Folder } from '@mui/icons-material';
+import {
+  Description,
+  AccountBox,
+  Fingerprint,
+  Folder,
+} from "@mui/icons-material";
 import Swal from 'sweetalert2'; // Import SweetAlert2
 import LinearProgress from '@mui/material/LinearProgress';
 import TablePagination from '@mui/material/TablePagination';
@@ -350,120 +355,122 @@ const ReadyForAudit = () => {
   const handleSentToNeft = async (FiCode, Creator) => {
     debugger;
     if (!FiCode || !Creator) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Invalid Input',
-        text: 'FiCode and Creator are required!'
-      });
-      console.error('Invalid inputs for handleSentToNeft:', { FiCode, Creator });
-      return;
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Input',
+            text: 'FiCode and Creator are required!',
+        });
+        console.error('Invalid inputs for handleSentToNeft:', { FiCode, Creator });
+        return;
     }
-
-    setLoading(true);
+    
+    setLoading(true); 
     const url = `https://apiuat.paisalo.in:4015/fi/api/FiPostSanction/AssignreadyforNeft?FiCode=${FiCode}&Creator=${Creator}`;
-
+    
     try {
-      // Making a POST request with the required data
-      const response = await axios.post(
-        url,
-        {},
-        {
-          headers: {
-            'Content-Type': 'application/json'
-            //Authorization: `Bearer ${token}`,
-          }
+        // Making a POST request with the required data
+        const response = await axios.post(
+            url,
+            {}, 
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                    //Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        if (response.status === 200) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Assign Ready For Neft successful!',
+            });
+            setShowSuccess(true);
+            setTimeout(() => {
+                setShowSuccess(false); 
+            }, 3000); 
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.data.message || 'Unknown error',
+            });
+            console.error('Error in API response:', response.data.message || 'Unknown error');
         }
-      );
-
-      if (response.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: 'Assign Ready For Neft successful!'
-        });
-        setShowSuccess(true);
-        setTimeout(() => {
-          setShowSuccess(false);
-        }, 3000);
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: response.data.message || 'Unknown error'
-        });
-        console.error('Error in API response:', response.data.message || 'Unknown error');
-      }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error.response?.data.message || 'An error occurred. Please try again later.'
-      });
-      console.error('Error in handleSentToNeft:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.response?.data.message || 'An error occurred. Please try again later.',
+        });
+        console.error('Error in handleSentToNeft:', error);
     } finally {
-      setLoading(false);
+        setLoading(false); 
     }
-  };
-  const [BackToNeftopen, setBackToNeftopen] = useState(false);
-  const [selectedDataBranch, setselectedDataBranch] = useState({ FiCode: '', Creator: '' });
-  const [remark, setRemark] = useState('');
-  const [showSuccess, setShowSuccess] = useState(false);
+};
+const [BackToNeftopen, setBackToNeftopen] = useState(false);
+const [selectedDataBranch, setselectedDataBranch] = useState({ FiCode: "", Creator: "" });
+const [remark, setRemark] = useState("");
+const [showSuccess, setShowSuccess] = useState(false);
 
-  const handleSentToBranch = async (FiCode, Creator) => {
+
+
+const handleSentToBranch = async (FiCode, Creator) => {
     const payloadRemark = remark;
     if (!FiCode || !Creator) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'All required fields must be filled!'
-      });
-      return;
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'All required fields must be filled!',
+        });
+        return;
     }
 
     const url = `https://apiuat.paisalo.in:4015/fi/api/FiPostSanction/BackReadyForNeft?FiCode=${FiCode}&Creator=${Creator}`;
 
     setLoading(true); // Set loading to true
     try {
-      console.log('Making API call to:', url);
-      const response = await axios.post(
-        url,
-        {}, // Pass an empty object for the body
-        {
-          headers: {
-            'Content-Type': 'application/json'
-            //Authorization: `Bearer ${token}`,
-          }
-        }
-      );
+        console.log("Making API call to:", url);
+        const response = await axios.post(
+            url,
+            {}, // Pass an empty object for the body
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                    //Authorization: `Bearer ${token}`,
+                },
+            }
+        );
 
-      if (response.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: 'Rejected From branch!'
-        });
-        setShowSuccess(true);
-        setTimeout(() => {
-          setShowSuccess(false);
-          setBackToNeftopen(false);
-        }, 2000);
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: response.data.message || 'Unknown error'
-        });
-      }
+        if (response.status === 200) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Rejected From branch!',
+            });
+            setShowSuccess(true);
+            setTimeout(() => {
+                setShowSuccess(false);
+                setBackToNeftopen(false);
+            }, 2000);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.data.message || 'Unknown error',
+            });
+        }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error.response?.data.message || error.message
-      });
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.response?.data.message || error.message,
+        });
     } finally {
-      setLoading(false); // Set loading to false regardless of success or failure
+        setLoading(false); // Set loading to false regardless of success or failure
     }
-  };
+};
 
   const fetchData = async () => {
     debugger;

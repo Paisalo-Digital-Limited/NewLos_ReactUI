@@ -124,7 +124,7 @@ const MainRoutes = {
     {
       path: 'branchmaster',
       element: <BranchMaster />
-    }
+    },
   ]
 };
 

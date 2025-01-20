@@ -63,13 +63,15 @@ const Rightsidebar = ({ ficode, creator }) => {
       const fetchDocuments = async () => {
         try {
           setLoading(true);
-          const response = await fetch(`https://apiuat.paisalo.in:4015/fi/api/FIIndex/GetAllDoc?creator=${creator}&ficode=${ficode}`);
+          const response = await fetch(
+            `https://apiuat.paisalo.in:4015/fi/api/FIIndex/GetAllDoc?creator=${creator}&ficode=${ficode}`
+          );
           const data = await response.json();
-
+          
           if (data.statuscode === 200) {
             const mergedDocuments = data.data.map((doc) => ({
               ...doc,
-              icon: doc.icon || <Description />
+              icon: doc.icon || <Description />,
             }));
 
             const borrowerDocuments = mergedDocuments.filter((doc) => doc.grNo <= 0);
@@ -192,3 +194,6 @@ const Rightsidebar = ({ ficode, creator }) => {
 };
 
 export default Rightsidebar;
+
+
+

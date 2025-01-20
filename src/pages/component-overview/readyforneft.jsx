@@ -28,6 +28,7 @@ import {
   Fingerprint,
   Folder,
 } from "@mui/icons-material";
+import Swal from 'sweetalert2'; // Import SweetAlert2
 import LinearProgress from '@mui/material/LinearProgress';
 import TablePagination from '@mui/material/TablePagination';
 import PreviewIcon from '@mui/icons-material/Preview';
@@ -356,12 +357,18 @@ const handleLoanAgreement = async (fiId) => {
   const handleSentToNeft = async (FiCode, Creator) => {
     debugger;
     if (!FiCode || !Creator) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Input',
+            text: 'FiCode and Creator are required!',
+        });
         console.error('Invalid inputs for handleSentToNeft:', { FiCode, Creator });
         return;
     }
+    
     setLoading(true); 
     const url = `https://apiuat.paisalo.in:4015/fi/api/FiPostSanction/AssignreadyforNeft?FiCode=${FiCode}&Creator=${Creator}`;
-    //const url = `https://localhost:7030/api/FiPostSanction/AssignreadyforNeft?FiCode=${261809}&Creator=${Creator}`;
+    
     try {
         // Making a POST request with the required data
         const response = await axios.post(
@@ -374,69 +381,97 @@ const handleLoanAgreement = async (fiId) => {
                 },
             }
         );
+
         if (response.status === 200) {
-            alert(" Assign Ready For Neft successful:", response.data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Assign Ready For Neft successful!',
+            });
             setShowSuccess(true);
             setTimeout(() => {
                 setShowSuccess(false); 
             }, 3000); 
-        }
-        else {
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.data.message || 'Unknown error',
+            });
             console.error('Error in API response:', response.data.message || 'Unknown error');
         }
     } catch (error) {
-       // console.error('Error in handleSentToNeft:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.response?.data.message || 'An error occurred. Please try again later.',
+        });
+        console.error('Error in handleSentToNeft:', error);
     } finally {
         setLoading(false); 
     }
 };
-
 const [BackToNeftopen, setBackToNeftopen] = useState(false);
 const [selectedDataBranch, setselectedDataBranch] = useState({ FiCode: "", Creator: "" });
 const [remark, setRemark] = useState("");
 const [showSuccess, setShowSuccess] = useState(false);
 
-const handleSentToBranch = async (FiCode, Creator) => {
-  // debugger;
-  //const { FiCode, Creator } = selectedDataBranch; // Destructure state
-  const payloadRemark = remark;
-  if (!FiCode || !Creator) {
-      console.error("All required fields must be filled!");
-      return;
-  }
-// debugger;
-    //const url = `https://localhost:7030/api/FiPostSanction/BackReadyForNeft?FiCode=${FiCode}&Creator=${Creator}`;
-    const url = `https://apiuat.paisalo.in:4015/fi/api/FiPostSanction/BackReadyForNeft?FiCode=${FiCode}&Creator=${Creator}`;
-  
-  setLoading(true); // Set loading to true
-  try {
-      console.log("Making API call to:", url);
-      const response = await axios.post(
-          url,
-          {}, // Pass an empty object for the body
-          {
-              headers: {
-                  "Content-Type": "application/json"
-                  //Authorization: `Bearer ${token}`,
-              },
-          }
-      );
 
-      if (response.status === 200) {
-          alert("API call successful:", response.data);
-          setShowSuccess(true);
-          setTimeout(() => {
-              setShowSuccess(false);
-              setBackToNeftopen(false);
-          }, 2000);
-      } else {
-          console.error("API call failed:", response.data.message || "Unknown error");
-      }
-  } catch (error) {
-      console.error("Error during API call:", error.response?.data || error.message);
-  } finally {
-      setLoading(false); // Set loading to false regardless of success or failure
-  }
+
+const handleSentToBranch = async (FiCode, Creator) => {
+    const payloadRemark = remark;
+    if (!FiCode || !Creator) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'All required fields must be filled!',
+        });
+        return;
+    }
+
+    const url = `https://apiuat.paisalo.in:4015/fi/api/FiPostSanction/BackReadyForNeft?FiCode=${FiCode}&Creator=${Creator}`;
+
+    setLoading(true); // Set loading to true
+    try {
+        console.log("Making API call to:", url);
+        const response = await axios.post(
+            url,
+            {}, // Pass an empty object for the body
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                    //Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        if (response.status === 200) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Rejected From branch!',
+            });
+            setShowSuccess(true);
+            setTimeout(() => {
+                setShowSuccess(false);
+                setBackToNeftopen(false);
+            }, 2000);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.data.message || 'Unknown error',
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.response?.data.message || error.message,
+        });
+    } finally {
+        setLoading(false); // Set loading to false regardless of success or failure
+    }
 };
 
   const fetchData = async () => {

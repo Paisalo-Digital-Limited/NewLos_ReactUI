@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 
 export const insertBranchMaster = async (payload) => {
   try {
+    // const response = await apiClient.post('https://apiuat.paisalo.in:4015/admin/api/Masters/InsertBranchMaster', payload);
     const response = await apiClient.post('https://apiuat.paisalo.in:4015/admin/api/Masters/InsertBranchMaster', payload);
     return response.data;
   } catch (error) {

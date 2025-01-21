@@ -35,6 +35,7 @@ const DeleteRecord = Loadable(lazy(() => import('pages/Delete/DeleteRecords')));
 const PddDocument = Loadable(lazy(() => import('pages/Pdddocument/PddDocument')));
 const BranchMaster = Loadable(lazy(() => import('pages/BranchMaster/AddBranch')));
 
+const AddGuarantors = Loadable(lazy(() => import('pages/addguarantor/addguarantor')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -125,6 +126,10 @@ const MainRoutes = {
       path: 'branchmaster',
       element: <BranchMaster />
     },
+    {
+      path: 'addguarantor',
+      element: <AddGuarantors />
+    }
   ]
 };
 

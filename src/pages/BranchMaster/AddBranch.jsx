@@ -115,6 +115,7 @@ const AddBranchMaster = () => {
       PANNo: formData.pan_number || '',
       BankAcNo: formData.bank_account_no || '',
       BankName: formData.bank_name || '',
+      BankBranch: formData.bank_branch || '',
       OtherCase: formData.other_case || '',
       Remarks: formData.remarks || '',
       Relation: formData.relation || '',

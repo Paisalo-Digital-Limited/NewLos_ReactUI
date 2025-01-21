@@ -190,13 +190,13 @@ const VehicleType = () => {
     return (
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         <EditIcon
-          onClick={() => handleEdit(rowData)}
+          onClick={rowData.isActive ? () => handleEdit(rowData) : null}
           sx={{
             fontSize: '24px',
-            color: '#1976d2',
-            cursor: 'pointer',
+            color: rowData.isActive ? '#1976d2' : '#ccc',
+            cursor: rowData.isActive ? 'pointer' : 'not-allowed', 
             '&:hover': {
-              color: '#115293'
+              color: rowData.isActive ? '#115293' : '#ccc' 
             }
           }}
         />

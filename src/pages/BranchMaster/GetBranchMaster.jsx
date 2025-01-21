@@ -63,12 +63,75 @@ const BranchMasterTable = () => {
     fetchCreators();
   }, []);
 
+  //   const handleEdit = async (rowData) => {
+  //     if (!rowData.Id) {
+  //       console.error('Id is missing in rowData');
+  //       alert('Cannot edit: Row data is missing Id');
+  //       return;
+  //     }
+  //     try {
+  //       const branchData = await fetchBranchMasterById(rowData.Id);
+  //       const matchedCreator = creators.find((creator) => creator.creatorID === branchData.creatorID);
+  //       const mappedData = {
+  //         Code: branchData.code,
+  //         Name: branchData.name,
+  //         Initials: branchData.initials,
+  //         'Guarantor Name': branchData.gurName,
+  //         'Office Address 1': branchData.offAdd1,
+  //         'Office Address 2': branchData.offAdd2,
+  //         'Office Address 3': branchData.offAdd3,
+  //         'Office City': branchData.offCity,
+  //         'Office Mobile 1': branchData.offMob1,
+  //         'Office Mobile 2': branchData.offMob2,
+  //         'Residential Address 1': branchData.resAdd1,
+  //         'Residential Address 2': branchData.resAdd2,
+  //         'Residential Address 3': branchData.resAdd3,
+  //        'CreatorID': branchData.creatorID || '',
+  // 'Creator': matchedCreator ? matchedCreator.creator : 'Unknown Creator',
+
+  //         'Bank Branch': branchData.bankBranch,
+  //         'Recovery Auth*': branchData.recoveryAuth,
+  //         'Residential City': branchData.resCity,
+  //         'Registered Phone 1': branchData.resPh1,
+  //         'Registered Phone 2': branchData.resPh2,
+  //         'Registered Phone 3': branchData.resPh3,
+  //         'Registered Mobile 1': branchData.resMob1,
+  //         'Registered Mobile 2': branchData.resMob2,
+  //         'Permanent Address 1': branchData.perAdd1,
+  //         'Permanent Address 2': branchData.perAdd2,
+  //         'Permanent Address 3': branchData.perAdd3,
+  //         'Permanent Mobile 1': branchData.perMob1,
+  //         'Permanent Mobile 2': branchData.perMob2,
+  //         'Permanent Fax': branchData.perFax,
+  //         DOB: branchData.dob,
+  //         Age: branchData.age,
+  //         Location: branchData.location,
+  //         'PAN Number': branchData.panNo,
+  //         'Bank Account No': branchData.bankAcNo,
+  //         'Bank Name': branchData.bankName,
+  //         'Other Case': branchData.otherCase,
+  //         Remarks: branchData.remarks
+  //       };
+
+  //       setSelectedRow(rowData);
+  //       setFormValues(mappedData);
+  //       setOpenDialog(true);
+  //     } catch (error) {
+  //       console.error('Error in handleEdit:', error.message);
+  //       alert(error.message || 'Failed to fetch branch details.');
+  //     }
+  //   };
   const handleEdit = async (rowData) => {
     if (!rowData.Id) {
       console.error('Id is missing in rowData');
       alert('Cannot edit: Row data is missing Id');
       return;
     }
+
+    if (creators.length === 0) {
+      await fetchCreators();
+    }
+
     try {
       const branchData = await fetchBranchMasterById(rowData.Id);
       const matchedCreator = creators.find((creator) => creator.creatorID === branchData.creatorID);
@@ -86,9 +149,9 @@ const BranchMasterTable = () => {
         'Residential Address 1': branchData.resAdd1,
         'Residential Address 2': branchData.resAdd2,
         'Residential Address 3': branchData.resAdd3,
-        CreatorID: branchData.creatorID,
         Creator: matchedCreator ? matchedCreator.creator : 'Unknown Creator',
-        'Bank Branch': branchData.bankBranch,
+        CreatorID: branchData.creatorID || '',
+        BankBranch: branchData.bankBranch,
         'Recovery Auth*': branchData.recoveryAuth,
         'Residential City': branchData.resCity,
         'Registered Phone 1': branchData.resPh1,
@@ -130,10 +193,9 @@ const BranchMasterTable = () => {
     try {
       const data = await fetchBranchMasterDetails();
 
-      // Ensure all rows have proper isActive values.
       const updatedData = data.map((row) => ({
         ...row,
-        isActive: row.isActive ?? 1 // Default to 1 if isActive is missing
+        isActive: row.isActive ?? 1
       }));
 
       setTableData(updatedData);
@@ -190,7 +252,8 @@ const BranchMasterTable = () => {
     }
     const payload = {
       Id: selectedRow.Id || null,
-      CreatorID: formValues['CreatorID'] || null,
+      CreatorID: formValues.CreatorID || null,
+      // CreatorID: formValues['CreatorID'] || null,
       Code: formValues['Code'] || null,
       Name: formValues['Name'] || null,
       GurName: formValues['Guarantor Name'] || null,
@@ -248,14 +311,14 @@ const BranchMasterTable = () => {
       });
     }
   };
+
   const fetchCreators = async () => {
     setLoadingCreators(true);
-    setError(null);
     try {
       const data = await fetchCreatorsApi();
       setCreators(data);
     } catch (err) {
-      setError('Failed to fetch creators. Please try again.');
+      console.error('Failed to fetch creators:', err.message);
     } finally {
       setLoadingCreators(false);
     }
@@ -301,15 +364,45 @@ const BranchMasterTable = () => {
     }
   };
 
+  // const actionTemplate = (rowData) => (
+  //   <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+  //     <EditIcon
+  //       onClick={() => handleEdit(rowData)}
+  //       sx={{
+  //         fontSize: '24px',
+  //         color: '#1976d2',
+  //         cursor: 'pointer',
+  //         '&:hover': { color: '#115293' }
+  //       }}
+  //     />
+  //     <Switch
+  //       checked={rowData.isActive === 1} // Check state directly from isActive
+  //       onChange={() => toggleBranchStatus(rowData)}
+  //       sx={{
+  //         '& .MuiSwitch-switchBase.Mui-checked': {
+  //           color: '#4caf50' // Green for active
+  //         },
+  //         '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+  //           backgroundColor: '#81c784'
+  //         },
+  //         '& .MuiSwitch-track': {
+  //           backgroundColor: rowData.isActive === 1 ? '#81c784' : '#ef9a9a' // Red for inactive
+  //         }
+  //       }}
+  //     />
+  //   </div>
+  // );
   const actionTemplate = (rowData) => (
     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
       <EditIcon
-        onClick={() => handleEdit(rowData)}
+        onClick={rowData.isActive === 1 ? () => handleEdit(rowData) : null} // Enable only if isActive is 1
         sx={{
           fontSize: '24px',
-          color: '#1976d2',
-          cursor: 'pointer',
-          '&:hover': { color: '#115293' }
+          color: rowData.isActive === 1 ? '#1976d2' : '#ccc', // Gray out if inactive
+          cursor: rowData.isActive === 1 ? 'pointer' : 'not-allowed', // Disable pointer events if inactive
+          '&:hover': {
+            color: rowData.isActive === 1 ? '#115293' : '#ccc' // Change hover color if active
+          }
         }}
       />
       <Switch
@@ -368,7 +461,7 @@ const BranchMasterTable = () => {
             {fields.map((field, index) => (
               <Grid item xs={12} sm={3} key={index}>
                 {field === 'Creator' ? (
-                  <FormControl fullWidth size="small" error={!!errors[field]} sx={{ background: '#fff', color: '#000' }}>
+                  <FormControl fullWidth size="small" error={!!errors['CreatorID']} sx={{ background: '#fff', color: '#000' }}>
                     <InputLabel id="creator-label">Creator</InputLabel>
                     <Select
                       labelId="creator-label"
@@ -386,12 +479,12 @@ const BranchMasterTable = () => {
                       }}
                     >
                       {creators.map((creator) => (
-                        <MenuItem key={creator.creatorID} value={creator.creatorID} sx={{ background: '#fff', color: '#000' }}>
+                        <MenuItem key={creator.creatorID} value={creator.creatorID}>
                           {creator.creator}
                         </MenuItem>
                       ))}
                     </Select>
-                    {errors[field] && <Box sx={{ color: 'red', fontSize: '0.75rem' }}>{errors[field]}</Box>}
+                    {errors['CreatorID'] && <Box sx={{ color: 'red', fontSize: '0.75rem' }}>{errors['CreatorID']}</Box>}
                   </FormControl>
                 ) : (
                   <TextField

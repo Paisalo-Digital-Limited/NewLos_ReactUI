@@ -173,12 +173,14 @@ const BrandType = () => {
   const actionTemplate = (rowData) => (
     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
       <EditIcon
-        onClick={() => handleEdit(rowData)}
+        onClick={rowData.isActive ? () => handleEdit(rowData) : null} // Enable only if isActive is true
         sx={{
           fontSize: '24px',
-          color: '#1976d2',
-          cursor: 'pointer',
-          '&:hover': { color: '#115293' }
+          color: rowData.isActive ? '#1976d2' : '#ccc', // Gray out if inactive
+          cursor: rowData.isActive ? 'pointer' : 'not-allowed', // Disable pointer events if inactive
+          '&:hover': {
+            color: rowData.isActive ? '#115293' : '#ccc' // Change hover color only if active
+          }
         }}
       />
       <Switch

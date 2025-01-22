@@ -194,9 +194,9 @@ const VehicleType = () => {
           sx={{
             fontSize: '24px',
             color: rowData.isActive ? '#1976d2' : '#ccc',
-            cursor: rowData.isActive ? 'pointer' : 'not-allowed', 
+            cursor: rowData.isActive ? 'pointer' : 'not-allowed',
             '&:hover': {
-              color: rowData.isActive ? '#115293' : '#ccc' 
+              color: rowData.isActive ? '#115293' : '#ccc'
             }
           }}
         />

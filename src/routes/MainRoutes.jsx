@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project import
 import Loadable from 'components/Loadable';
 import Dashboard from 'layout/Dashboard';
+// import { element } from 'prop-types';
 
 // const Color = Loadable(lazy(() => import('pages/component-overview/color')));
 const Postsanction = Loadable(lazy(() => import('pages/component-overview/postsanction')));
@@ -17,7 +18,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
 const Role = Loadable(lazy(() => import('pages/role/role')));
 const Vechicles = Loadable(lazy(() => import('pages/vechicles/vechicles')));
-const Menu = Loadable(lazy(() => import('pages/menu/menu')));
+// const Menu = Loadable(lazy(() => import('pages/menu/menu')));
 const Groupmaster = Loadable(lazy(() => import('pages/groupmaster/groupmaster')));
 // const Mastercreator = Loadable(lazy(() => import('pages/mastercreator/mastercreator')));
 const Mastercreator = Loadable(lazy(() => import('pages/mastercreator/Creator/CreatorMaster')));
@@ -34,7 +35,7 @@ const Sanction = Loadable(lazy(() => import('pages/sanction/Master')));
 const DeleteRecord = Loadable(lazy(() => import('pages/Delete/DeleteRecords')));
 const PddDocument = Loadable(lazy(() => import('pages/Pdddocument/PddDocument')));
 const BranchMaster = Loadable(lazy(() => import('pages/BranchMaster/AddBranch')));
-
+const BranchHardwareReq = Loadable(lazy(() => import('pages/branchhardwarerequest/branchhardwarerequest')));
 const AddGuarantors = Loadable(lazy(() => import('pages/addguarantor/addguarantor')));
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -70,10 +71,10 @@ const MainRoutes = {
       path: 'vehicledetails',
       element: <Vechicles />
     },
-    {
-      path: 'menu',
-      element: <Menu />
-    },
+    // {
+    //   path: 'menu',
+    //   element: <Menu />
+    // },
     {
       path: 'groupmaster',
       element: <Groupmaster />
@@ -129,6 +130,10 @@ const MainRoutes = {
     {
       path: 'addguarantor',
       element: <AddGuarantors />
+    },
+    {
+      path: 'branchhardwarerequest',
+      element: <BranchHardwareReq />
     }
   ]
 };

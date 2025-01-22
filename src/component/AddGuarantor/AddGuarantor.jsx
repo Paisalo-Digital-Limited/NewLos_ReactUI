@@ -8,9 +8,7 @@ import {
   MenuItem,
   TextField,
   Select,
-  Divider,
   Typography,
-  Chip,
   Button,
   FormHelperText,
   CircularProgress
@@ -81,10 +79,16 @@ export const AddGuarantorProcess = () => {
     const fetchCreators = async () => {
       setLoadingCreators(true);
       try {
-        const creatorsList = await fetchCreatorsApi();
-        setCreators(creatorsList);
+        const response = await fetchCreatorsApi();
+        console.log('API Response:', response); // Log the raw response
+        const mappedCreators = response.map((item) => ({
+          id: item.creatorID,
+          name: item.creator
+        }));
+        console.log('Mapped Creators:', mappedCreators); // Log the mapped creators
+        setCreators(mappedCreators);
       } catch (error) {
-        setInternalCreatorError(error.message || 'Unknown error');
+        console.error('Error fetching creators:', error);
       } finally {
         setLoadingCreators(false);
       }
@@ -96,28 +100,15 @@ export const AddGuarantorProcess = () => {
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files?.[0];
     if (uploadedFile) {
-      setFile(uploadedFile);
-      setPreview(URL.createObjectURL(uploadedFile));
-    }
-  };
-
-  const handleDragOver = (e) => {
-    //handleDragOver is assigned a vlue but never used.
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = () => setIsDragging(false);
-  //handleDragLeave is assigned a vlue but never used.
-
-  const handleDrop = (e) => {
-    //handleDrop is assigned a vlue but never used.
-    e.preventDefault();
-    setIsDragging(false);
-    const uploadedFile = e.dataTransfer.files[0];
-    if (uploadedFile) {
-      setFile(uploadedFile);
-      setPreview(URL.createObjectURL(uploadedFile));
+      if (uploadedFile.size > 5 * 1024 * 1024) {
+        alert('File size should not exceed 5MB');
+        return;
+      }
+      if (!['image/jpeg', 'image/png', 'image/jpg'].includes(uploadedFile.type)) {
+        alert('Only JPG and PNG files are allowed');
+        return;
+      }
+      setFile(uploadedFile); // Store the file in state
     }
   };
 
@@ -138,21 +129,54 @@ export const AddGuarantorProcess = () => {
 
   const validate = () => {
     const newErrors = {};
+  
     if (!formData.fiCode.trim()) newErrors.fiCode = 'Fi Code is required';
+    if (!formData.creator) newErrors.creator = 'Creator is required';
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.guardianName.trim()) newErrors.guardianName = 'Guardian Name is required';
-    if (!formData.gender) newErrors.gender = 'Gender is required';
     if (!formData.dob) newErrors.dob = 'Date of Birth is required';
-    if (!formData.relation) newErrors.relation = 'Relation is required';
+    if (!formData.gender || formData.gender === 'select') newErrors.gender = 'Gender is required';
+    if (!formData.relation || formData.relation === 'select') newErrors.relation = 'Relation is required';
     if (!formData.religion.trim()) newErrors.religion = 'Religion is required';
     if (!formData.caste.trim()) newErrors.caste = 'Caste is required';
+  
+    // Validate Aadhar Card (12 digits only)
+    if (!/^\d{12}$/.test(formData.aadhar)) {
+      newErrors.aadhar = 'Aadhar must be a 12-digit number';
+    }
+  
+    // Validate PAN Card (ABCDE1234F format)
+    if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(formData.pan)) {
+      newErrors.pan = 'Invalid PAN format (e.g., ABCDE1234F)';
+    }
+  
+    // Validate Mobile Number (10 digits only)
+    if (!/^\d{10}$/.test(formData.mobile)) {
+      newErrors.mobile = 'Mobile number must be a 10-digit number';
+    }
+  
+    // Optional Voter ID Validation
+    if (formData.voterId && formData.voterId.length < 10) {
+      newErrors.voterId = 'Voter ID must be at least 10 characters';
+    }
+  
+    if (!formData.address1.trim()) newErrors.address1 = 'Address Line 1 is required';
+    if (!formData.address2.trim()) newErrors.address2 = 'Address Line 2 is required';
     if (!formData.city.trim()) newErrors.city = 'City is required';
     if (!formData.state.trim()) newErrors.state = 'State is required';
+  
+    // Validate PIN (6 digits only)
+    if (!/^\d{6}$/.test(formData.pin)) {
+      newErrors.pin = 'PIN must be a 6-digit number';
+    }
+  
     if (!file) newErrors.file = 'File upload is required';
-
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  
+  
 
   useEffect(() => {
     const fetchStates = async () => {
@@ -179,10 +203,19 @@ export const AddGuarantorProcess = () => {
 
     try {
       const submissionData = new FormData();
-      Object.entries(formData).forEach(([key, value]) => submissionData.append(key, value));
-      if (file) submissionData.append('file', file);
+      Object.entries(formData).forEach(([key, value]) => {
+        submissionData.append(key, value); // Append all other form fields
+      });
 
-      await insertGuarantorApi(submissionData); // Remove assignment to `response`
+      if (file) {
+        submissionData.append('Image', file); // Append the file under the key 'Image'
+      } else {
+        console.error('File is missing');
+      }
+
+      console.log([...submissionData.entries()]); // Log the FormData contents for debugging
+
+      await insertGuarantorApi(submissionData); // Call your API method
 
       Swal.fire({
         icon: 'success',
@@ -190,10 +223,10 @@ export const AddGuarantorProcess = () => {
         text: 'Guarantor added successfully!'
       });
 
-      setFormData(initialFormData);
-      setFile(null);
-      setPreview(null);
+      setFormData(initialFormData); // Reset form fields
+      setFile(null); // Reset file
     } catch (error) {
+      console.error('Submission error:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -212,22 +245,9 @@ export const AddGuarantorProcess = () => {
           padding: { xs: '18px', sm: '20px', lg: '25px' }
         }}
       >
-        <Divider>
-          <Chip
-            label="Delete Fi"
-            size="small"
-            onDelete={() => console.log('Delete clicked')}
-            deleteIcon={<DeleteIcon />}
-            sx={{
-              '& .MuiChip-deleteIcon': {
-                color: 'red',
-                '&:hover': {
-                  color: 'darkred'
-                }
-              }
-            }}
-          />
-        </Divider>
+        <Typography variant="h5" sx={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '20px' }}>
+          Add Guarantor
+        </Typography>
 
         <Box sx={{ mt: 5 }}>
           <Grid container spacing={2}>
@@ -251,8 +271,11 @@ export const AddGuarantorProcess = () => {
                   labelId="creator-label"
                   id="creator-select"
                   name="creator"
-                  value={formData.creator}
-                  onChange={handleChange}
+                  value={formData.creator || ''} // Use creatorID as the value
+                  onChange={(e) => {
+                    setFormData({ ...formData, creator: e.target.value }); // Save creatorID in formData
+                    setErrors({ ...errors, creator: '' });
+                  }}
                   label="Select Creator"
                   MenuProps={{
                     PaperProps: {
@@ -268,15 +291,16 @@ export const AddGuarantorProcess = () => {
                       <CircularProgress size={20} />
                     </MenuItem>
                   ) : creators.length > 0 ? (
-                    creators.map((item, index) => (
-                      <MenuItem key={index} value={item.creator}>
-                        {item.creator}
+                    creators.map((creator) => (
+                      <MenuItem key={creator.id} value={creator.id}>
+                        {creator.name}
                       </MenuItem>
                     ))
                   ) : (
                     <MenuItem disabled>No creators found</MenuItem>
                   )}
                 </Select>
+
                 <FormHelperText>{errors.creator}</FormHelperText>
               </FormControl>
             </Grid>
@@ -421,13 +445,19 @@ export const AddGuarantorProcess = () => {
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <TextField
-                  label="Aadhar No *"
-                  name="aadhar"
-                  value={formData.aadhar}
-                  onChange={handleChange}
-                  error={!!errors.aadhar}
-                  helperText={errors.aadhar}
-                  placeholder="Enter your Aadhar No"
+               label="Aadhar No *"
+               name="aadhar"
+               type="number"
+               value={formData.aadhar}
+               onChange={(e) => {
+                 if (e.target.value.length <= 12) {
+                   handleChange(e); // Allow changes only if the length is <= 12
+                 }
+               }}
+               error={!!errors.aadhar}
+               helperText={errors.aadhar}
+               placeholder="Enter your Aadhar No"
+               inputProps={{ maxLength: 12 }} // Add maxLength restriction
                 />
               </FormControl>
             </Grid>
@@ -447,13 +477,19 @@ export const AddGuarantorProcess = () => {
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <TextField
-                  label="Mobile No *"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  error={!!errors.mobile}
-                  helperText={errors.mobile}
-                  placeholder="Enter your Mobile No"
+                label="Mobile No *"
+                name="mobile"
+                type="number"
+                value={formData.mobile}
+                onChange={(e) => {
+                  if (e.target.value.length <= 10) {
+                    handleChange(e);
+                  }
+                }}
+                error={!!errors.mobile}
+                helperText={errors.mobile}
+                placeholder="Enter your Mobile No"
+                inputProps={{ maxLength: 10 }} 
                 />
               </FormControl>
             </Grid>
@@ -560,14 +596,21 @@ export const AddGuarantorProcess = () => {
                 <TextField
                   label="Pin *"
                   name="pin"
+                  type="number"
                   value={formData.pin}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 6) {
+                      handleChange(e); // Allow changes only if the length is <= 6
+                    }
+                  }}
                   error={!!errors.pin}
                   helperText={errors.pin}
                   placeholder="Enter your Pin"
+                  inputProps={{ maxLength: 6 }} // Add maxLength restriction
                 />
               </FormControl>
             </Grid>
+       
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth error={!!errors.file}>
                 <Box
@@ -581,9 +624,6 @@ export const AddGuarantorProcess = () => {
                     '&:hover': { backgroundColor: '#f9fafc' }
                   }}
                   onClick={() => document.getElementById('file-upload-inline')?.click()}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
                 >
                   <UploadFileIcon sx={{ mr: 1, color: '#1976d2' }} />
                   <Typography variant="body2" color="text.secondary">
@@ -599,6 +639,7 @@ export const AddGuarantorProcess = () => {
                 )}
               </FormControl>
             </Grid>
+
             <Grid item xs={12} sm={6} md={3}>
               <Button
                 variant="contained"

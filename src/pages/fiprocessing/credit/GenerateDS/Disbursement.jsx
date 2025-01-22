@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+
 import {
   Grid,
   Typography,
@@ -7,15 +9,93 @@ import {
   Card,
   FormControl,
   InputLabel,
-  Select,
+  Select,MenuItem 
 } from "@mui/material";
 import Swal from "sweetalert2";
 import ArticleIcon from '@mui/icons-material/Article';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import apiClient from 'network/apiClient';
+import axios from "axios";
 
 const Disbursement = () => {
+    const [creator, setCreator] = useState('');
+    const [branchCode, setBranchCode] = useState('');
+    const [groupCode, setGroupCode] = useState('');
+    const [Creatorlist, setCreatorlist] = useState([]);
+    const [Branchlist, setBranchlist] = useState([]);
+
+
+ useEffect(() => {
+    getCreatorDropdown();
+  }, []);
+  const getCreatorDropdown = async () => {
+    debugger;
+    try {
+      const response = await apiClient.get("/Masters/GetCreator", {
+        requireAuth: true,
+        checkTokenInResponse: false,
+      });
+      const fetchCreator = response.data.data;
+      setCreatorlist(fetchCreator);
+      //getBranchDropdown();
+    } catch (error) {
+    } finally {
+    }
+  };
+  const getBranchDropdown = async (creator) => {
+    try {
+      debugger;
+      //const response = await apiClient.get("https://localhost:5238/api/Masters/GetBranchCodeByCreator", {
+        const response = await axios.get("http://localhost:5238/api/Masters/GetBranchCodeByCreator", {
+        params: {
+          Creator: creator
+      },
+        requireAuth: true,
+        checkTokenInResponse: false,
+      });
+      if(response.data.statuscode === 200){
+        const fetchBranch = response.data.data;
+        setBranchlist(fetchBranch);
+      }
+      else{
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: response.data.message,
+        });
+      }
+     
+    } catch (error) {
+    } finally {
+    }
+  };
+
+  const handleCreatorChange = (event) => {
+    const selectedCreator = event.target.value;
+    setCreator(selectedCreator);
+    getBranchDropdown(selectedCreator);
+  };
+  const handleBranchChange = (event) => { 
+    debugger;
+    const selectedBranch = event.target.value;
+    setBranchCode(selectedBranch);
+  }
+  const handleDownloadDisbursementSheet = () => {
+    debugger;
+    Creator:creator;
+    BranchCode:branchCode;
+    GroupCode:groupCode
+      // Split the branchCode to extract the first part
+      const branchNumber = branchCode.split('-')[0]; // This will give you "002"
+
+  }
+
+  const handleSearch = () => {
+    handleDownloadDisbursementSheet();
+  }
+
   return (
     <Card
       sx={{
@@ -31,27 +111,52 @@ const Disbursement = () => {
 
       <Grid container spacing={2} mb={2}>
         <Grid item xs={12} sm={5} md={3}>
-          <FormControl fullWidth>
-            <InputLabel id="sub-menu-label">Creator</InputLabel>
-            <Select
-              label="Sub Menu"
-              labelId="sub-menu-label"
-              id="sub-menu-select"
-            ></Select>
-          </FormControl>
+        <FormControl fullWidth size="medium">
+                  <InputLabel>Creator</InputLabel>
+                  <Select
+                    label="Creator"
+                    size="medium"
+                    value={creator}
+                    onChange={handleCreatorChange}
+                  >
+                    {Creatorlist.map((index) => (
+                      <MenuItem key={index.creatorid} value={index.creator}>
+                        {index.creator}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
         </Grid>
         <Grid item xs={12} sm={5} md={3}>
-          <FormControl fullWidth>
+         <FormControl fullWidth size="medium">
+                  <InputLabel>Branch Code</InputLabel>
+                  <Select
+                    label="Creator"
+                    size="medium"
+                    value={branchCode}
+                    onChange={handleBranchChange}
+                  >
+                    {Branchlist.map((index) => (
+                      <MenuItem key={index.branch} value={index.branch}>
+                        {index.branch}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+          {/* <FormControl fullWidth>
             <InputLabel id="sub-menu-label">Branch Code</InputLabel>
             <Select
               label="Sub Menu"
               labelId="sub-menu-label"
               id="sub-menu-select"
             ></Select>
-          </FormControl>
+          </FormControl> */}
         </Grid>
         <Grid item xs={12} sm={5} md={3}>
-          <TextField variant="outlined" label="Group Code" fullWidth />
+          <TextField variant="outlined" label="Group Code" fullWidth 
+           value={groupCode}
+           onChange={(e) => setGroupCode(e.target.value)}
+          />
         </Grid>
         <Grid item xs={12} sm={5} md={3}>
           <TextField variant="outlined" label="Database Name" fullWidth />
@@ -70,6 +175,7 @@ const Disbursement = () => {
                 },
           }}
           startIcon={< ArticleIcon/>}
+          onClick={handleSearch}
         >
           DISBURSEMENT SHEET
         </Button>

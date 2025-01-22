@@ -36,7 +36,7 @@ const BranchMaster = Loadable(lazy(() => import('pages/dashboardmenu/Master/Bran
 const Apiendpoints = Loadable(lazy(() => import('pages/dashboardmenu/Master/ApiEndPoints/apiendpoints')));
 const MoveToAuditquery = Loadable(lazy(() => import('pages/fiprocessing/Audit/MoveToAuditRecord/MoveToAuditRecord')));
 // render - FI Processing -- Branch 
-const Postsanction = Loadable(lazy(() => import('pages/fiprocessing/Branch/PostSanction/postsanction')));
+const Postsanction = Loadable(lazy(() => import('pages/fiprocessing/Branch/postsanction/postsanction')));
 const AddGuarantor = Loadable(lazy(() => import('pages/fiprocessing/Branch/addguarantor/index')));
 const Generate = Loadable(lazy(() => import('pages/fiprocessing/credit/GenerateDS/Master')));
 // ==============================|| MAIN ROUTING ||============================== //

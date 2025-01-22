@@ -149,7 +149,6 @@ const ReadyForAudit = () => {
     setGroupCode('');
   };
   useEffect(() => {
-    debugger;
     getCreatorDropdown();
   }, []);
   const handleGetAllDocModelOpen = async (FiCode, Creator) => {

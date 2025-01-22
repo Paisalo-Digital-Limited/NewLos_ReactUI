@@ -596,34 +596,23 @@ const PostSanction = () => {
       return;
     }
     setLoading(true);
-    //const url = `https://apiuat.paisalo.in:4015/fi/api/FiPostSanction/GetFiPostDoc?FiCode=${FiCode}&Creator=${Creator}`;
-    const url = `https://apiuat.paisalo.in:4015/fi/api/FiSanction/OnePgerdonload?ficode=${fiCode}&creator=${creator}`;
+    const url = `https://apiuat.paisalo.in:4015/fi/api/FiSanction/OnePgerdonload?ficode=${FiCode}&creator=${Creator}`;
     try {
       const response = await axios.get(url, {
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
           //Authorization: `Bearer ${token}`, // Ensure proper headers JSON.parse(response.data.data)
         },
       });
-      if (response.status === 200) {
-        const apipinfoData = JSON.parse(response.data.data || "[]");
-         // setSelectedItem(apipinfoData);
-        pinfoData.map((item,index)=>{
-          debugger;
-           if(item.Document=="Pronote" && item.CheckListId !=null){
-            setPronoteuploaded(true);
-        }
-        });
-      //     apipinfoData.forEach((item)=>{
-      //     if(item.Document=="Pronote" && item.CheckListId !=null){
-      //         setPronoteuploaded(true);
-      //     }
-      // });
-      
-        setPinfoData(apipinfoData);
-        setSelectedRowData(apipinfoData[0] || null);
-       // setPronoteDocopen(true);
-      } else {
+      const { statuscode, message, data } = response.data;
+      if (statuscode === 20) {
+        const pdfFilePath = data.pdfOnePager; 
+        const urlRegex = /https?:\/\/[^\s'"]+/;
+        const extractedUrl = pdfFilePath.match(urlRegex)[0];
+        window.open(extractedUrl, '_blank', 'noopener,noreferrer');
+      } 
+      else {
         console.error(
           "Error in API response:",
           response.data.message || "Unknown error"

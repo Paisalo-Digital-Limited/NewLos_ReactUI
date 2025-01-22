@@ -6,7 +6,7 @@ import apiClient from '../network/apiClient';
  */
 export const fetchStatesApi = async () => {
   try {
-    const response = await apiClient.get('http://localhost:5238/api/Masters/GetStateMaster');
+    const response = await apiClient.get('https://apiuat.paisalo.in:4015/fi/api/Masters/GetStateMaster');
     const { statuscode, data } = response.data;
 
     if (statuscode === 200) {

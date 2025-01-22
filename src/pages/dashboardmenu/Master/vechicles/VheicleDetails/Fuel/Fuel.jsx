@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid, TextField, Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, Switch } from '@mui/material';
+import { Typography, Grid, TextField, Button, Box, Dialog,IconButton, DialogTitle, DialogContent, DialogActions, Switch } from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import Swal from 'sweetalert2';
 import { createFuelType, getFuelTypeDetails, updateFuelType, deleteFuelType } from 'api/apiVheicle';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import EditIcon from '@mui/icons-material/Edit';
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import CloseIcon from "@mui/icons-material/Close";
+import AnimateButton from 'components/@extended/AnimateButton';
+import SendIcon from '@mui/icons-material/Send';
+
 const FuelType = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -94,40 +98,51 @@ const FuelType = () => {
     }
   };
 
-  const toggleFuelType = async (rowData) => {
-    const updatedStatus = !rowData.isActive;
-
-    // Optimistically update the UI
-    setFuelTypes((prev) => prev.map((fuel) => (fuel.id === rowData.id ? { ...fuel, isActive: updatedStatus } : fuel)));
-
-    try {
-      const response = await deleteFuelType(rowData.id); // Assuming delete API is used to toggle
-      if (response.statuscode === 200) {
-        Swal.fire('Success', `Fuel type has been ${updatedStatus ? 'activated' : 'deactivated'}`, 'success');
-      } else {
-        throw new Error(response.message || 'Failed to toggle status.');
-      }
-    } catch (error) {
-      // Rollback UI if API fails
-      setFuelTypes((prev) => prev.map((fuel) => (fuel.id === rowData.id ? { ...fuel, isActive: !updatedStatus } : fuel)));
-      Swal.fire('Error', error.message || 'An error occurred.', 'error');
-    }
-  };
+ const toggleStatus = async (rowData) => {
+     const toggleTo = !rowData.isActive; // Determine the new state
+     Swal.fire({
+       title: 'Are you sure?',
+       text: `Do you want to ${rowData.isActive ? 'deactivate' : 'activate'} this fuel?`,
+       icon: 'warning',
+       showCancelButton: true,
+       confirmButtonText: 'Yes',
+       cancelButtonText: 'No'
+     }).then(async (result) => {
+       if (result.isConfirmed) {
+         try {
+           setLoading(true); // Start loading
+           const response = await deleteFuelType(rowData.id); // Call the API
+           if (response.statuscode === 200) {
+             Swal.fire('Success', rowData.isActive ? 'Fuel deactivated successfully!' : 'Fuel activated successfully!', 'success');
+ 
+             // Update local state to reflect the change
+             setFuelTypes((prevModels) => prevModels.map((model) => (model.id === rowData.id ? { ...model, isActive: toggleTo } : model)));
+           } else {
+             Swal.fire('Error', response.message || 'Failed to toggle status.', 'error');
+           }
+         } catch (error) {
+           Swal.fire('Error', error.message || 'An error occurred.', 'error');
+         } finally {
+           setLoading(false); // Stop loading
+         }
+       }
+     });
+   };
 
   const actionTemplate = (rowData) => (
     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-      <EditIcon
+      <EditCalendarIcon
         onClick={() => handleEdit(rowData)}
         sx={{
           fontSize: '24px',
-          color: '#1976d2',
+          color: 'red',
           cursor: 'pointer',
           '&:hover': { color: '#115293' }
         }}
       />
       <Switch
         checked={rowData.isActive}
-        onChange={() => toggleFuelType(rowData)}
+        onChange={() => toggleStatus(rowData)}
         sx={{
           '& .MuiSwitch-switchBase.Mui-checked': {
             color: '#4caf50'
@@ -166,17 +181,23 @@ const FuelType = () => {
         </Grid>
 
         <Grid item xs={12} md={2} container alignItems="center">
+        <AnimateButton>
           <Button
-            variant="contained"
-            size="large"
-            type="button"
-            sx={{ bgcolor: 'green', borderRadius: '0px', color: 'white', fontWeight: 'bold' }}
-            startIcon={<CheckBoxIcon />}
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? 'Saving...' : 'Submit'}
-          </Button>
+              type="submit"
+              variant="contained"
+              size="large"
+              fullWidth
+              sx={{
+                fontWeight: 'bold',
+                    bgcolor: 'green',
+                    '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
+                  }}
+              startIcon={<SendIcon />} // Adding Submit Icon
+              onClick={handleSubmit}
+            >
+              SUBMIT
+            </Button>
+            </AnimateButton>
         </Grid>
       </Grid>
 
@@ -209,82 +230,57 @@ const FuelType = () => {
         )}
       </Box>
 
-      <Dialog
-        open={editDialogOpen}
-        onClose={() => setEditDialogOpen(false)}
-        fullWidth
+      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)} fullWidth
         sx={{
           '& .MuiDialog-paper': {
             borderRadius: '16px',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
-          }
+            boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+          },
         }}
       >
-        <DialogTitle
-          sx={{
-            textAlign: 'center',
-            fontSize: '1.5rem',
-            fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #2196f3, #21cbf3)',
-            color: 'white',
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px',
-            padding: '16px 24px',
-            marginBottom: '30px'
-          }}
-        >
-          Edit Fuel Type
-        </DialogTitle>
-        <DialogContent>
+        <DialogTitle sx={{
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          color: 'black',
+          padding: '14px 20px',
+        }}>Edit Fuel Type</DialogTitle>
+         <IconButton  onClick={() => setEditDialogOpen(false)} style={{ position: 'absolute', top: '8px', right: '8px' }}>
+          <CloseIcon sx={{ color: 'red' }} />
+        </IconButton>
+
+        <DialogContent >
           <TextField
             label="Fuel Name"
-            variant="outlined"
+            variant="outlined" 
             fullWidth
             size="medium"
-            value={editFuelType?.name || ''}
-            onChange={(e) => setEditFuelType((prev) => ({ ...prev, name: e.target.value }))}
-            sx={{ marginBottom: '15px', marginTop: '10px' }}
+            value={editFuelType?.name || ""}
+            onChange={(e) =>
+              setEditFuelType((prev) => ({ ...prev, name: e.target.value }))
+            }
+            sx={{ marginBottom: "15px", marginTop: '10px', }}
           />
           <TextField
             label="Description"
             variant="outlined"
             fullWidth
             size="medium"
-            value={editFuelType?.description || ''}
-            onChange={(e) => setEditFuelType((prev) => ({ ...prev, description: e.target.value }))}
+            value={editFuelType?.description || ""}
+            onChange={(e) =>
+              setEditFuelType((prev) => ({ ...prev, description: e.target.value }))
+            }
           />
         </DialogContent>
+
         <DialogActions>
-          <Button
-            onClick={() => setEditDialogOpen(false)}
-            sx={{
-              borderRadius: '12px',
-              padding: '8px 24px',
-              fontSize: '1rem',
-              textTransform: 'none',
-              borderColor: '#d32f2f',
-              color: '#d32f2f',
-              '&:hover': {
-                background: '#ffd2d2'
-              }
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleEditSave}
-            variant="contained"
-            sx={{
-              borderRadius: '12px',
-              padding: '8px 24px',
-              fontSize: '1rem',
-              textTransform: 'none',
-              background: 'linear-gradient(135deg, #21cbf3, #2196f3)',
-              color: 'white',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #1a78c2, #1976d2)'
-              }
-            }}
+          <Button onClick={handleEditSave} variant="contained"
+           color="primary"
+           sx={{
+            fontSize: '1rem',
+            textTransform: 'none',
+            marginBottom:"20px",
+            marginRight:"10px"
+          }}
           >
             Save
           </Button>

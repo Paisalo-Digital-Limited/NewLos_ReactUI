@@ -22,7 +22,10 @@ import {
   FormHelperText,
   Switch,
   Modal,
-  TablePagination
+  TablePagination,
+  Dialog,
+  DialogActions,
+  DialogTitle
 } from '@mui/material';
 
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
@@ -30,6 +33,7 @@ import SendIcon from '@mui/icons-material/Send';
 import apiClient from 'network/apiClient';
 import Swal from 'sweetalert2';
 import CloseIcon from '@mui/icons-material/Close';
+
 const SubMenu = () => {
     const [rows, setRows] = useState([]);
   const [menu, setMenu] = useState('');
@@ -50,6 +54,7 @@ const SubMenu = () => {
 // Pagination states
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5); // Set default rows per page
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
 
   const tableCellStyle = {
@@ -65,7 +70,7 @@ const SubMenu = () => {
   useEffect(() => {
     fetchMenuData();
     fetchMenuDataForList();
-}, [pageNo, rowsPerPage]);
+}, []);
 
   const fetchMenuData = async () => {
     try {
@@ -164,6 +169,8 @@ const SubMenu = () => {
         setRows(prevRows => [...prevRows, newRow]); // Add the new item to the existing rows
         setPageName('');
         setMainMenuIcon('');
+        fetchMenuData();
+        fetchMenuDataForList();
       } else {
         Swal.fire({
           title: 'Error',
@@ -228,6 +235,8 @@ const SubMenu = () => {
               icon: 'success',
               confirmButtonColor: 'red',
             });
+            fetchMenuData();
+         fetchMenuDataForList();
           }
           else{
             Swal.fire({
@@ -236,10 +245,11 @@ const SubMenu = () => {
               icon: 'success',
               confirmButtonColor: 'green',
             });
+            fetchMenuData();
+         fetchMenuDataForList();
           }
           // Fetch updated menu data after deletion
-          fetchMenuData();
-         fetchMenuDataForList();
+          
         } else {
           Swal.fire({
             title: 'Error',
@@ -247,8 +257,6 @@ const SubMenu = () => {
             icon: 'error',
             confirmButtonColor: 'red',
           });
-          fetchMenuData();
-         fetchMenuDataForList();
         }
       } catch (error) {
         Swal.fire({
@@ -277,7 +285,7 @@ const SubMenu = () => {
         setEditedIcon(item.icon);
         seteditParentId(item.parentId);
         setMenu(item.menu);
-        setMainMenuModalopen(true);
+       setEditDialogOpen(true);
     } else {
         console.warn("No item selected");
     }
@@ -306,7 +314,7 @@ const UpdateSubMenu = async () => {
           });
           fetchMenuData();
          fetchMenuDataForList();
-          setMainMenuModalopen(false);
+         setEditDialogOpen(false);
       } 
       else {
           // Show an error message
@@ -326,6 +334,8 @@ const UpdateSubMenu = async () => {
       });
   }
 };
+
+const paginatedRows = menuListData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <>
@@ -415,8 +425,8 @@ const UpdateSubMenu = async () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {menuListData.length > 0 ? (
-              menuListData.map((item, index) => (
+          {paginatedRows.length > 0 ? (
+              paginatedRows.map((item, index) => (
                 <TableRow key={item.mainid}>
                   <TableCell sx={{ textAlign: 'center' }}>{page * rowsPerPage + index + 1}</TableCell>
                   {/* <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell> */}
@@ -509,7 +519,7 @@ const UpdateSubMenu = async () => {
          <TablePagination
                   rowsPerPageOptions={[5, 10, 25]} // Options for rows per page
                   component="div"
-                  count={rows.length} // Total number of rows
+                  count={menuListData.length} // Total number of rows
                   rowsPerPage={rowsPerPage} // Rows per page
                   page={page} // Current page
                   onPageChange={handleChangePage} // Handle page change
@@ -517,50 +527,34 @@ const UpdateSubMenu = async () => {
                 />
       </TableContainer>
 
-      <Modal open={MainMenuModalopen} onClose={() => setMainMenuModalopen(false)}>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        backgroundColor: 'white',
-                        borderRadius: '8px',
-                        boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
-                        width: { xs: '90%', sm: '80%', md: '50%' }, // Responsive width
-                        padding: '16px',
-                        // position: 'relative', // Set the position to relative for the close icon positioning
-                    }}
-                >
-                    {/* Close Icon */}
-                    <CloseIcon
-                        sx={{
-                            position: 'absolute',
-                            top: '16px',
-                            right: '16px',
-                            cursor: 'pointer',
-                            '&:hover': {
-                                color: '#d21919', // Optional: Change color on hover
-                            },
-                        }}
-                        onClick={() => setMainMenuModalopen(false)} // Close the modal when clicked
-                    />
-
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            fontWeight: 'bold',
-                            marginBottom: '16px',
-                            textAlign: 'left',
-                            color: '#d21919',
-                        }}
-                    >
-                        Update Sub Menu Details
-                    </Typography>
-
-                    <Grid container spacing={2} mb={2}>
+            <Dialog
+            open={editDialogOpen}
+            onClose={() => setEditDialogOpen(false)}
+            fullWidth
+            sx={{
+              '& .MuiDialog-paper': {
+                borderRadius: '16px',
+                boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+                
+              }
+            }}
+          >
+            <DialogTitle
+              sx={{
+                fontSize: '1.5rem',
+                fontWeight: 'bold',
+                color: 'Black',
+                padding: '16px 24px',
+              }}
+            >
+              {' '}
+              Edit SubMenu Details
+            </DialogTitle>
+            <IconButton    onClick={() => setEditDialogOpen(false)} style={{ position: 'absolute', top: '8px', right: '8px' }}>
+              <CloseIcon sx={{ color: 'red' }} />
+            </IconButton>
+            <Grid sx={{padding:"20px"}}>
                         {/* Row 1: Two inputs */}
-                        <Grid item xs={12} sm={6}>
                             <FormControl fullWidth error={!!errors.menu}>
                                 <InputLabel id="menu-label">Menu</InputLabel>
                                 <Select
@@ -569,6 +563,7 @@ const UpdateSubMenu = async () => {
                                     label="Menu"
                                     labelId="menu-label"
                                     id="menu-select"
+                                    sx={{mb:2}}
                                 >
                                     {menuData.map((menuItem) => (
                                         <MenuItem key={menuItem.id} value={menuItem.title}>
@@ -578,52 +573,46 @@ const UpdateSubMenu = async () => {
                                 </Select>
                                 {errors.menu && <FormHelperText>{errors.menu}</FormHelperText>}
                             </FormControl>
-                        </Grid>
-
-                        <Grid item xs={12} sm={6} mb={2}>
+          
                             <TextField
                                 label="Main ID"
+                                disabled
                                 fullWidth
                                 value={editedmaiid || ''}
                                 onChange={(e) => setmaiid(e.target.value)}
+                                sx={{mb:2}}
                             />
-                        </Grid>
-
-                        {/* Row 2: Two inputs */}
-                        <Grid item xs={12} sm={6} mb={2}>
+                        
                             <TextField
                                 label="Title Name"
                                 fullWidth
                                 value={edittitleName || ''}
                                 onChange={(e) => setedittitleName(e.target.value)}
+                                sx={{mb:2}}
                             />
-                        </Grid>
-                        <Grid item xs={12} sm={6} mb={2}>
+                      
                             <TextField
                                 label="Icon"
                                 fullWidth
                                 value={editedIcon || ''}
                                 onChange={(e) => setEditedIcon(e.target.value)}
+                                sx={{mb:2}}
                             />
-                        </Grid>
-                    </Grid>
-
-                    <Box sx={{ textAlign: 'center', marginTop: '16px' }}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={UpdateSubMenu}
-                            sx={{
-                                textTransform: 'uppercase',
-                                fontWeight: 'bold',
-                                padding: '8px 16px',
-                            }}
-                        >
-                            Save
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
+                            </Grid>
+            <DialogActions>
+              <Button
+                onClick={UpdateSubMenu}
+                variant="contained"
+                color='primary'
+                sx={{
+                  fontSize: '1rem',
+                  textTransform: 'none',
+                }}
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
     </>
   );
 };

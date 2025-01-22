@@ -10,14 +10,18 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Switch
+  Switch,
+  IconButton
 } from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import EditIcon from '@mui/icons-material/Edit';
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import Swal from 'sweetalert2';
 import { createBrand, getBrandDetails, updateBrand, deleteBrand } from 'api/apiVheicle';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import SendIcon from '@mui/icons-material/Send';
+import AnimateButton from 'components/@extended/AnimateButton';
+import CloseIcon from "@mui/icons-material/Close";
 
 const BrandType = () => {
   const [name, setName] = useState('');
@@ -145,38 +149,45 @@ const BrandType = () => {
     setEditDialogOpen(true);
   };
 
+  
   const toggleStatus = async (rowData) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to ${rowData.isActive ? 'deactivate' : 'activate'} this brand?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await deleteBrand(rowData.id);
-          if (response.statuscode === 200) {
-            Swal.fire('Success', rowData.isActive ? 'Brand deactivated successfully!' : 'Brand activated successfully!', 'success');
-            fetchBrands();
-          } else {
-            Swal.fire('Error', response.message || 'Failed to toggle status.', 'error');
+      const toggleTo = !rowData.isActive; // Determine the new state
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you want to ${rowData.isActive ? 'deactivate' : 'activate'} this brand?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            setLoading(true); // Start loading
+            const response = await deleteBrand(rowData.id); // Call the API
+            if (response.statuscode === 200) {
+              Swal.fire('Success', rowData.isActive ? 'Brand deactivated successfully!' : 'Brand activated successfully!', 'success');
+  
+              // Update local state to reflect the change
+              setBrands((prevModels) => prevModels.map((model) => (model.id === rowData.id ? { ...model, isActive: toggleTo } : model)));
+            } else {
+              Swal.fire('Error', response.message || 'Failed to toggle status.', 'error');
+            }
+          } catch (error) {
+            Swal.fire('Error', error.message || 'An error occurred.', 'error');
+          } finally {
+            setLoading(false); // Stop loading
           }
-        } catch (error) {
-          Swal.fire('Error', error.message || 'An error occurred.', 'error');
         }
-      }
-    });
-  };
+      });
+    };
 
   const actionTemplate = (rowData) => (
     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-      <EditIcon
+      <EditCalendarIcon
         onClick={() => handleEdit(rowData)}
         sx={{
           fontSize: '24px',
-          color: '#1976d2',
+          color: 'red',
           cursor: 'pointer',
           '&:hover': { color: '#115293' }
         }}
@@ -232,18 +243,24 @@ const BrandType = () => {
           />
         </Grid>
 
-        <Grid item xs={12} md={2} container alignItems="center">
-          <Button
-            variant="contained"
-            size="large"
-            type="button"
-            sx={{ bgcolor: 'green', borderRadius: '0px', color: 'white', fontWeight: 'bold' }}
-            startIcon={<CheckBoxIcon />}
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? 'Saving...' : 'Submit'}
-          </Button>
+        <Grid item xs={12} md={2}>
+          <AnimateButton>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              fullWidth
+              sx={{
+                fontWeight: 'bold',
+                bgcolor: 'green',
+                '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
+              }}
+              startIcon={<SendIcon />} // Adding Submit Icon
+              onClick={handleSubmit}
+            >
+              SUBMIT
+            </Button>
+          </AnimateButton>
         </Grid>
       </Grid>
 
@@ -289,26 +306,20 @@ const BrandType = () => {
       >
         <DialogTitle
           sx={{
-            textAlign: 'center',
             fontSize: '1.5rem',
             fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #2196f3, #21cbf3)',
-            color: 'white',
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px',
+            color: 'Black',
             padding: '16px 24px',
-            marginBottom: '30px'
           }}
         >
           {' '}
           Edit Brand
         </DialogTitle>
-        <DialogContent
-          sx={{
-            padding: '24px',
-            backgroundColor: '#ffff'
-          }}
-        >
+        <IconButton    onClick={() => setEditDialogOpen(false)} style={{ position: 'absolute', top: '8px', right: '8px' }}>
+          <CloseIcon sx={{ color: 'red' }} />
+        </IconButton>
+        <Grid sx={{padding:"20px"}}>
+
           <TextField
             label="Brand Name"
             variant="outlined"
@@ -316,7 +327,7 @@ const BrandType = () => {
             size="medium"
             value={editBrand?.name || ''}
             onChange={(e) => setEditBrand((prev) => ({ ...prev, name: e.target.value }))}
-            sx={{ marginBottom: '15px', marginTop: '10px' }}
+           sx={{marginBottom:"20px"}}
           />
           <TextField
             label="Description"
@@ -326,40 +337,15 @@ const BrandType = () => {
             value={editBrand?.description || ''}
             onChange={(e) => setEditBrand((prev) => ({ ...prev, description: e.target.value }))}
           />
-        </DialogContent>
+          </Grid>
         <DialogActions>
-          <Button
-            onClick={() => setEditDialogOpen(false)}
-            variant="outlined"
-            size="large"
-            sx={{
-              borderRadius: '12px',
-              padding: '8px 24px',
-              fontSize: '1rem',
-              textTransform: 'none',
-              borderColor: '#d32f2f',
-              color: '#d32f2f',
-              '&:hover': {
-                background: '#ffd2d2'
-              }
-            }}
-          >
-            Cancel
-          </Button>
           <Button
             onClick={handleEditSave}
             variant="contained"
-            size="large"
+            color='primary'
             sx={{
-              borderRadius: '12px',
-              padding: '8px 24px',
               fontSize: '1rem',
               textTransform: 'none',
-              background: 'linear-gradient(135deg, #21cbf3, #2196f3)',
-              color: 'white',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #1a78c2, #1976d2)'
-              }
             }}
           >
             Save

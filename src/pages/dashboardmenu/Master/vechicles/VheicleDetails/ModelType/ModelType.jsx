@@ -15,9 +15,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Switch
+  Switch,
+  IconButton
 } from '@mui/material';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import SendIcon from "@mui/icons-material/Send";
 import {
   getVehicleTypes,
   getFuelTypeDetails,
@@ -30,7 +31,11 @@ import {
 import Swal from 'sweetalert2';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import EditIcon from '@mui/icons-material/Edit';
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import CloseIcon from "@mui/icons-material/Close";
+import AnimateButton from 'components/@extended/AnimateButton';
+
+
 const ModelType = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -274,11 +279,11 @@ const ModelType = () => {
 
   const actionTemplate = (rowData) => (
     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-      <EditIcon
+      <EditCalendarIcon
         onClick={() => handleDialogOpen('edit', rowData)}
         sx={{
           fontSize: '24px',
-          color: '#1976d2',
+          color: 'red',
           cursor: 'pointer',
           '&:hover': { color: '#115293' }
         }}
@@ -405,17 +410,23 @@ const ModelType = () => {
 
         {/* Submit Button */}
         <Grid item xs={12} md={2} container alignItems="center">
-          <Button
-            variant="contained"
-            size="large"
-            type="button"
-            sx={{ bgcolor: 'green', borderRadius: '0px', color: 'white', fontWeight: 'bold' }}
-            startIcon={<CheckBoxIcon />}
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? 'Saving...' : 'Submit'}
-          </Button>
+        <AnimateButton>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              fullWidth
+              sx={{
+                fontWeight: 'bold',
+                bgcolor: 'green',
+                '&:hover': { bgcolor: 'green' } // Ensuring it stays green on hover
+              }}
+              startIcon={<SendIcon />} // Adding Submit Icon
+              onClick={handleSubmit}
+            >
+              SUBMIT
+            </Button>
+          </AnimateButton>
         </Grid>
       </Grid>
 
@@ -457,33 +468,29 @@ const ModelType = () => {
         onClose={handleDialogClose}
         fullWidth
         sx={{
-          '& .MuiDialog-paper': {
-            borderRadius: '16px',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
-          }
+          "& .MuiDialog-paper": {
+            borderRadius: "16px",
+            boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+          },
         }}
       >
         <DialogTitle
           sx={{
-            textAlign: 'center',
-            fontSize: '1.5rem',
-            fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #2196f3, #21cbf3)',
-            color: 'white',
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px',
-            padding: '16px 24px',
-            marginBottom: '30px'
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+            color: "black",
+            padding: "14px 20px",
           }}
         >
-          {dialogMode === 'create' ? 'Add New Model' : 'Edit Model'}
+          {dialogMode === "create" ? "Add New Model" : "Edit Model"}
         </DialogTitle>
-        <DialogContent
-          sx={{
-            padding: '24px',
-            backgroundColor: '#ffff'
-          }}
+        <IconButton
+          onClick={handleDialogClose}
+          style={{ position: "absolute", top: "8px", right: "8px" }}
         >
+          <CloseIcon sx={{ color: "red" }} />
+        </IconButton>
+        <DialogContent sx={{ padding: "24px", backgroundColor: "#ffff" }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -492,8 +499,8 @@ const ModelType = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 error={nameError}
-                helperText={nameError && 'Model Name is required'}
-                sx={{ marginBottom: '15px', marginTop: '10px' }}
+                helperText={nameError && "Model Name is required"}
+                sx={{ marginBottom: "15px", marginTop: "10px" }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -503,7 +510,7 @@ const ModelType = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 error={descriptionError}
-                helperText={descriptionError && 'Description is required'}
+                helperText={descriptionError && "Description is required"}
               />
             </Grid>
             <Grid item xs={12}>
@@ -515,7 +522,6 @@ const ModelType = () => {
                   value={dropdown1}
                   onChange={(e) => setDropdown1(e.target.value)}
                   label="Vehicle Type"
-                  MenuProps={dropdownMenuProps}
                 >
                   {vehicleTypes.map((type) => (
                     <MenuItem key={type.id} value={type.id}>
@@ -523,7 +529,9 @@ const ModelType = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                {dropdown1Error && <FormHelperText>Vehicle Type is required</FormHelperText>}
+                {dropdown1Error && (
+                  <FormHelperText>Vehicle Type is required</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -535,7 +543,6 @@ const ModelType = () => {
                   value={dropdown2}
                   onChange={(e) => setDropdown2(e.target.value)}
                   label="Fuel Type"
-                  MenuProps={dropdownMenuProps}
                 >
                   {fuelTypes.map((type) => (
                     <MenuItem key={type.id} value={type.id}>
@@ -543,7 +550,9 @@ const ModelType = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                {dropdown2Error && <FormHelperText>Fuel Type is required</FormHelperText>}
+                {dropdown2Error && (
+                  <FormHelperText>Fuel Type is required</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -555,7 +564,6 @@ const ModelType = () => {
                   value={dropdown3}
                   onChange={(e) => setDropdown3(e.target.value)}
                   label="Brand"
-                  MenuProps={dropdownMenuProps}
                 >
                   {brandDetails.map((brand) => (
                     <MenuItem key={brand.id} value={brand.id}>
@@ -563,45 +571,27 @@ const ModelType = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                {dropdown3Error && <FormHelperText>Brand is required</FormHelperText>}
+                {dropdown3Error && (
+                  <FormHelperText>Brand is required</FormHelperText>
+                )}
               </FormControl>
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleDialogClose}
-            sx={{
-              borderRadius: '12px',
-              padding: '8px 24px',
-              fontSize: '1rem',
-              textTransform: 'none',
-              borderColor: '#d32f2f',
-              color: '#d32f2f',
-              '&:hover': {
-                background: '#ffd2d2'
-              }
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
             onClick={handleSubmit}
             variant="contained"
             disabled={loading}
+            color="primary"
             sx={{
-              borderRadius: '12px',
-              padding: '8px 24px',
-              fontSize: '1rem',
-              textTransform: 'none',
-              background: 'linear-gradient(135deg, #21cbf3, #2196f3)',
-              color: 'white',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #1a78c2, #1976d2)'
-              }
+              fontSize: "1rem",
+              textTransform: "none",
+              marginBottom: "30px",
+              marginRight: "10px",
             }}
           >
-            {loading ? 'Saving...' : 'Save'}
+            {loading ? "Saving..." : "Save"}
           </Button>
         </DialogActions>
       </Dialog>

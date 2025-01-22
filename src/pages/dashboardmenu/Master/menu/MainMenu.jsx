@@ -23,12 +23,16 @@ import {
   Tooltip,
   IconButton,
   Switch,
-  TablePagination
+  TablePagination,
+  Dialog,
+  DialogTitle,
+  DialogActions
 } from '@mui/material';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import SendIcon from '@mui/icons-material/Send';
 import Swal from 'sweetalert2';
 import apiClient from 'network/apiClient';
+import CloseIcon from "@mui/icons-material/Close";
 
 
 const tableCellStyle = {
@@ -51,11 +55,13 @@ const MainPage = () => {
   const [menu, setMenu] = useState('');
   const [menuData, setMenuData] = useState([]);
   const [editedIcon, setEditedIcon] = useState('');
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  
 
   // Pagination states
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5); // Set default rows per page
-  const [MainMenuModalOpen, setMainMenuModalOpen] = useState(false);
+  
   
   const [errors, setErrors] = useState({
     menu: "",
@@ -119,6 +125,7 @@ const MainPage = () => {
         setRows(prevRows => [...prevRows, newRow]);
         setPageName('');
         setMainMenuIcon('');
+        fetchMenuData();
       } else {
         Swal.fire({
           title: 'Error',
@@ -228,7 +235,7 @@ const MainPage = () => {
       });
 
       if (response.data.statuscode === 200) {
-        await Swal.fire({
+         Swal.fire({
           icon: 'success',
           title: 'Success!',
           text: 'Page Menu updated successfully!',
@@ -236,9 +243,10 @@ const MainPage = () => {
 
         setPageName('');
         setMainMenuIcon('');
-        setMainMenuModalOpen(false);
+        setEditDialogOpen(false);
+        fetchMenuData();
       } else {
-        await Swal.fire({
+         Swal.fire({
           icon: 'error',
           title: 'Error!',
           text: response.data.message || "Failed to update menu.",
@@ -246,7 +254,7 @@ const MainPage = () => {
       }
     } catch (err) {
       console.error("Error updating menu:", err);
-      await Swal.fire({
+       Swal.fire({
         icon: 'error',
         title: 'Error!',
         text: 'An error occurred while updating the menu.',
@@ -258,9 +266,9 @@ const MainPage = () => {
     if (item) {
       setEditedMainId(item.mainid);
       setEditTitleName(item.title);
-      setEditedPageUrl(item.pageUrl);
+      setEditedPageUrl(item.icon);
       setMenu(item.title);
-      setMainMenuModalOpen(true);
+      setEditDialogOpen(true);
     }
   };
 
@@ -378,7 +386,7 @@ const MainPage = () => {
         </Table>
 
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, 40]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
@@ -388,87 +396,76 @@ const MainPage = () => {
         />
       </TableContainer>
 
-      {/* Modal for editing */}
-      <Modal open={MainMenuModalOpen} onClose={() => setMainMenuModalOpen(false)}>
-        <Box
+      
+         <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        fullWidth
+        sx={{
+          '& .MuiDialog-paper': {
+            borderRadius: '16px',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
+          }
+        }}
+      >
+        <DialogTitle
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
-            width: '50%',
-            padding: '16px',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            color: 'Black',
+            padding: '16px 24px',
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: 'bold',
-              marginBottom: '16px',
-              textAlign: 'center',
-              color: '#1976D2',
-            }}
-          >
-            Update Sub Menu Details
-          </Typography>
+          {' '}
+          Edit Menu Details
+        </DialogTitle>
+        <IconButton    onClick={() => setEditDialogOpen(false)} style={{ position: 'absolute', top: '8px', right: '8px' }}>
+          <CloseIcon sx={{ color: 'red' }} />
+        </IconButton>
+        <Grid sx={{padding:"20px"}}>
 
           <TextField
-            label="Main ID"
+            label="Main Id"
+            variant="outlined"
             fullWidth
+            size="medium"
             disabled
             value={editedMainId || ''}
             onChange={(e) => setEditedMainId(e.target.value)}
-            sx={{ mb: 2 }}
+           sx={{marginBottom:"20px"}}
           />
-
           <TextField
-            label="Title Name"
+            label="Title"
+            variant="outlined"
             fullWidth
+            size="medium"
             value={edittitleName || ''}
-            onChange={(e) => setEditTitleName(e.target.value)}
-            sx={{ mb: 2 }}
+            onChange={(e)=>setEditTitleName(e.target.value)}
+            sx={{mb:2}}
           />
-
-             <TextField
-                        label="Icon"
-                        fullWidth
-                        value={editedIcon || ''}
-                        onChange={(e) => setEditedIcon(e.target.value)}
-                        sx={{ mb: 2 }}
-                    />
-
-          <Box sx={{ textAlign: 'center', marginTop: '16px' }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={UpdateMainMenu}
-              sx={{
-                textTransform: 'uppercase',
-                fontWeight: 'bold',
-                padding: '8px 16px',
-              }}
-            >
-              Save
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={() => setMainMenuModalOpen(false)}
-              sx={{
-                textTransform: 'uppercase',
-                fontWeight: 'bold',
-                padding: '8px 16px',
-                marginLeft: '8px',
-              }}
-            >
-              Cancel
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+          <TextField
+            label="Icon"
+            variant="outlined"
+            fullWidth
+            size="medium"
+            value={editedIcon || ''}
+            onChange={(e) => setEditedIcon(e.target.value)}
+          />
+          </Grid>
+        <DialogActions>
+          <Button
+            onClick={UpdateMainMenu}
+            variant="contained"
+            color='primary'
+            sx={{
+              fontSize: '1rem',
+              textTransform: 'none',
+            }}
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

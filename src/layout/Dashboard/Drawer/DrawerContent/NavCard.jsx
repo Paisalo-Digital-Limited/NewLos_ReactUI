@@ -11,9 +11,9 @@ export default function NavCard() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }}>
       <AnimateButton>
-        <Button variant="contained" color="success" size="small">
+        {/* <Button variant="contained" color="success" size="small">
           Logout
-        </Button>
+        </Button> */}
       </AnimateButton>
     </div>
   );

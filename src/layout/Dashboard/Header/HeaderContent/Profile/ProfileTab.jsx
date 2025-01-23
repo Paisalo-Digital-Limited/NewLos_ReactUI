@@ -11,44 +11,55 @@ import ListItemText from '@mui/material/ListItemText';
 import EditOutlined from '@ant-design/icons/EditOutlined';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
-// import WalletOutlined from '@ant-design/icons/WalletOutlined';
-// import ProfileOutlined from '@ant-design/icons/ProfileOutlined';
+import Swal from 'sweetalert2'; // Import SweetAlert2
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
-export default function ProfileTab() {
+export default function ProfileTab({ handleLogout }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const navigate = useNavigate(); // Initialize the navigate function
 
   const handleListItemClick = (index) => {
     setSelectedIndex(index);
   };
 
+  const handleLogoutClick = () => {
+    Swal.fire({
+      title: 'Confirm Logout',
+      text: 'Are you sure you want to logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, logout',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Call the logout function if provided
+        if (handleLogout) {
+          handleLogout();
+        }
+
+        // Redirect to the home page
+        navigate('/'); // Change this to your desired redirect path
+      }
+    });
+  };
+
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
-      <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0, '/apps/profiles/user/personal')}>
+      <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(0)}>
         <ListItemIcon>
           <EditOutlined />
         </ListItemIcon>
         <ListItemText primary="Edit Profile" />
       </ListItemButton>
-      <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1, '/apps/profiles/account/basic')}>
+      <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(1)}>
         <ListItemIcon>
           <UserOutlined />
         </ListItemIcon>
         <ListItemText primary="View Profile" />
       </ListItemButton>
-      {/* <ListItemButton selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3, 'apps/profiles/account/personal')}>
-        <ListItemIcon>
-          <ProfileOutlined />
-        </ListItemIcon>
-        <ListItemText primary="Social Profile" />
-      </ListItemButton> */}
-      {/* <ListItemButton selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4, '/apps/invoice/details/1')}>
-        <ListItemIcon>
-          <WalletOutlined />
-        </ListItemIcon>
-        <ListItemText primary="Billing" />
-      </ListItemButton> */}
-      <ListItemButton selected={selectedIndex === 2}>
+      <ListItemButton selected={selectedIndex === 2} onClick={handleLogoutClick}>
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>

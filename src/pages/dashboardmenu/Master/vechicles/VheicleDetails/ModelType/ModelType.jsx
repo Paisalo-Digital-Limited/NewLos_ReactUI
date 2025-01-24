@@ -177,7 +177,7 @@ const ModelType = () => {
     setDropdown3Error(!dropdown3);
 
     if (!name.trim() || !description.trim() || !dropdown1 || !dropdown2 || !dropdown3) return;
-
+          debugger;
     setLoading(true);
     try {
       const modelData = {

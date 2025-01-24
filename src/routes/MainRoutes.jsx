@@ -29,7 +29,7 @@ const FiSanction = Loadable(lazy(() => import('pages/fiprocessing/credit/FiSanct
 // render - Dashboard- Master
 const Role = Loadable(lazy(() => import('pages/dashboardmenu/Master/role/role')));
 const Vechicles = Loadable(lazy(() => import('pages/dashboardmenu/Master/vechicles/vechicles')));
-//const Menu = Loadable(lazy(() => import('pages/dashboardmenu/Master/menu/menu')));
+const Menu = Loadable(lazy(() => import('pages/dashboardmenu/Master/menu/menu')));
 const Groupmaster = Loadable(lazy(() => import('pages/dashboardmenu/Master/GroupMaster/groupmaster')));
 const Mastercreator = Loadable(lazy(() => import('pages/dashboardmenu/Master/mastercreator/AddCreator/AddCreator')));
 const BranchMaster = Loadable(lazy(() => import('pages/dashboardmenu/Master/BranchMaster/AddBranch')));

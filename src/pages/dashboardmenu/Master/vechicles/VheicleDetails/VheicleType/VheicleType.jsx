@@ -193,17 +193,10 @@ const VehicleType = () => {
           onClick={() => handleEdit(rowData)}
           sx={{
             fontSize: '24px',
-<<<<<<< HEAD:src/pages/vechicles/VheicleDetails/VheicleType/VheicleType.jsx
             color: rowData.isActive ? '#1976d2' : '#ccc',
             cursor: rowData.isActive ? 'pointer' : 'not-allowed',
             '&:hover': {
-              color: rowData.isActive ? '#115293' : '#ccc'
-=======
-            color: '#1976d2',
-            cursor: 'pointer',
-            '&:hover': {
-              color: '#115293'
->>>>>>> a118244bc498877007ff11d494ad421d1ac22180:src/pages/dashboardmenu/Master/vechicles/VheicleDetails/VheicleType/VheicleType.jsx
+              color: rowData.isActive ? '#115293' : '#ccc',
             }
           }}
         />

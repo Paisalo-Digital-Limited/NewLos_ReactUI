@@ -13,3 +13,8 @@
 /* .pro-inner-item {
    color: #f26167 !important;
 } */
+
+.pro-sidebar .pro-menu > ul > .pro-sub-menu > .pro-inner-list-item > div > ul {
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+}

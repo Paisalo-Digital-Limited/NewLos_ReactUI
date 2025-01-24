@@ -24,11 +24,11 @@ import {
   Select,
   MenuItem
 } from '@mui/material';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
+// import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import { Switch } from '@mui/material';
 import MainCard from 'components/MainCard';
-import ComponentSkeleton from '../component-overview/ComponentSkeleton';
+import ComponentSkeleton from 'pages/component-overview/ComponentSkeleton';
 import SendIcon from '@mui/icons-material/Send';
 import AnimateButton from 'components/@extended/AnimateButton';
 

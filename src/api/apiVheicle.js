@@ -130,7 +130,8 @@ export const deleteFuelType = async (fuelTypeId) => {
 
 export const createNewModel = async (modelData) => {
   try {
-    const response = await apiClient.post('https://apiuat.paisalo.in:4015/admin/api/Masters/CreateNewModel', modelData);
+    // const response = await apiClient.post('https://apiuat.paisalo.in:4015/admin/api/Masters/CreateNewModel', modelData);
+    const response = await apiClient.post('http://localhost:5238/api/Masters/CreateNewModel', modelData);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Failed to create the model.');

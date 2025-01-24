@@ -111,59 +111,6 @@ const ModelType = () => {
     setDialogOpen(false);
   };
 
-  // const handleSubmit = async () => {
-  //   setNameError(!name.trim());
-  //   setDescriptionError(!description.trim());
-  //   setDropdown1Error(!dropdown1);
-  //   setDropdown2Error(!dropdown2);
-  //   setDropdown3Error(!dropdown3);
-
-  //   if (!name.trim() || !description.trim() || !dropdown1 || !dropdown2 || !dropdown3) return;
-
-  //   setLoading(true);
-  //   try {
-  //     const modelData = {
-  //       Name: name,
-  //       Description: description,
-  //       VehicleTypeId: dropdown1,
-  //       FuelTypeId: dropdown2,
-  //       BrandId: dropdown3
-  //     };
-
-  //     if (dialogMode === 'create') {
-  //       // Create new model
-  //       const response = await createNewModel(modelData);
-  //       if (response.statuscode === 200) {
-  //         alert('Model created successfully!');
-  //         const updatedModelsResponse = await getModelDetails();
-  //         if (updatedModelsResponse.statuscode === 200) {
-  //           setModels(updatedModelsResponse.data);
-  //         }
-  //       } else {
-  //         alert(response.message || 'Failed to create model.');
-  //       }
-  //     } else if (dialogMode === 'edit') {
-  //       // Update existing model
-  //       modelData.Id = dialogOpen.id; // Pass the `id` of the model being updated
-  //       const response = await updateModel(modelData);
-  //       if (response.statuscode === 200) {
-  //         alert('Model updated successfully!');
-  //         const updatedModelsResponse = await getModelDetails();
-  //         if (updatedModelsResponse.statuscode === 200) {
-  //           setModels(updatedModelsResponse.data);
-  //         }
-  //       } else {
-  //         alert(response.message || 'Failed to update model.');
-  //       }
-  //     }
-  //   } catch (error) {
-  //     alert('An error occurred.');
-  //     console.error('Error:', error.message);
-  //   } finally {
-  //     setLoading(false);
-  //     handleDialogClose();
-  //   }
-  // };
   const handleSubmit = async () => {
     setNameError(!name.trim());
     setDescriptionError(!description.trim());
@@ -178,9 +125,10 @@ const ModelType = () => {
       const modelData = {
         Name: name,
         Description: description,
-        VehicleTypeId: dropdown1,
-        FuelTypeId: dropdown2,
-        BrandId: dropdown3
+        // VehicleTypeId: dropdown1,
+        VIId: dropdown1,
+        FuelType: dropdown2,
+        BId: dropdown3
       };
 
       if (dialogMode === 'create') {
@@ -201,7 +149,7 @@ const ModelType = () => {
         }
       } else if (dialogMode === 'edit') {
         // Update existing model
-        modelData.Id = dialogOpen.id; // Pass the `id` of the model being updated
+        modelData.Id = dialogOpen.id;
         const response = await updateModel(modelData);
         if (response.statuscode === 200) {
           Swal.fire({
@@ -331,7 +279,6 @@ const ModelType = () => {
           </FormControl>
         </Grid>
 
-        {/* Fuel Type Dropdown */}
         <Grid item xs={12} md={2} sm={3}>
           <FormControl fullWidth error={dropdown2Error}>
             <InputLabel id="dropdown2-label">Fuel Type *</InputLabel>
@@ -344,7 +291,7 @@ const ModelType = () => {
               MenuProps={dropdownMenuProps}
             >
               {fuelTypes.map((type) => (
-                <MenuItem key={type.id} value={type.id}>
+                <MenuItem key={type.id} value={type.name}>
                   {type.name}
                 </MenuItem>
               ))}

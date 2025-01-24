@@ -417,7 +417,7 @@
 
 // export default PostSanction;
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -441,43 +441,38 @@ import {
   Grid,
   Tooltip,
   TableFooter,
-  TablePagination,
-} from "@mui/material";
-import { CheckCircle, HourglassBottom } from "@mui/icons-material";
-import {
-  CloudUpload,
-  Close,
-  Visibility,
-  DocumentScanner,
-} from "@mui/icons-material";
-import SearchIcon from "@mui/icons-material/Search";
-import RepeatIcon from "@mui/icons-material/Repeat";
-import apiClient from "network/apiClient";
-import Swal from "sweetalert2";
+  TablePagination
+} from '@mui/material';
+import { CheckCircle, HourglassBottom } from '@mui/icons-material';
+import { CloudUpload, Close, Visibility, DocumentScanner } from '@mui/icons-material';
+import SearchIcon from '@mui/icons-material/Search';
+import RepeatIcon from '@mui/icons-material/Repeat';
+import apiClient from 'network/apiClient';
+import Swal from 'sweetalert2';
 
-import axios from "axios";
-import PreviewIcon from "@mui/icons-material/Preview";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { styled } from "@mui/material/styles";
-import AddBoxIcon from "@mui/icons-material/AddBox";
+import axios from 'axios';
+import PreviewIcon from '@mui/icons-material/Preview';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { styled } from '@mui/material/styles';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 //import MoveToAuditRecord from "./MoveToAuditRecord/MoveToAuditRecord";
 //import MoveToAuditquery from "./MoveToAuditRecord/MoveToAuditRecord";
 
 const PostSanction = () => {
-  const [filterOption, setFilterOption] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  const [fiCode, setFiCode] = useState("");
-  const [creator, setCreator] = useState("");
+  const [filterOption, setFilterOption] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+  const [fiCode, setFiCode] = useState('');
+  const [creator, setCreator] = useState('');
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openModal, setOpenModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
-  const [newRemarks, setNewRemarks] = useState("");
+  const [newRemarks, setNewRemarks] = useState('');
   const [file, setFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [openImageModal, setOpenImageModal] = useState(false);
@@ -486,21 +481,21 @@ const PostSanction = () => {
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [pinfoData, setPinfoData] = useState([]);
   const [openmodelForAddDoc, setopenmodelForAddDoc] = useState(false);
-  const [remarks, setRemarks] = useState("");
+  const [remarks, setRemarks] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [pronoteuploaded, setPronoteuploaded] = useState(false);
   const [DocID, setDocID] = useState(null);
   const [docname, setdocname] = useState(null);
-  const [errorsearch, setErrorsearch] = useState({ fiCode: "", creator: "" });
+  const [errorsearch, setErrorsearch] = useState({ fiCode: '', creator: '' });
   const [selectedItemForDoc, setSelectedItemForDoc] = useState(null);
 
   // Handle filter change
   const handleFilterChange = (event) => {
     setFilterOption(event.target.value);
-    setFromDate("");
-    setToDate("");
-    setFiCode("");
-    setCreator("");
+    setFromDate('');
+    setToDate('');
+    setFiCode('');
+    setCreator('');
   };
 
   useEffect(() => {
@@ -509,9 +504,9 @@ const PostSanction = () => {
 
   const getCreatorDropdown = async () => {
     try {
-      const response = await apiClient.get("/Masters/GetCreator", {
+      const response = await apiClient.get('/Masters/GetCreator', {
         requireAuth: true,
-        checkTokenInResponse: false,
+        checkTokenInResponse: false
       });
       const fetchCreator = response.data.data;
       setCreatorlist(fetchCreator);
@@ -527,39 +522,37 @@ const PostSanction = () => {
 
   // Search button should be enabled based on filter option
   const isSearchEnabled = () => {
-    if (filterOption === "date") {
+    if (filterOption === 'date') {
       return fromDate && toDate; // Ensure both dates are set
-    } else if (filterOption === "ficode") {
+    } else if (filterOption === 'ficode') {
       return fiCode && creator; // Ensure FiCode and Creator are set
     }
     return false;
   };
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
     height: 1,
-    overflow: "hidden",
-    position: "absolute",
+    overflow: 'hidden',
+    position: 'absolute',
     bottom: 0,
     left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
+    whiteSpace: 'nowrap',
+    width: 1
   });
-  const handleViewDoc = (docName,FI_ID) => {
+  const handleViewDoc = (docName, FI_ID) => {
     debugger;
     const pdfFilePaths = `LOSDOC/FiDocs/${FI_ID}/FiDocuments/${docName}`;
-     //const pdfFilePath = docName;
-      //const fileName = pdfFilePath.split(':').pop();
-      //const pdfUrl = `https://predeptest.paisalo.in:8084/${fileName}`;
-      //window.open('https://predeptest.paisalo.in:8084//LOSDOC/FiDocs/10048/EsignDoc/SecondEsign_261824_BAREILLY.pdf', '_blank', 'noopener,noreferrer');
-      window.open(pdfFilePaths, '_blank', 'noopener,noreferrer');
-
-    
+    //const pdfFilePath = docName;
+    //const fileName = pdfFilePath.split(':').pop();
+    //const pdfUrl = `https://predeptest.paisalo.in:8084/${fileName}`;
+    //window.open('https://predeptest.paisalo.in:8084//LOSDOC/FiDocs/10048/EsignDoc/SecondEsign_261824_BAREILLY.pdf', '_blank', 'noopener,noreferrer');
+    window.open(pdfFilePaths, '_blank', 'noopener,noreferrer');
   };
   //Move to Audit handler (mock behavior) open a query page new tab
   const handleQueryForMoveToAudit = async () => {
     debugger;
-    const newPageUrl = "/MoveToAuditRecord"; 
+    const newPageUrl = '/MoveToAuditRecord';
     window.location.href = newPageUrl;
   };
 
@@ -572,15 +565,15 @@ const PostSanction = () => {
       Swal.fire({
         icon: 'warning',
         title: 'Warning!',
-        text: '2nd eSign is not done. Please complete the eSign process before moving to Audit.',
+        text: '2nd eSign is not done. Please complete the eSign process before moving to Audit.'
       });
       return;
     }
-     MoveToAudit(fiCode,creator);
+    MoveToAudit(fiCode, creator);
     Swal.fire({
       icon: 'success',
       title: 'Success',
-      text: 'Successfully moved to Audit.',
+      text: 'Successfully moved to Audit.'
     });
   };
 
@@ -589,9 +582,9 @@ const PostSanction = () => {
   const handleDownloadonePager = async (FiCode, Creator) => {
     debugger;
     if (!FiCode || !Creator) {
-      console.error("Invalid inputs for handlePersonalInfoClick:", {
+      console.error('Invalid inputs for handlePersonalInfoClick:', {
         FiCode,
-        Creator,
+        Creator
       });
       return;
     }
@@ -601,41 +594,37 @@ const PostSanction = () => {
     try {
       const response = await axios.get(url, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
           //Authorization: `Bearer ${token}`, // Ensure proper headers JSON.parse(response.data.data)
-        },
+        }
       });
       if (response.status === 200) {
-        const apipinfoData = JSON.parse(response.data.data || "[]");
-         // setSelectedItem(apipinfoData);
-        pinfoData.map((item,index)=>{
+        const apipinfoData = JSON.parse(response.data.data || '[]');
+        // setSelectedItem(apipinfoData);
+        pinfoData.map((item, index) => {
           debugger;
-           if(item.Document=="Pronote" && item.CheckListId !=null){
+          if (item.Document == 'Pronote' && item.CheckListId != null) {
             setPronoteuploaded(true);
-        }
+          }
         });
-      //     apipinfoData.forEach((item)=>{
-      //     if(item.Document=="Pronote" && item.CheckListId !=null){
-      //         setPronoteuploaded(true);
-      //     }
-      // });
-      
+        //     apipinfoData.forEach((item)=>{
+        //     if(item.Document=="Pronote" && item.CheckListId !=null){
+        //         setPronoteuploaded(true);
+        //     }
+        // });
+
         setPinfoData(apipinfoData);
         setSelectedRowData(apipinfoData[0] || null);
-       // setPronoteDocopen(true);
+        // setPronoteDocopen(true);
       } else {
-        console.error(
-          "Error in API response:",
-          response.data.message || "Unknown error"
-        );
+        console.error('Error in API response:', response.data.message || 'Unknown error');
       }
     } catch (error) {
-      console.error("Error in handlePersonalInfoClick:", error);
+      console.error('Error in handlePersonalInfoClick:', error);
     } finally {
       setLoading(false);
     }
   };
- 
 
   const MoveToAudit = async () => {
     debugger;
@@ -647,30 +636,30 @@ const PostSanction = () => {
         {
           params: {
             FiCode: fiCode,
-            Creator: creator,
+            Creator: creator
           },
           headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
             // Authorization: `Bearer ${token}`,
-          },
+          }
         }
       );
       debugger;
       if (response.status === 200) {
         setData(response.data.data || []);
       } else {
-        console.error("Unexpected response status:", response.status);
+        console.error('Unexpected response status:', response.status);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
       if (error.response) {
-        console.error("Server responded with:", error.response.status);
-        console.error("Response data:", error.response.data);
+        console.error('Server responded with:', error.response.status);
+        console.error('Response data:', error.response.data);
       } else if (error.request) {
-        console.error("No response received:", error.request);
+        console.error('No response received:', error.request);
       } else {
-        console.error("Error setting up the request:", error.message);
+        console.error('Error setting up the request:', error.message);
       }
     } finally {
       setLoading(false);
@@ -682,15 +671,7 @@ const PostSanction = () => {
     setFile(e.target.files[0]);
   };
 
-  const handleUploadDoc = async (
-    FICode,
-    Creator,
-    FI_ID,
-    CheckListId,
-    DocName,
-    Document,
-    DocID
-  ) => {
+  const handleUploadDoc = async (FICode, Creator, FI_ID, CheckListId, DocName, Document, DocID) => {
     setopenmodelForAddDoc(true);
     debugger;
     setDocID(CheckListId);
@@ -704,9 +685,8 @@ const PostSanction = () => {
       Document,
       DocID
     });
-    
   };
-  const handleDocClickModelopen=(FICode, Creator,FI_ID,CheckListId,DocName,Document,DocID)=>{
+  const handleDocClickModelopen = (FICode, Creator, FI_ID, CheckListId, DocName, Document, DocID) => {
     setPronoteDocopen(true);
     debugger;
     setSelectedItemForDoc({
@@ -718,43 +698,38 @@ const PostSanction = () => {
       Document,
       DocID
     });
-    
-  }
- 
+  };
+
   const SubmitAddDoc = async () => {
     debugger;
-   
+
     if (!file) {
       //setError("Please select a file.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("creator", selectedItemForDoc.Creator);
-    formData.append("DocName", docname);
-    formData.append("ficode", selectedItemForDoc.FICode);
-    formData.append("DocId", DocID);
-    formData.append("FI_ID", selectedItemForDoc.FI_ID);
+    formData.append('file', file);
+    formData.append('creator', selectedItemForDoc.Creator);
+    formData.append('DocName', docname);
+    formData.append('ficode', selectedItemForDoc.FICode);
+    formData.append('DocId', DocID);
+    formData.append('FI_ID', selectedItemForDoc.FI_ID);
 
     try {
-      const response = await axios.post(
-        `https://localhost:7030/api/FiPostSanction/FilePostUpload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", 
-            "Access-Control-Allow-Origin": "*", // CORS header
-            // Authorization: `Bearer ${token}`, // Add token if needed
-          },
+      const response = await axios.post(`https://localhost:7030/api/FiPostSanction/FilePostUpload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*' // CORS header
+          // Authorization: `Bearer ${token}`, // Add token if needed
         }
-      );
+      });
       if (response.data.statuscode === 200) {
         debugger;
         alert(response.data.message);
         setOpenModal(false);
         setFile(null);
-        setRemarks("");
+        setRemarks('');
       } else {
         //setError('Error uploading file.'); // Show error message
       }
@@ -765,14 +740,13 @@ const PostSanction = () => {
       //setIsLoading(false); // Hide loading indicator
     }
   };
-  
 
   const handleDocClick = async (FiCode, Creator) => {
     debugger;
     if (!FiCode || !Creator) {
-      console.error("Invalid inputs for handlePersonalInfoClick:", {
+      console.error('Invalid inputs for handlePersonalInfoClick:', {
         FiCode,
-        Creator,
+        Creator
       });
       return;
     }
@@ -782,60 +756,57 @@ const PostSanction = () => {
     try {
       const response = await axios.get(url, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
           //Authorization: `Bearer ${token}`, // Ensure proper headers JSON.parse(response.data.data)
-        },
+        }
       });
       if (response.status === 200) {
-        const apipinfoData = JSON.parse(response.data.data || "[]");
-         // setSelectedItem(apipinfoData);
-        pinfoData.map((item,index)=>{
+        const apipinfoData = JSON.parse(response.data.data || '[]');
+        // setSelectedItem(apipinfoData);
+        pinfoData.map((item, index) => {
           debugger;
-           if(item.Document=="Pronote" && item.CheckListId !=null){
+          if (item.Document == 'Pronote' && item.CheckListId != null) {
             setPronoteuploaded(true);
-        }
+          }
         });
-      //     apipinfoData.forEach((item)=>{
-      //     if(item.Document=="Pronote" && item.CheckListId !=null){
-      //         setPronoteuploaded(true);
-      //     }
-      // });
-      
+        //     apipinfoData.forEach((item)=>{
+        //     if(item.Document=="Pronote" && item.CheckListId !=null){
+        //         setPronoteuploaded(true);
+        //     }
+        // });
+
         setPinfoData(apipinfoData);
         setSelectedRowData(apipinfoData[0] || null);
-       // setPronoteDocopen(true);
+        // setPronoteDocopen(true);
       } else {
-        console.error(
-          "Error in API response:",
-          response.data.message || "Unknown error"
-        );
+        console.error('Error in API response:', response.data.message || 'Unknown error');
       }
     } catch (error) {
-      console.error("Error in handlePersonalInfoClick:", error);
+      console.error('Error in handlePersonalInfoClick:', error);
     } finally {
       setLoading(false);
     }
   };
   const fetchData = async () => {
     debugger;
-    setErrorsearch({ fiCode: '', creator: '',fromDate:'',toDate:'' });
-  
-  if (!fiCode && !creator) {
-    setErrorsearch({
-        fiCode: fiCode ? '' : 'FiCode is required.',
-        creator: creator ? '' : 'Creator is required.',
-    });
-    return;
-}
+    setErrorsearch({ fiCode: '', creator: '', fromDate: '', toDate: '' });
 
-//  if (!fromDate && !toDate) { 
-//     setErrorsearch({
-//         fromDate: fromDate ? '' : 'fromDate is required.',
-//         toDate: toDate ? '' : 'toDate is required.',
-//     });
-//     return;
-// }
-    
+    if (!fiCode && !creator) {
+      setErrorsearch({
+        fiCode: fiCode ? '' : 'FiCode is required.',
+        creator: creator ? '' : 'Creator is required.'
+      });
+      return;
+    }
+
+    //  if (!fromDate && !toDate) {
+    //     setErrorsearch({
+    //         fromDate: fromDate ? '' : 'fromDate is required.',
+    //         toDate: toDate ? '' : 'toDate is required.',
+    //     });
+    //     return;
+    // }
+
     setLoading(true);
     try {
       const response = await axios.get(
@@ -848,31 +819,30 @@ const PostSanction = () => {
             pageSize: 5,
             pageNumber: 1,
             fromdate: fromDate,
-            todate: toDate,
+            todate: toDate
           },
           headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
             // Authorization: `Bearer ${token}`,
-          },
+          }
         }
       );
       if (response.status === 200) {
-
         setData(response.data.data || []);
-        handleDocClick(fiCode,creator);
+        handleDocClick(fiCode, creator);
       } else {
-        console.error("Unexpected response status:", response.status);
+        console.error('Unexpected response status:', response.status);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
       if (error.response) {
-        console.error("Server responded with:", error.response.status);
-        console.error("Response data:", error.response.data);
+        console.error('Server responded with:', error.response.status);
+        console.error('Response data:', error.response.data);
       } else if (error.request) {
-        console.error("No response received:", error.request);
+        console.error('No response received:', error.request);
       } else {
-        console.error("Error setting up the request:", error.message);
+        console.error('Error setting up the request:', error.message);
       }
     } finally {
       setLoading(false);
@@ -880,43 +850,27 @@ const PostSanction = () => {
   };
   const handleSearch = () => {
     fetchData();
-   
   };
 
   return (
     <div>
-      <Card sx={{ boxShadow: "none", borderRadius: "7px", mb: 3, p: 2 }}>
-        <Grid
-          container
-          justifyContent="space-between"
-          alignItems="center"
-          marginBottom={2}
-        >
+      <Card sx={{ boxShadow: 'none', borderRadius: '7px', mb: 3, p: 2 }}>
+        <Grid container justifyContent="space-between" alignItems="center" marginBottom={2}>
           <Grid item></Grid>
         </Grid>
 
-        <Grid
-          container
-          spacing={2}
-          alignItems="center"
-          justifyContent="flex-start"
-        >
+        <Grid container spacing={2} alignItems="center" justifyContent="flex-start">
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="medium">
               <InputLabel>Search By</InputLabel>
-              <Select
-                value={filterOption}
-                onChange={handleFilterChange}
-                label="Search By"
-                size="medium"
-              >
+              <Select value={filterOption} onChange={handleFilterChange} label="Search By" size="medium">
                 <MenuItem value="date">Date</MenuItem>
                 <MenuItem value="ficode">FiCode & Creator</MenuItem>
               </Select>
             </FormControl>
           </Grid>
 
-          {filterOption === "date" && (
+          {filterOption === 'date' && (
             <>
               <Grid item xs={12} sm={6} md={3}>
                 <TextField
@@ -929,7 +883,7 @@ const PostSanction = () => {
                   variant="outlined"
                   size="medium"
                 />
-                  {errorsearch.fromDate && <div className="error-message">{errorsearch.fromDate}</div>}
+                {errorsearch.fromDate && <div className="error-message">{errorsearch.fromDate}</div>}
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <TextField
@@ -942,12 +896,12 @@ const PostSanction = () => {
                   variant="outlined"
                   size="medium"
                 />
-                 {errorsearch.toDate && <div className="error-message">{errorsearch.toDate}</div>}
+                {errorsearch.toDate && <div className="error-message">{errorsearch.toDate}</div>}
               </Grid>
             </>
           )}
 
-          {filterOption === "ficode" && (
+          {filterOption === 'ficode' && (
             <>
               <Grid item xs={12} sm={6} md={3}>
                 <TextField
@@ -958,18 +912,13 @@ const PostSanction = () => {
                   variant="outlined"
                   size="medium"
                 />
-                 {errorsearch.fiCode && <div className="error-message">{errorsearch.fiCode}</div>}
+                {errorsearch.fiCode && <div className="error-message">{errorsearch.fiCode}</div>}
               </Grid>
-             
+
               <Grid item xs={12} sm={6} md={2}>
                 <FormControl fullWidth size="medium">
                   <InputLabel>Creator</InputLabel>
-                  <Select
-                    label="Creator"
-                    size="medium"
-                    value={creator}
-                    onChange={handleCreatorChange}
-                  >
+                  <Select label="Creator" size="medium" value={creator} onChange={handleCreatorChange}>
                     {Creatorlist.map((index) => (
                       <MenuItem key={index.creatorid} value={index.creator}>
                         {index.creator}
@@ -979,75 +928,59 @@ const PostSanction = () => {
                 </FormControl>
                 {errorsearch.creator && <div className="error-message">{errorsearch.creator}</div>}
               </Grid>
-             
             </>
           )}
 
           <Grid item xs={12} sm={6} md={1}>
-              <Button
-                type="submit"
-                variant="contained"
-                size="large"
-                sx={{
-                  fontWeight: "bold",
-                  bgcolor: "primary",
-                  "&:hover": { bgcolor: "primary" }, // Ensuring it stays green on hover
-                }}
-                fullWidth
-                startIcon={<SearchIcon />}
-                onClick={handleSearch}
-              >
-                SERACH
-              </Button>
-              
-            </Grid>
-            <Grid item xs={12} sm={6} md={1}>
             <Button
-                type="submit"
-                variant="contained"
-                size="large"
-                sx={{
-                  fontWeight: "bold",
-                  bgcolor: "primary",
-                  marginLeft:"20px",
-                  "&:hover": { bgcolor: "primary" }, // Ensuring it stays green on hover
-                }}
-                fullWidth
-                startIcon={<SearchIcon />}
-                onClick={handleQueryForMoveToAudit}
-              >
-                query
-              </Button>
-            </Grid>
+              type="submit"
+              variant="contained"
+              size="large"
+              sx={{
+                fontWeight: 'bold',
+                bgcolor: 'primary',
+                '&:hover': { bgcolor: 'primary' } // Ensuring it stays green on hover
+              }}
+              fullWidth
+              startIcon={<SearchIcon />}
+              onClick={handleSearch}
+            >
+              SERACH
+            </Button>
           </Grid>
-       
+          <Grid item xs={12} sm={6} md={1}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              sx={{
+                fontWeight: 'bold',
+                bgcolor: 'primary',
+                marginLeft: '20px',
+                '&:hover': { bgcolor: 'primary' } // Ensuring it stays green on hover
+              }}
+              fullWidth
+              startIcon={<SearchIcon />}
+              onClick={handleQueryForMoveToAudit}
+            >
+              query
+            </Button>
+          </Grid>
+        </Grid>
 
-        <TableContainer
-          component={Paper}
-          sx={{ borderRadius: "4px", marginTop: "1rem" }}
-        >
+        <TableContainer component={Paper} sx={{ borderRadius: '4px', marginTop: '1rem' }}>
           <Table>
             <TableHead>
               <TableRow>
-                {[
-                  "SmCode",
-                  "FiCode",
-                  "Creator",
-                  "Branch_Code",
-                  "Group_code",
-                  "2nd Esign",
-                  "Doc",
-                  "Comments",
-                  "Action",
-                ].map((header) => (
+                {['SmCode', 'FiCode', 'Creator', 'Branch_Code', 'Group_code', '2nd Esign', 'Doc', 'Comments', 'Action'].map((header) => (
                   <TableCell
                     key={header}
                     sx={{
-                      fontWeight: "bold",
-                      textTransform: "uppercase",
-                      background: "#ff4c4c",
-                      color: "white",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase',
+                      background: '#ff4c4c',
+                      color: 'white',
+                      textAlign: 'center'
                     }}
                   >
                     {header}
@@ -1056,83 +989,60 @@ const PostSanction = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? data.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : data
-              ).map((item, index) => (
+              {(rowsPerPage > 0 ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data).map((item, index) => (
                 <TableRow key={index} hover>
-                             <TableCell
-                  sx={{ padding: "12px 16px", textAlign: "center" }}
-                  onClick={!item.smCode ?()=> handleDownloadonePager(item.fiCode,item.creator) : undefined}
-                >
-                  <span style={{ color: !item.smCode ? "red" : "inherit" }}>
-                    {item.smCode || "download one pager"}
-                  </span>
-                </TableCell>
-                   
-                  <TableCell sx={{ padding: "12px 16px", textAlign: "center" }}>
-                    {item.fiCode}
+                  <TableCell
+                    sx={{ padding: '12px 16px', textAlign: 'center' }}
+                    onClick={!item.smCode ? () => handleDownloadonePager(item.fiCode, item.creator) : undefined}
+                  >
+                    <span style={{ color: !item.smCode ? 'red' : 'inherit' }}>{item.smCode || 'download one pager'}</span>
                   </TableCell>
-                  <TableCell sx={{ padding: "12px 16px", textAlign: "center" }}>
-                    {item.creator}
-                  </TableCell>
-                  <TableCell sx={{ padding: "12px 16px", textAlign: "center" }}>
-                    {item.branch_Code}
-                  </TableCell>
-                  <TableCell sx={{ padding: "12px 16px", textAlign: "center" }}>
-                    {item.group_Code}
-                  </TableCell>
+
+                  <TableCell sx={{ padding: '12px 16px', textAlign: 'center' }}>{item.fiCode}</TableCell>
+                  <TableCell sx={{ padding: '12px 16px', textAlign: 'center' }}>{item.creator}</TableCell>
+                  <TableCell sx={{ padding: '12px 16px', textAlign: 'center' }}>{item.branch_Code}</TableCell>
+                  <TableCell sx={{ padding: '12px 16px', textAlign: 'center' }}>{item.group_Code}</TableCell>
                   <TableCell
                     sx={{
-                      padding: "12px 16px",
-                      textAlign: "center",
-                      fontWeight: "bold",
-                      color: item.borrSignStatus === "Y" ? "green" : "red",
+                      padding: '12px 16px',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      color: item.borrSignStatus === 'Y' ? 'green' : 'red'
                     }}
                   >
-                    {item.borrSignStatus === "Y" ? (
-                      <CheckCircle sx={{ color: "green", fontSize: "20px" }} />
+                    {item.borrSignStatus === 'Y' ? (
+                      <CheckCircle sx={{ color: 'green', fontSize: '20px' }} />
                     ) : (
-                      <HourglassBottom
-                        sx={{ color: "red", fontSize: "20px" }}
-                      />
+                      <HourglassBottom sx={{ color: 'red', fontSize: '20px' }} />
                     )}
                   </TableCell>
-                  <TableCell sx={{ padding: "12px 16px", textAlign: "center" }}>
+                  <TableCell sx={{ padding: '12px 16px', textAlign: 'center' }}>
                     <IconButton
                       onClick={() => {
                         if (item?.fiCode && item?.creator) {
                           setPronoteDocopen(true);
-                          handleDocClickModelopen(item.fiCode.toString(), item.creator,item.fi_Id,item.CheckListId,item.DocName,item.Document);
-                        } else {
-                          console.error(
-                            "Missing FiCode or Creator in row:",
-                            row
+                          handleDocClickModelopen(
+                            item.fiCode.toString(),
+                            item.creator,
+                            item.fi_Id,
+                            item.CheckListId,
+                            item.DocName,
+                            item.Document
                           );
+                        } else {
+                          console.error('Missing FiCode or Creator in row:', row);
                         }
                       }}
                     >
                       <DocumentScanner />
                     </IconButton>
                   </TableCell>
-                  <TableCell sx={{ padding: "12px 16px", textAlign: "center" }}>
-                    {item.comments}
-                  </TableCell>
-                  <TableCell sx={{ padding: "12px 16px", textAlign: "center" }}>
-                    {item.borrSignStatus === "Y" && pronoteuploaded? (
+                  <TableCell sx={{ padding: '12px 16px', textAlign: 'center' }}>{item.comments}</TableCell>
+                  <TableCell sx={{ padding: '12px 16px', textAlign: 'center' }}>
+                    {item.borrSignStatus === 'Y' && pronoteuploaded ? (
                       <Button
                         variant="contained"
-                        onClick={() =>
-                          handleMoveToAudit(
-                            String(item.fiCode),
-                            item.creator,
-                            item.borrSignStatus,
-                            item.smCode
-                          )
-                        }
+                        onClick={() => handleMoveToAudit(String(item.fiCode), item.creator, item.borrSignStatus, item.smCode)}
                       >
                         <Tooltip title="Move To Audit" arrow>
                           <span>
@@ -1144,14 +1054,7 @@ const PostSanction = () => {
                       <Button
                         variant="contained"
                         disabled
-                        onClick={() =>
-                          handleMoveToAudit(
-                            String(item.fiCode),
-                            item.creator,
-                            item.borrSignStatus,
-                            item.smCode
-                          )
-                        }
+                        onClick={() => handleMoveToAudit(String(item.fiCode), item.creator, item.borrSignStatus, item.smCode)}
                       >
                         <Tooltip title="Move To Audit" arrow>
                           <span>
@@ -1174,7 +1077,7 @@ const PostSanction = () => {
                   onPageChange={(event, newPage) => setPage(newPage)}
                   onRowsPerPageChange={(event) => {
                     setRowsPerPage(parseInt(event.target.value, 10));
-                    setPage(0); 
+                    setPage(0);
                   }}
                 />
               </TableRow>
@@ -1184,39 +1087,32 @@ const PostSanction = () => {
       </Card>
 
       {/* Modal for Document Info */}
-      <Modal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
+      <Modal open={openModal} onClose={() => setOpenModal(false)} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Box
           sx={{
-            padding: "20px",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            maxWidth: "600px",
-            margin: "auto",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-            outline: "none",
+            padding: '20px',
+            backgroundColor: 'white',
+            borderRadius: '10px',
+            maxWidth: '600px',
+            margin: 'auto',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+            outline: 'none'
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: "bold", textAlign: "center" }}
-          >
+          <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
             Document Information
           </Typography>
           <Button
             onClick={() => setOpenModal(false)}
             sx={{
-              position: "absolute",
+              position: 'absolute',
               right: 0,
               top: 0,
               minWidth: 0,
-              padding: 0,
+              padding: 0
             }}
           >
-            <Close sx={{ color: "red", fontSize: "1.5rem" }} />
+            <Close sx={{ color: 'red', fontSize: '1.5rem' }} />
           </Button>
           {/* Add Document info here */}
         </Box>
@@ -1226,29 +1122,29 @@ const PostSanction = () => {
       <Modal
         open={openAddModal}
         onClose={() => setOpenAddModal(false)}
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
         <Box
           sx={{
-            padding: "24px",
-            backgroundColor: "white",
-            borderRadius: "8px",
-            maxWidth: "400px",
-            margin: "auto",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
-            outline: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            padding: '24px',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            maxWidth: '400px',
+            margin: 'auto',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+            outline: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
           }}
         >
           <Typography
             variant="h6"
             sx={{
-              fontWeight: "bold",
-              marginBottom: "16px",
-              color: "#1976d2",
-              textAlign: "center",
+              fontWeight: 'bold',
+              marginBottom: '16px',
+              color: '#1976d2',
+              textAlign: 'center'
             }}
           >
             Add New Document
@@ -1260,10 +1156,10 @@ const PostSanction = () => {
             className="form-control form-control-sm"
             onChange={(event) => setFile(event.target.files?.[0] || null)} // Attach the fixed handler
             style={{
-              width: "100%",
-              marginBottom: "16px",
-              padding: "8px",
-              borderRadius: "4px",
+              width: '100%',
+              marginBottom: '16px',
+              padding: '8px',
+              borderRadius: '4px'
             }}
           />
           <TextField
@@ -1278,10 +1174,10 @@ const PostSanction = () => {
           {/* Action Buttons */}
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              marginTop: "20px",
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+              marginTop: '20px'
             }}
           >
             <Button
@@ -1290,24 +1186,20 @@ const PostSanction = () => {
               onClick={() => {
                 if (file) {
                   setUploadedFile(URL.createObjectURL(file)); // Directly set the uploaded file for preview
-                  Swal.fire(
-                    "Success",
-                    "File uploaded successfully!",
-                    "success"
-                  );
+                  Swal.fire('Success', 'File uploaded successfully!', 'success');
                   setOpenAddModal(false);
                 }
               }}
               disabled={!file}
               sx={{
                 flex: 1,
-                padding: "10px 16px",
-                fontSize: "16px",
-                fontWeight: "bold",
-                marginRight: "8px",
+                padding: '10px 16px',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                marginRight: '8px'
               }}
             >
-              <CloudUpload sx={{ marginRight: "8px" }} /> Save
+              <CloudUpload sx={{ marginRight: '8px' }} /> Save
             </Button>
 
             <Button
@@ -1316,46 +1208,38 @@ const PostSanction = () => {
               onClick={() => setOpenAddModal(false)}
               sx={{
                 flex: 1,
-                padding: "10px 16px",
-                fontSize: "16px",
-                fontWeight: "bold",
-                marginLeft: "8px",
-                borderColor: "#d32f2f",
-                color: "#d32f2f",
+                padding: '10px 16px',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                marginLeft: '8px',
+                borderColor: '#d32f2f',
+                color: '#d32f2f'
               }}
             >
-              <Close sx={{ marginRight: "8px" }} /> Close
+              <Close sx={{ marginRight: '8px' }} /> Close
             </Button>
           </Box>
         </Box>
       </Modal>
 
       {/* Dialog for Image Preview */}
-      <Dialog
-        open={openImageModal}
-        onClose={() => setOpenImageModal(false)}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog open={openImageModal} onClose={() => setOpenImageModal(false)} maxWidth="md" fullWidth>
         <Box sx={{ padding: 3 }}>
           <Grid container spacing={3}>
             {uploadedFile && (
               <Grid item xs={12} sm={6}>
-                <Paper sx={{ padding: 2, textAlign: "center", boxShadow: 3 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{ marginBottom: 2, fontWeight: "bold" }}
-                  >
+                <Paper sx={{ padding: 2, textAlign: 'center', boxShadow: 3 }}>
+                  <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
                     Uploaded File:
                   </Typography>
                   <img
                     src={uploadedFile}
                     alt="Uploaded File"
                     style={{
-                      height: "150px",
-                      borderRadius: "8px",
-                      objectFit: "cover",
-                      width: "100%",
+                      height: '150px',
+                      borderRadius: '8px',
+                      objectFit: 'cover',
+                      width: '100%'
                     }}
                   />
                 </Paper>
@@ -1368,26 +1252,26 @@ const PostSanction = () => {
       <Modal open={PronoteDocopen} onClose={() => setPronoteDocopen(false)}>
         <Box
           sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            borderRadius: "8px",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
-            width: "80%",
-            maxHeight: "80%",
-            overflowY: "auto",
-            padding: "16px",
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+            width: '80%',
+            maxHeight: '80%',
+            overflowY: 'auto',
+            padding: '16px'
           }}
         >
           <Typography
             variant="h6"
             sx={{
-              fontWeight: "bold",
-              marginBottom: "16px",
-              textAlign: "center",
-              color: "#D32F2F",
+              fontWeight: 'bold',
+              marginBottom: '16px',
+              textAlign: 'center',
+              color: '#D32F2F'
             }}
           >
             Document Information
@@ -1397,15 +1281,15 @@ const PostSanction = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {["S.NO", "DocName", "Action"].map((header, index) => (
+                  {['S.NO', 'DocName', 'Action'].map((header, index) => (
                     <TableCell
-                      key={header.replace(/\s/g, "_")}
+                      key={header.replace(/\s/g, '_')}
                       sx={{
-                        fontWeight: "bold",
-                        textTransform: "uppercase",
-                        background: "linear-gradient(90deg, #FF4C4C, #FF7F7F)",
-                        color: "white",
-                        textAlign: "center",
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        background: 'linear-gradient(90deg, #FF4C4C, #FF7F7F)',
+                        color: 'white',
+                        textAlign: 'center'
                       }}
                     >
                       {header}
@@ -1418,15 +1302,10 @@ const PostSanction = () => {
                 {Array.isArray(pinfoData) && pinfoData.length > 0 ? (
                   pinfoData.map((mainItem, index) => (
                     <TableRow key={index}>
-                      <TableCell sx={{ textAlign: "center" }}>
-                        {index + 1}
-                      </TableCell>
-                      <TableCell sx={{ textAlign: "center" }}>
-                        {mainItem.Document || mainItem.DocName}
-                      </TableCell>
-                      <TableCell sx={{ textAlign: "center" }}>
-                        {mainItem.DocName !== null &&
-                        mainItem.Document !== null ? (
+                      <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
+                      <TableCell sx={{ textAlign: 'center' }}>{mainItem.Document || mainItem.DocName}</TableCell>
+                      <TableCell sx={{ textAlign: 'center' }}>
+                        {mainItem.DocName !== null && mainItem.Document !== null ? (
                           <IconButton
                             disabled
                             onClick={() =>
@@ -1441,9 +1320,7 @@ const PostSanction = () => {
                               )
                             }
                           >
-                            <AddBoxIcon
-                              sx={{ color: "red", fontSize: "20px" }}
-                            />
+                            <AddBoxIcon sx={{ color: 'red', fontSize: '20px' }} />
                           </IconButton>
                         ) : (
                           <IconButton
@@ -1459,25 +1336,16 @@ const PostSanction = () => {
                               )
                             }
                           >
-                            <AddBoxIcon
-                              sx={{ color: "green", fontSize: "20px" }}
-                            />
+                            <AddBoxIcon sx={{ color: 'green', fontSize: '20px' }} />
                           </IconButton>
                         )}
-                        {mainItem.DocName !== null &&
-                        mainItem.Document !== null ? (
-                          <IconButton
-                            onClick={() => handleViewDoc(mainItem.DocName,mainItem.FI_ID)}
-                          >
-                            <PreviewIcon
-                              sx={{ color: "green", fontSize: "20px" }}
-                            />
+                        {mainItem.DocName !== null && mainItem.Document !== null ? (
+                          <IconButton onClick={() => handleViewDoc(mainItem.DocName, mainItem.FI_ID)}>
+                            <PreviewIcon sx={{ color: 'green', fontSize: '20px' }} />
                           </IconButton>
                         ) : (
                           <IconButton disabled>
-                            <PreviewIcon
-                              sx={{ color: "red", fontSize: "20px" }}
-                            />
+                            <PreviewIcon sx={{ color: 'red', fontSize: '20px' }} />
                           </IconButton>
                         )}
                       </TableCell>
@@ -1494,13 +1362,9 @@ const PostSanction = () => {
             </Table>
           </TableContainer>
 
-          <Box sx={{ textAlign: "center", marginTop: "16px" }}>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => setPronoteDocopen(false)}
-            >
-              {" "}
+          <Box sx={{ textAlign: 'center', marginTop: '16px' }}>
+            <Button variant="contained" color="error" onClick={() => setPronoteDocopen(false)}>
+              {' '}
               {/* Close modal button */}
               Close
             </Button>
@@ -1508,49 +1372,46 @@ const PostSanction = () => {
         </Box>
       </Modal>
 
-      <Modal
-        open={openmodelForAddDoc}
-        onClose={() => setopenmodelForAddDoc(false)}
-      >
+      <Modal open={openmodelForAddDoc} onClose={() => setopenmodelForAddDoc(false)}>
         <Box
           sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            borderRadius: "8px",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
-            width: "40%",
-            height: "20%",
-            overflowY: "auto",
-            padding: "16px",
-            justifyContent: "center",
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+            width: '40%',
+            height: '20%',
+            overflowY: 'auto',
+            padding: '16px',
+            justifyContent: 'center'
           }}
         >
-          <Grid sx={{ marginTop: "25px", marginLeft: "20px" }}>
+          <Grid sx={{ marginTop: '25px', marginLeft: '20px' }}>
             <Typography
               variant="h6"
               sx={{
-                fontWeight: "bold",
-                marginBottom: "16px",
-                textAlign: "center",
-                color: "#D32F2F",
+                fontWeight: 'bold',
+                marginBottom: '16px',
+                textAlign: 'center',
+                color: '#D32F2F'
               }}
             >
               Upload Document Information
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={6} sx={{ marginLeft: "10px" }}>
+              <Grid item xs={6} sx={{ marginLeft: '10px' }}>
                 <Button
                   component="label"
                   variant="outlined"
                   tabIndex={-1}
-                  startIcon={<CloudUploadIcon sx={{ color: "red" }} />}
+                  startIcon={<CloudUploadIcon sx={{ color: 'red' }} />}
                   sx={{
-                    border: "1px solid grey",
-                    color: "gray",
-                    fontSize: "16px",
+                    border: '1px solid grey',
+                    color: 'gray',
+                    fontSize: '16px'
                   }}
                 >
                   Chouse File
@@ -1571,23 +1432,14 @@ const PostSanction = () => {
           />
          
           </Grid> */}
-              <Grid item xs={3} sx={{ marginTop: "5px" }} spacing={2}>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => SubmitAddDoc()}
-                >
-                  {" "}
+              <Grid item xs={3} sx={{ marginTop: '5px' }} spacing={2}>
+                <Button variant="contained" color="error" onClick={() => SubmitAddDoc()}>
+                  {' '}
                   {/* Close modal button */}
                   Submit
                 </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => setopenmodelForAddDoc(false)}
-                  sx={{ marginLeft: "10px" }}
-                >
-                  {" "}
+                <Button variant="contained" color="error" onClick={() => setopenmodelForAddDoc(false)} sx={{ marginLeft: '10px' }}>
+                  {' '}
                   {/* Close modal button */}
                   Close
                 </Button>
@@ -1601,5 +1453,3 @@ const PostSanction = () => {
 };
 
 export default PostSanction;
-
-

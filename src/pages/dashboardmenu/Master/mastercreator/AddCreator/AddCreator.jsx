@@ -10,8 +10,8 @@ import {
   fetchCreators,
   fetchCreatorDetails,
   updateCreator
-  // from "../../../api/apiCreatorMaster";
-} from '../../../api/apiCreatorMaster';
+
+} from 'api/apiCreatorMaster';
 import Swal from 'sweetalert2';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';

@@ -46,24 +46,24 @@ const AddMenuMaster = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [menuListData, setMenuListData] = useState([]);
   const [subparentId, setSubparentId] = useState('');
-  const [pageName, setPageName] = useState("");
-  const [pageUrl, setPageUrl] = useState("");
+  const [pageName, setPageName] = useState('');
+  const [pageUrl, setPageUrl] = useState('');
   const [subMenuData, setSubMenuData] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedRow, setSelectedRow] = useState(null);
   const [editedmaiid, setmaiid] = useState('');
   const [edittitleName, setedittitleName] = useState('');
-  const [editedIcon, setEditedIcon] = useState("");
-  const [editeParentId, seteditParentId] = useState("");
+  const [editedIcon, setEditedIcon] = useState('');
+  const [editeParentId, seteditParentId] = useState('');
   const [MainMenuModalopen, setMainMenuModalopen] = useState(false);
-  const [editedpageurl, setEditedpageurl] = useState("");
+  const [editedpageurl, setEditedpageurl] = useState('');
 
   const [errors, setErrors] = useState({
-    menu: "",
-    subMenu: "",
-    pageName: "",
-    pageUrl: "",
+    menu: '',
+    subMenu: '',
+    pageName: '',
+    pageUrl: ''
   });
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const AddMenuMaster = () => {
 
   const fetchMenuData = async () => {
     try {
-      const response = await apiClient.get("/Menu/GetMainMenu");
+      const response = await apiClient.get('/Menu/GetMainMenu');
       if (response.status === 200) {
         setMenuData(response.data.data);
       }
@@ -81,58 +81,58 @@ const AddMenuMaster = () => {
       console.error('Error fetching menu data:', error);
     }
   };
-  
+
   const fetchMenuDataForList = async () => {
     try {
-        const params = {
-            pageSize: rowsPerPage,
-            pageNumber: pageNo,
-        };
-        debugger;
-        const response = await apiClient.get("/Menu/GetMainMenuDetails");
-        if (response.data && response.data.statuscode === 200) {
-                // Make sure to handle totalCount logic correctly
-           setMenuListData(response.data.data); 
-                //setTotalCount(response.data[0].totalCount); 
-                setTotalPages(Math.ceil(response.totalCount / rowsPerPage));
-        } else {
-          console.error("Failed to fetch menu data:", response.data.message || "Unknown error");
-        }
+      const params = {
+        pageSize: rowsPerPage,
+        pageNumber: pageNo
+      };
+      debugger;
+      const response = await apiClient.get('/Menu/GetMainMenuDetails');
+      if (response.data && response.data.statuscode === 200) {
+        // Make sure to handle totalCount logic correctly
+        setMenuListData(response.data.data);
+        //setTotalCount(response.data[0].totalCount);
+        setTotalPages(Math.ceil(response.totalCount / rowsPerPage));
+      } else {
+        console.error('Failed to fetch menu data:', response.data.message || 'Unknown error');
+      }
     } catch (error) {
-          Swal.fire({
-            title: 'Error',
-            text: "Could not fetch menu data. Please try again.",
-            icon: 'error',
-            confirmButtonColor: 'red',
-          });
-        }
-};
+      Swal.fire({
+        title: 'Error',
+        text: 'Could not fetch menu data. Please try again.',
+        icon: 'error',
+        confirmButtonColor: 'red'
+      });
+    }
+  };
 
   const handleMenuChange = (event) => {
     const selectedTitle = event.target.value;
     setMenu(selectedTitle);
     const selectedMenuItem = menuData.find((item) => item.title === selectedTitle);
-    
+
     if (selectedMenuItem) {
       setParentId(selectedMenuItem.id);
-      // Set subparentId only if it matches parentId, 
+      // Set subparentId only if it matches parentId,
       // else keep the last selected subparentId to retain its value.
-      if (menuListData.find(submenuItem => submenuItem.id === subparentId && submenuItem.parentId === selectedMenuItem.id)) {
+      if (menuListData.find((submenuItem) => submenuItem.id === subparentId && submenuItem.parentId === selectedMenuItem.id)) {
         // The selected submenu is still valid
         return;
       } else {
         // Reset subparentId if the selected menu doesn't contain the current submenu
-        setSubparentId(''); 
+        setSubparentId('');
       }
     }
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     let validationErrors = {
-      menu: menu ? "" : "Menu is required",
-      subMenu: subparentId ? "" : "Sub Menu is required",
-      pageName: pageName ? "" : "Page Name is required",
-      pageUrl: pageUrl ? "" : "Page URL is required",
+      menu: menu ? '' : 'Menu is required',
+      subMenu: subparentId ? '' : 'Sub Menu is required',
+      pageName: pageName ? '' : 'Page Name is required',
+      pageUrl: pageUrl ? '' : 'Page URL is required'
     };
     setErrors(validationErrors);
     if (validationErrors.menu || validationErrors.pageName || validationErrors.pageUrl) {
@@ -147,26 +147,26 @@ const AddMenuMaster = () => {
       PageUrl: pageUrl,
       Icon: null,
       IsActive: true,
-      IsDeleted: false,
+      IsDeleted: false
     };
 
     try {
       const response = await apiClient.post('/Menu/InsertMenuData', menuVM, {
-        headers: { 'Content-Type': 'application/json', }
-      });   
+        headers: { 'Content-Type': 'application/json' }
+      });
       if (response.data.statuscode === 200) {
         const newRow = response.data.data;
         Swal.fire({ title: 'Success', text: 'Added Successfully', icon: 'success' });
         setRows((prevRows) => [...prevRows, newRow]);
         resetForm();
       } else {
-        Swal.fire({ title: 'Error', text: response.data.message || "Failed to add item.", icon: 'error' });
+        Swal.fire({ title: 'Error', text: response.data.message || 'Failed to add item.', icon: 'error' });
       }
     } catch (error) {
       Swal.fire({ icon: 'error', title: 'Error!', text: 'An error occurred while inserting menu data.' });
     }
   };
-  
+
   const resetForm = () => {
     setMenu('');
     setSubparentId('');
@@ -186,137 +186,134 @@ const AddMenuMaster = () => {
     debugger;
     const selectedMenu = event.target.value;
     setMenu(selectedMenu);
-    const selectedItem = menuData.find(item => item.title === selectedMenu);
+    const selectedItem = menuData.find((item) => item.title === selectedMenu);
     if (selectedItem) {
-        EditSubMenu(selectedItem);
+      EditSubMenu(selectedItem);
     }
-};
+  };
   const EditSubMenu = (item) => {
     if (item) {
-        setSelectedRow(item);
-        setmaiid(item.mainid);
-        setedittitleName(item.title);
-        setEditedIcon(item.icon);
-        seteditParentId(item.parentId);
-        setMenu(item.menu);
-        setMainMenuModalopen(true);
+      setSelectedRow(item);
+      setmaiid(item.mainid);
+      setedittitleName(item.title);
+      setEditedIcon(item.icon);
+      seteditParentId(item.parentId);
+      setMenu(item.menu);
+      setMainMenuModalopen(true);
     } else {
-        console.warn("No item selected");
+      console.warn('No item selected');
     }
-};
-const UpdateSubMenu = async () => {
-  const menuVM = {
+  };
+  const UpdateSubMenu = async () => {
+    const menuVM = {
       Title: edittitleName,
       PageUrl: editedpageurl,
       mainid: editedmaiid,
-      type: "pagemenu",
+      type: 'pagemenu',
       ParentId: parentId,
       SubMenuId: subparentId,
       PageName: pageName,
       Icon: null,
       IsActive: true,
       IsDeleted: false
-  };
+    };
 
-  try {
-    const response = await apiClient.post('/Menu/UpdateMenuData', menuVM, {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    if (response.data.statuscode === 200) {
-          await Swal.fire({
-              icon: 'success',
-              title: 'Success!',
-              text: 'Page Menu updated successfully!',
-          });
-          fetchMenuDataForList();
-          setMainMenuModalopen(false);
+    try {
+      const response = await apiClient.post('/Menu/UpdateMenuData', menuVM, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response.data.statuscode === 200) {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Page Menu updated successfully!'
+        });
+        fetchMenuDataForList();
+        setMainMenuModalopen(false);
       } else {
-          await Swal.fire({
-              icon: 'error',
-              title: 'Error!',
-              text: response.data.message || "Failed to update menu.",
-          });
-      }
-  } catch (err) {
-      await Swal.fire({
+        await Swal.fire({
           icon: 'error',
           title: 'Error!',
-          text: 'An error occurred while updating the menu.',
+          text: response.data.message || 'Failed to update menu.'
+        });
+      }
+    } catch (err) {
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'An error occurred while updating the menu.'
       });
-  }
-};
-const ActiveSubMenu = async (event) => {
-  if (!event || event.mainid === undefined) return;
-  const deletedMainId = event.mainid;
-  const objVM = {
-    mainid: deletedMainId,
-    isActive: true,
-    IsDeleted: false
-
+    }
   };
-  mainSwitch(objVM);
-}
-const deleteMainMenu = async (event) => {
-  if (!event || event.mainid === undefined) return;
-  const deletedMainId = event.mainid;
-  const objVM = {
-    mainid: deletedMainId,
-    isActive: false,
-    IsDeleted: true
+  const ActiveSubMenu = async (event) => {
+    if (!event || event.mainid === undefined) return;
+    const deletedMainId = event.mainid;
+    const objVM = {
+      mainid: deletedMainId,
+      isActive: true,
+      IsDeleted: false
+    };
+    mainSwitch(objVM);
   };
-  mainSwitch(objVM);
-}
-const mainSwitch=async(objVM)=>{
-  try {
-    const response = await apiClient.post('/Menu/DeleteMenuData', objVM, {
+  const deleteMainMenu = async (event) => {
+    if (!event || event.mainid === undefined) return;
+    const deletedMainId = event.mainid;
+    const objVM = {
+      mainid: deletedMainId,
+      isActive: false,
+      IsDeleted: true
+    };
+    mainSwitch(objVM);
+  };
+  const mainSwitch = async (objVM) => {
+    try {
+      const response = await apiClient.post('/Menu/DeleteMenuData', objVM, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
-    if (response.data.statuscode === 200) {
-      if(objVM.isActive==true){
+      if (response.data.statuscode === 200) {
+        if (objVM.isActive == true) {
+          Swal.fire({
+            title: 'Success',
+            text: 'Menu item DeActive successfully.',
+            icon: 'success',
+            confirmButtonColor: 'red'
+          });
+        } else {
+          Swal.fire({
+            title: 'Success',
+            text: 'Menu item Active successfully.',
+            icon: 'success',
+            confirmButtonColor: 'green'
+          });
+        }
+        // Fetch updated menu data after deletion
+        fetchMenuData();
+        fetchMenuDataForList();
+      } else {
         Swal.fire({
-          title: 'Success',
-          text: 'Menu item DeActive successfully.',
-          icon: 'success',
-          confirmButtonColor: 'red',
+          title: 'Error',
+          text: response.data.message || 'Failed to delete the menu item.',
+          icon: 'error',
+          confirmButtonColor: 'red'
         });
+        fetchMenuData();
+        fetchMenuDataForList();
       }
-      else{
-        Swal.fire({
-          title: 'Success',
-          text: 'Menu item Active successfully.',
-          icon: 'success',
-          confirmButtonColor: 'green',
-        });
-      }
-      // Fetch updated menu data after deletion
-      fetchMenuData();
-     fetchMenuDataForList();
-    } else {
+    } catch (error) {
       Swal.fire({
         title: 'Error',
-        text: response.data.message || "Failed to delete the menu item.",
+        text: 'An error occurred while deleting the menu item. Please try again.',
         icon: 'error',
-        confirmButtonColor: 'red',
+        confirmButtonColor: 'red'
       });
-      fetchMenuData();
-     fetchMenuDataForList();
+      console.error('Error deleting menu data:', error);
     }
-  } catch (error) {
-    Swal.fire({
-      title: 'Error',
-      text: "An error occurred while deleting the menu item. Please try again.",
-      icon: 'error',
-      confirmButtonColor: 'red',
-    });
-    console.error("Error deleting menu data:", error);
-  }
-}
+  };
   return (
     <>
       <Card sx={{ boxShadow: 'none', borderRadius: '7px', mb: '10px' }}>
@@ -328,13 +325,7 @@ const mainSwitch=async(objVM)=>{
           <Grid item xs={12} sm={3} md={2}>
             <FormControl fullWidth error={!!errors.menu}>
               <InputLabel id="menu-label">Menu</InputLabel>
-              <Select
-                value={menu}
-                onChange={handleMenuChange}
-                label="Menu"
-                labelId="menu-label"
-                id="menu-select"
-              >
+              <Select value={menu} onChange={handleMenuChange} label="Menu" labelId="menu-label" id="menu-select">
                 {menuData.map((menuItem) => (
                   <MenuItem key={menuItem.id} value={menuItem.title}>
                     {menuItem.title}
@@ -344,9 +335,9 @@ const mainSwitch=async(objVM)=>{
               {errors.menu && <FormHelperText>{errors.menu}</FormHelperText>}
             </FormControl>
           </Grid>
-          
+
           <Grid item xs={12} sm={3} md={2}>
-          <FormControl fullWidth error={!!errors.subMenu}>
+            <FormControl fullWidth error={!!errors.subMenu}>
               <InputLabel id="sub-menu-label">Sub Menu</InputLabel>
               <Select
                 value={subparentId}
@@ -356,9 +347,9 @@ const mainSwitch=async(objVM)=>{
                 id="sub-menu-select"
               >
                 {/* Filter submenu items based on the selected menu */}
-                {menuListData.length > 0 && menu ? ( 
+                {menuListData.length > 0 && menu ? (
                   menuListData
-                    .filter(submenuItem => submenuItem.parentId === parentId)
+                    .filter((submenuItem) => submenuItem.parentId === parentId)
                     .map((submenuItem) => (
                       <MenuItem key={submenuItem.id} value={submenuItem.title}>
                         {submenuItem.title}
@@ -370,26 +361,26 @@ const mainSwitch=async(objVM)=>{
               </Select>
               {errors.subMenu && <FormHelperText>{errors.subMenu}</FormHelperText>}
             </FormControl>
-        </Grid>
+          </Grid>
           <Grid item xs={12} sm={3} md={2}>
-            <TextField 
-              label="Page Name" 
-              variant="outlined" 
-              fullWidth 
+            <TextField
+              label="Page Name"
+              variant="outlined"
+              fullWidth
               value={pageName}
-              onChange={(e) => setPageName(e.target.value)} 
+              onChange={(e) => setPageName(e.target.value)}
               error={!!errors.pageName}
               helperText={errors.pageName}
             />
           </Grid>
 
           <Grid item xs={12} sm={3} md={2}>
-            <TextField 
-              label="Page URL" 
-              variant="outlined" 
-              fullWidth 
+            <TextField
+              label="Page URL"
+              variant="outlined"
+              fullWidth
               value={pageUrl}
-              onChange={(e) => setPageUrl(e.target.value)} 
+              onChange={(e) => setPageUrl(e.target.value)}
               error={!!errors.pageUrl}
               helperText={errors.pageUrl}
             />
@@ -411,7 +402,7 @@ const mainSwitch=async(objVM)=>{
         </Grid>
       </Card>
 
-      <TableContainer component={Paper} sx={{ borderRadius: '5px', marginTop: "20px" }}>
+      <TableContainer component={Paper} sx={{ borderRadius: '5px', marginTop: '20px' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -443,87 +434,86 @@ const mainSwitch=async(objVM)=>{
                   <TableCell sx={{ textAlign: 'center' }}>{item.pageName}</TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>{item.pageUrl}</TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
-                  <Tooltip title="Edit" arrow>
+                    <Tooltip title="Edit" arrow>
                       <IconButton color="secondary" onClick={() => EditSubMenu(item)}>
                         <EditCalendarIcon sx={{ color: 'red' }} />
                       </IconButton>
                     </Tooltip>
                     {item.isDeleted === 0 && (
-                                                                                   <>
-                                                                                       <Switch
-                                                                                           color="secondary"
-                                                                                           onClick={() => ActiveSubMenu(item)} // Handling deletion
-                                                                                           checked={item.isActive === 1} // Switch checked if isActive is 1
-                                                                                           //onChange={() => toggleStatus(row.mainid)} // Toggle active state
-                                                                                           sx={{
-                                                                                               '& .MuiSwitch-switchBase': {
-                                                                                                   '&.Mui-checked': {
-                                                                                                       '& .MuiSwitch-thumb': {
-                                                                                                           background: "linear-gradient(135deg, #4CAF50, #8BC34A)",
-                                                                                                       },
-                                                                                                   },
-                                                                                                   '&:not(.Mui-checked) .MuiSwitch-thumb': {
-                                                                                                       background: 'red', // red color when inactive
-                                                                                                   },
-                                                                                                   '&.Mui-checked + .MuiSwitch-track': {
-                                                                                                       border: '1px solid black',
-                                                                                                   },
-                                                                                                   '&:not(.Mui-checked) + .MuiSwitch-track': {
-                                                                                                       backgroundColor: 'red', // red color when inactive
-                                                                                                   },
-                                                                                               },
-                                                                                               '& .MuiSwitch-switchBase + .MuiSwitch-track': {
-                                                                                                   border: 'none',
-                                                                                               },
-                                                                                           }}
-                                                                                       />
-                                                                                       <span style={{ marginLeft: '10px' }}>
-                                                                                           {item.isActive === 1 ? '' : ''}
-                                                                                       </span>
-                                                                                   </>
-                                                                               )}
-                                                                               {item.isDeleted === 1 && item.isActive === 0 && (
-                                                                                   <span style={{ color: 'gray', marginLeft: '10px' }}>
-                                                                                       <Switch
-                                                                                           color="secondary"
-                                                                                           onClick={() => deleteMainMenu(item)}
-                                                                                           //checked={item.isDeleted === 1} 
-                                                                                          // onChange={() => toggleStatus(row.mainid)}
-                                                                                           sx={{
-                                                                                               '& .MuiSwitch-switchBase': {
-                                                                                                   '&.Mui-checked': {
-                                                                                                       '& .MuiSwitch-thumb': {
-                                                                                                           background: "linear-gradient(135deg, #4CAF50, #8BC34A)",
-                                                                                                       },
-                                                                                                   },
-                                                                                                   '&:not(.Mui-checked) .MuiSwitch-thumb': {
-                                                                                                       background: 'red', // red color when inactive
-                                                                                                   },
-                                                                                                   '&.Mui-checked + .MuiSwitch-track': {
-                                                                                                       border: '1px solid black',
-                                                                                                   },
-                                                                                                   '&:not(.Mui-checked) + .MuiSwitch-track': {
-                                                                                                       backgroundColor: 'red', // red color when inactive
-                                                                                                   },
-                                                                                               },
-                                                                                               '& .MuiSwitch-switchBase + .MuiSwitch-track': {
-                                                                                                   border: 'none',
-                                                                                               },
-                                                                                           }}
-                                                                                       />
-                                                                                       {item.isDeleted === 1 ? '' : ''}
-                                                                                   </span>
-                                                                               )}
+                      <>
+                        <Switch
+                          color="secondary"
+                          onClick={() => ActiveSubMenu(item)} // Handling deletion
+                          checked={item.isActive === 1} // Switch checked if isActive is 1
+                          //onChange={() => toggleStatus(row.mainid)} // Toggle active state
+                          sx={{
+                            '& .MuiSwitch-switchBase': {
+                              '&.Mui-checked': {
+                                '& .MuiSwitch-thumb': {
+                                  background: 'linear-gradient(135deg, #4CAF50, #8BC34A)'
+                                }
+                              },
+                              '&:not(.Mui-checked) .MuiSwitch-thumb': {
+                                background: 'red' // red color when inactive
+                              },
+                              '&.Mui-checked + .MuiSwitch-track': {
+                                border: '1px solid black'
+                              },
+                              '&:not(.Mui-checked) + .MuiSwitch-track': {
+                                backgroundColor: 'red' // red color when inactive
+                              }
+                            },
+                            '& .MuiSwitch-switchBase + .MuiSwitch-track': {
+                              border: 'none'
+                            }
+                          }}
+                        />
+                        <span style={{ marginLeft: '10px' }}>{item.isActive === 1 ? '' : ''}</span>
+                      </>
+                    )}
+                    {item.isDeleted === 1 && item.isActive === 0 && (
+                      <span style={{ color: 'gray', marginLeft: '10px' }}>
+                        <Switch
+                          color="secondary"
+                          onClick={() => deleteMainMenu(item)}
+                          //checked={item.isDeleted === 1}
+                          // onChange={() => toggleStatus(row.mainid)}
+                          sx={{
+                            '& .MuiSwitch-switchBase': {
+                              '&.Mui-checked': {
+                                '& .MuiSwitch-thumb': {
+                                  background: 'linear-gradient(135deg, #4CAF50, #8BC34A)'
+                                }
+                              },
+                              '&:not(.Mui-checked) .MuiSwitch-thumb': {
+                                background: 'red' // red color when inactive
+                              },
+                              '&.Mui-checked + .MuiSwitch-track': {
+                                border: '1px solid black'
+                              },
+                              '&:not(.Mui-checked) + .MuiSwitch-track': {
+                                backgroundColor: 'red' // red color when inactive
+                              }
+                            },
+                            '& .MuiSwitch-switchBase + .MuiSwitch-track': {
+                              border: 'none'
+                            }
+                          }}
+                        />
+                        {item.isDeleted === 1 ? '' : ''}
+                      </span>
+                    )}
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={tableHeaders.length} align="center">No data available</TableCell>
+                <TableCell colSpan={tableHeaders.length} align="center">
+                  No data available
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
-          
         </Table>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
@@ -536,128 +526,123 @@ const mainSwitch=async(objVM)=>{
         />
       </TableContainer>
       <Modal open={MainMenuModalopen} onClose={() => setMainMenuModalopen(false)}>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        backgroundColor: 'white',
-                        borderRadius: '8px',
-                        boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
-                        width: '50%',
-                        padding: '16px',
-                    }}
-                >
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            fontWeight: 'bold',
-                            marginBottom: '16px',
-                            textAlign: 'center',
-                            color: '#1976D2',
-                        }}
-                    >
-                        Update Page Menu Details
-                    </Typography>
-                    <Grid item xs={12} sm={3} md={2} mb={2}>
-                        <FormControl fullWidth error={!!errors.menu}>
-                            <InputLabel id="menu-label">Menu</InputLabel>
-                            <Select
-                                value={menu}
-                                onChange={handleMenuChange}
-                                label="Menu"
-                                labelId="menu-label"
-                                id="menu-select"
-                            >
-                                {menuData.map((menuItem) => (
-                                    <MenuItem key={menuItem.id} value={menuItem.title}>
-                                        {menuItem.title}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                            {errors.menu && <FormHelperText>{errors.menu}</FormHelperText>}
-                        </FormControl>
-                    </Grid>
-                           <Grid item xs={12} mb={2}>
-                               <FormControl fullWidth error={!!errors.subMenu}>
-                                   <InputLabel id="sub-menu-label">Sub Menu</InputLabel>
-                                   <Select
-                                     value={subparentId}
-                                     onChange={(e) => {
-                                       const selectedMainId = e.target.value; 
-                                       const selectedSubMenu = menuListData.find(submenuItem => submenuItem.mainid === selectedMainId); // Find by mainid
-                                       if (selectedSubMenu) {
-                                         console.log('Selected Value:', selectedSubMenu.title);
-                                         console.log('Selected Main ID:', selectedSubMenu.mainid);
-                                         setSubparentId(selectedMainId); 
-                                       }
-                                     }}
-                                     label="Sub Menu"
-                                     labelId="sub-menu-label"
-                                     id="sub-menu-select"
-                                     >
-                                     {menuListData.length > 0 && menu ? (
-                                       menuListData
-                                         .filter(submenuItem => submenuItem.parentId === parentId)
-                                         .map((submenuItem) => (
-                                           <MenuItem key={submenuItem.mainid} value={submenuItem.mainid}> {/* Use mainid as value */}
-                                             {submenuItem.title}
-                                           </MenuItem>
-                                         ))
-                                     ) : (
-                                       <MenuItem disabled>No submenus available</MenuItem>
-                                     )}
-                                   </Select>
-                                   {errors.subMenu && <FormHelperText>{errors.subMenu}</FormHelperText>}
-                                 </FormControl>
-                          </Grid>
-                    
-                    <TextField
-                        label="Title Name"
-                        fullWidth
-                        value={edittitleName || ''}
-                        onChange={(e) => setedittitleName(e.target.value)}
-                        sx={{ mb: 2 }}
-                    />
-                    <TextField
-                        label="PageUrl"
-                        fullWidth
-                        value={editedpageurl || ''}
-                        onChange={(e) => setEditedpageurl(e.target.value)}
-                        sx={{ mb: 2 }}
-                    />
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+            width: '50%',
+            padding: '16px'
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 'bold',
+              marginBottom: '16px',
+              textAlign: 'center',
+              color: '#1976D2'
+            }}
+          >
+            Update Page Menu Details
+          </Typography>
+          <Grid item xs={12} sm={3} md={2} mb={2}>
+            <FormControl fullWidth error={!!errors.menu}>
+              <InputLabel id="menu-label">Menu</InputLabel>
+              <Select value={menu} onChange={handleMenuChange} label="Menu" labelId="menu-label" id="menu-select">
+                {menuData.map((menuItem) => (
+                  <MenuItem key={menuItem.id} value={menuItem.title}>
+                    {menuItem.title}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.menu && <FormHelperText>{errors.menu}</FormHelperText>}
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} mb={2}>
+            <FormControl fullWidth error={!!errors.subMenu}>
+              <InputLabel id="sub-menu-label">Sub Menu</InputLabel>
+              <Select
+                value={subparentId}
+                onChange={(e) => {
+                  const selectedMainId = e.target.value;
+                  const selectedSubMenu = menuListData.find((submenuItem) => submenuItem.mainid === selectedMainId); // Find by mainid
+                  if (selectedSubMenu) {
+                    console.log('Selected Value:', selectedSubMenu.title);
+                    console.log('Selected Main ID:', selectedSubMenu.mainid);
+                    setSubparentId(selectedMainId);
+                  }
+                }}
+                label="Sub Menu"
+                labelId="sub-menu-label"
+                id="sub-menu-select"
+              >
+                {menuListData.length > 0 && menu ? (
+                  menuListData
+                    .filter((submenuItem) => submenuItem.parentId === parentId)
+                    .map((submenuItem) => (
+                      <MenuItem key={submenuItem.mainid} value={submenuItem.mainid}>
+                        {' '}
+                        {/* Use mainid as value */}
+                        {submenuItem.title}
+                      </MenuItem>
+                    ))
+                ) : (
+                  <MenuItem disabled>No submenus available</MenuItem>
+                )}
+              </Select>
+              {errors.subMenu && <FormHelperText>{errors.subMenu}</FormHelperText>}
+            </FormControl>
+          </Grid>
 
-                    <Box sx={{ textAlign: 'center', marginTop: '16px' }}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={UpdateSubMenu}
-                            sx={{
-                                textTransform: 'uppercase',
-                                fontWeight: 'bold',
-                                padding: '8px 16px',
-                            }}
-                        >
-                            Save
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => setMainMenuModalopen(false)}
-                            sx={{
-                                textTransform: 'uppercase',
-                                fontWeight: 'bold',
-                                padding: '8px 16px',
-                                marginLeft: '8px',
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
-            
+          <TextField
+            label="Title Name"
+            fullWidth
+            value={edittitleName || ''}
+            onChange={(e) => setedittitleName(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="PageUrl"
+            fullWidth
+            value={editedpageurl || ''}
+            onChange={(e) => setEditedpageurl(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+
+          <Box sx={{ textAlign: 'center', marginTop: '16px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={UpdateSubMenu}
+              sx={{
+                textTransform: 'uppercase',
+                fontWeight: 'bold',
+                padding: '8px 16px'
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => setMainMenuModalopen(false)}
+              sx={{
+                textTransform: 'uppercase',
+                fontWeight: 'bold',
+                padding: '8px 16px',
+                marginLeft: '8px'
+              }}
+            >
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 };

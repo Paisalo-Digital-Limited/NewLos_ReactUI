@@ -17,7 +17,6 @@ const BranchMasterTable = () => {
   const [errors, setErrors] = useState({});
   const [loadingCreators, setLoadingCreators] = useState(false);
   const [creators, setCreators] = useState([]);
-  // const [error, setError] = useState(null);
 
   const fields = [
     'Code',
@@ -129,11 +128,9 @@ const BranchMasterTable = () => {
     setLoading(true);
     try {
       const data = await fetchBranchMasterDetails();
-
-      // Ensure all rows have proper isActive values.
       const updatedData = data.map((row) => ({
         ...row,
-        isActive: row.isActive ?? 1 // Default to 1 if isActive is missing
+        isActive: row.isActive ?? 1
       }));
 
       setTableData(updatedData);
@@ -266,7 +263,6 @@ const BranchMasterTable = () => {
 
   const toggleBranchStatus = async (rowData) => {
     const updatedStatus = rowData.isActive === 1 ? 0 : 1;
-
     setTableData((prev) =>
       prev.map((branch) =>
         branch.Id === rowData.Id
@@ -292,7 +288,7 @@ const BranchMasterTable = () => {
           branch.Id === rowData.Id
             ? {
                 ...branch,
-                isActive: rowData.isActive // Revert to original state
+                isActive: rowData.isActive
               }
             : branch
         )

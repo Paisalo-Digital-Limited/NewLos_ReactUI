@@ -31,13 +31,15 @@ const Role = Loadable(lazy(() => import('pages/dashboardmenu/Master/role/role'))
 const Vechicles = Loadable(lazy(() => import('pages/dashboardmenu/Master/vechicles/vechicles')));
 //const Menu = Loadable(lazy(() => import('pages/dashboardmenu/Master/menu/menu')));
 const Groupmaster = Loadable(lazy(() => import('pages/dashboardmenu/Master/GroupMaster/groupmaster')));
-const Mastercreator = Loadable(lazy(() => import('pages/dashboardmenu/Master/mastercreator/mastercreator')));
+const Mastercreator = Loadable(lazy(() => import('pages/dashboardmenu/Master/mastercreator/AddCreator/AddCreator')));
 const BranchMaster = Loadable(lazy(() => import('pages/dashboardmenu/Master/BranchMaster/AddBranch')));
 const Apiendpoints = Loadable(lazy(() => import('pages/dashboardmenu/Master/ApiEndPoints/apiendpoints')));
 const MoveToAuditquery = Loadable(lazy(() => import('pages/fiprocessing/Audit/MoveToAuditRecord/MoveToAuditRecord')));
-// render - FI Processing -- Branch 
+// render - FI Processing -- Branch
 const Postsanction = Loadable(lazy(() => import('pages/fiprocessing/Branch/postsanction/postsanction')));
 const AddGuarantor = Loadable(lazy(() => import('pages/fiprocessing/Branch/addguarantor/index')));
+const CoborrowerCrifProcess = Loadable(lazy(() => import('pages/fiprocessing/Branch/coborrowercrif/index')));
+
 const BranchHardwareReq = Loadable(lazy(() => import('pages/branchhardwarerequest/branchhardwarerequest')));
 
 const Generate = Loadable(lazy(() => import('pages/fiprocessing/credit/GenerateDS/Master')));
@@ -128,18 +130,23 @@ const MainRoutes = {
       path: 'employee',
       element: <Employee />
     },
-   {
-    path: 'MoveToAuditRecord',
-    element: <MoveToAuditquery />
-   },
-   {
-    path:'generate',
-    element:<Generate />
-   },
-   {
-     path: 'branchhardwarerequest',
-     element: <BranchHardwareReq />
-   }
+    {
+      path: 'MoveToAuditRecord',
+      element: <MoveToAuditquery />
+    },
+    {
+      path: 'generate',
+      element: <Generate />
+    },
+    {
+      path: 'branchhardwarerequest',
+      element: <BranchHardwareReq />
+    },
+    {
+      path: 'coborrowercrif',
+      element: <CoborrowerCrifProcess />
+    }
+    
   ]
 };
 

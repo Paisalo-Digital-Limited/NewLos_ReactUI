@@ -1,10 +1,11 @@
+
 import React from 'react';
-import { AddGuarantorProcess } from './AddGuarantor';
+import { CoborrowerCrifProcess } from './coborrowercrif';
 
 export default function AddGuarantors() {
   return (
     <>
-      <AddGuarantorProcess />
+      <CoborrowerCrifProcess />
     </>
   );
 }

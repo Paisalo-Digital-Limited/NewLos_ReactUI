@@ -30,7 +30,6 @@ import SendIcon from '@mui/icons-material/Send';
 import Swal from 'sweetalert2';
 import apiClient from 'network/apiClient';
 
-
 const tableCellStyle = {
   background: '#ff4c4c',
   padding: '10px 16px',
@@ -56,12 +55,12 @@ const MainPage = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5); // Set default rows per page
   const [MainMenuModalOpen, setMainMenuModalOpen] = useState(false);
-  
+
   const [errors, setErrors] = useState({
-    menu: "",
-    subMenu: "",
-    pageName: "",
-    pageUrl: "",
+    menu: '',
+    subMenu: '',
+    pageName: '',
+    pageUrl: ''
   });
 
   useEffect(() => {
@@ -70,19 +69,19 @@ const MainPage = () => {
 
   const fetchMenuData = async () => {
     try {
-      const response = await apiClient.get("/Menu/GetMainMenuDetails");
+      const response = await apiClient.get('/Menu/GetMainMenuDetails');
       if (response.data && response.data.statuscode === 200) {
         setRows(response.data.data); // Assuming response.data.data is your array of menu items
       } else {
-        console.error("Failed to fetch menu data:", response.data.message || "Unknown error");
+        console.error('Failed to fetch menu data:', response.data.message || 'Unknown error');
       }
     } catch (error) {
-      console.error("Error fetching menu data:", error);
+      console.error('Error fetching menu data:', error);
       Swal.fire({
         title: 'Error',
-        text: "Could not fetch menu data. Please try again.",
+        text: 'Could not fetch menu data. Please try again.',
         icon: 'error',
-        confirmButtonColor: 'red',
+        confirmButtonColor: 'red'
       });
     }
   };
@@ -102,7 +101,7 @@ const MainPage = () => {
     try {
       const response = await apiClient.post('/Menu/InsertMenuData', payload, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         }
       });
 
@@ -116,24 +115,24 @@ const MainPage = () => {
           confirmButtonText: 'OK!'
         });
 
-        setRows(prevRows => [...prevRows, newRow]);
+        setRows((prevRows) => [...prevRows, newRow]);
         setPageName('');
         setMainMenuIcon('');
       } else {
         Swal.fire({
           title: 'Error',
-          text: response.data.message || "Failed to add the menu item.",
+          text: response.data.message || 'Failed to add the menu item.',
           icon: 'error',
-          confirmButtonColor: 'red',
+          confirmButtonColor: 'red'
         });
       }
     } catch (error) {
-      console.error("Error inserting menu data:", error);
+      console.error('Error inserting menu data:', error);
       Swal.fire({
         title: 'Error',
-        text: "There was an error inserting the menu data. Please try again.",
+        text: 'There was an error inserting the menu data. Please try again.',
         icon: 'error',
-        confirmButtonColor: 'red',
+        confirmButtonColor: 'red'
       });
     }
   };
@@ -173,7 +172,7 @@ const MainPage = () => {
     try {
       const response = await apiClient.post('/Menu/DeleteMenuData', objVM, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         }
       });
 
@@ -182,7 +181,7 @@ const MainPage = () => {
           title: 'Success',
           text: objVM.isActive ? 'Menu item Deactivated successfully.' : 'Menu item Activated successfully.',
           icon: 'success',
-          confirmButtonColor: 'green',
+          confirmButtonColor: 'green'
         });
 
         // Fetch updated menu data
@@ -190,18 +189,18 @@ const MainPage = () => {
       } else {
         Swal.fire({
           title: 'Error',
-          text: response.data.message || "Failed to delete the menu item.",
+          text: response.data.message || 'Failed to delete the menu item.',
           icon: 'error',
-          confirmButtonColor: 'red',
+          confirmButtonColor: 'red'
         });
       }
     } catch (error) {
-      console.error("Error updating menu status:", error);
+      console.error('Error updating menu status:', error);
       Swal.fire({
         title: 'Error',
-        text: "An error occurred while updating the menu status. Please try again.",
+        text: 'An error occurred while updating the menu status. Please try again.',
         icon: 'error',
-        confirmButtonColor: 'red',
+        confirmButtonColor: 'red'
       });
     }
   };
@@ -223,7 +222,7 @@ const MainPage = () => {
     try {
       const response = await apiClient.post('/Menu/UpdateMenuData', menuVM, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         }
       });
 
@@ -231,7 +230,7 @@ const MainPage = () => {
         await Swal.fire({
           icon: 'success',
           title: 'Success!',
-          text: 'Page Menu updated successfully!',
+          text: 'Page Menu updated successfully!'
         });
 
         setPageName('');
@@ -241,15 +240,15 @@ const MainPage = () => {
         await Swal.fire({
           icon: 'error',
           title: 'Error!',
-          text: response.data.message || "Failed to update menu.",
+          text: response.data.message || 'Failed to update menu.'
         });
       }
     } catch (err) {
-      console.error("Error updating menu:", err);
+      console.error('Error updating menu:', err);
       await Swal.fire({
         icon: 'error',
         title: 'Error!',
-        text: 'An error occurred while updating the menu.',
+        text: 'An error occurred while updating the menu.'
       });
     }
   };
@@ -266,7 +265,7 @@ const MainPage = () => {
 
   const handleMenuChanges = (event) => {
     setMenu(event.target.value);
-    const selectedItem = menuData.find(item => item.title === event.target.value);
+    const selectedItem = menuData.find((item) => item.title === event.target.value);
     if (selectedItem) {
       EditPageMenu(selectedItem);
     }
@@ -304,7 +303,7 @@ const MainPage = () => {
         </Grid>
       </Card>
 
-      <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
+      <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -337,13 +336,13 @@ const MainPage = () => {
                             '& .MuiSwitch-switchBase': {
                               '&.Mui-checked': {
                                 '& .MuiSwitch-thumb': {
-                                  background: "linear-gradient(135deg, #4CAF50, #8BC34A)",
-                                },
+                                  background: 'linear-gradient(135deg, #4CAF50, #8BC34A)'
+                                }
                               },
                               '&:not(.Mui-checked) .MuiSwitch-thumb': {
-                                background: 'red', // red color when inactive
-                              },
-                            },
+                                background: 'red' // red color when inactive
+                              }
+                            }
                           }}
                         />
                       </>
@@ -357,10 +356,10 @@ const MainPage = () => {
                           '& .MuiSwitch-switchBase': {
                             '&.Mui-checked': {
                               '& .MuiSwitch-thumb': {
-                                background: "linear-gradient(135deg, #4CAF50, #8BC34A)",
-                              },
-                            },
-                          },
+                                background: 'linear-gradient(135deg, #4CAF50, #8BC34A)'
+                              }
+                            }
+                          }
                         }}
                       />
                     )}
@@ -400,7 +399,7 @@ const MainPage = () => {
             borderRadius: '8px',
             boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
             width: '50%',
-            padding: '16px',
+            padding: '16px'
           }}
         >
           <Typography
@@ -409,7 +408,7 @@ const MainPage = () => {
               fontWeight: 'bold',
               marginBottom: '16px',
               textAlign: 'center',
-              color: '#1976D2',
+              color: '#1976D2'
             }}
           >
             Update Sub Menu Details
@@ -432,13 +431,7 @@ const MainPage = () => {
             sx={{ mb: 2 }}
           />
 
-             <TextField
-                        label="Icon"
-                        fullWidth
-                        value={editedIcon || ''}
-                        onChange={(e) => setEditedIcon(e.target.value)}
-                        sx={{ mb: 2 }}
-                    />
+          <TextField label="Icon" fullWidth value={editedIcon || ''} onChange={(e) => setEditedIcon(e.target.value)} sx={{ mb: 2 }} />
 
           <Box sx={{ textAlign: 'center', marginTop: '16px' }}>
             <Button
@@ -448,7 +441,7 @@ const MainPage = () => {
               sx={{
                 textTransform: 'uppercase',
                 fontWeight: 'bold',
-                padding: '8px 16px',
+                padding: '8px 16px'
               }}
             >
               Save
@@ -461,7 +454,7 @@ const MainPage = () => {
                 textTransform: 'uppercase',
                 fontWeight: 'bold',
                 padding: '8px 16px',
-                marginLeft: '8px',
+                marginLeft: '8px'
               }}
             >
               Cancel

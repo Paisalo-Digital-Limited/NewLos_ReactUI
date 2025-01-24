@@ -14,8 +14,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { fetchCreatorsApi } from 'api/apiCreator';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -24,7 +23,7 @@ import { fetchStatesApi } from 'api/apiState';
 import Swal from 'sweetalert2';
 import { insertGuarantorApi } from 'api/apiAddGuarantor';
 
-export const AddGuarantorProcess = () => {
+export const CoborrowerCrifProcess = () => {
   const [formData, setFormData] = useState({
     fiCode: '',
     creator: '',
@@ -97,25 +96,8 @@ export const AddGuarantorProcess = () => {
     fetchCreators();
   }, []);
 
-  const handleFileChange = (e) => {
-    const uploadedFile = e.target.files?.[0];
-    if (uploadedFile) {
-      if (uploadedFile.size > 5 * 1024 * 1024) {
-        alert('File size should not exceed 5MB');
-        return;
-      }
-      if (!['image/jpeg', 'image/png', 'image/jpg'].includes(uploadedFile.type)) {
-        alert('Only JPG and PNG files are allowed');
-        return;
-      }
-      setFile(uploadedFile); // Store the file in state
-    }
-  };
 
-  const handleRemoveFile = () => {
-    setFile(null);
-    setPreview(null);
-  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -308,13 +290,26 @@ export const AddGuarantorProcess = () => {
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <TextField
-                  label="Name *"
+                  label="Full Name *"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   error={!!errors.name}
                   helperText={errors.name}
                   placeholder="Enter your name"
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <FormControl fullWidth>
+                <TextField
+                  label="Email Id*"
+                  name="emaiId"
+                  value={formData.emaiId}
+                  onChange={handleChange}
+                  error={!!errors.emaiId}
+                  helperText={errors.emaiId}
+                  placeholder="Enter your Email Id"
                 />
               </FormControl>
             </Grid>
@@ -328,6 +323,19 @@ export const AddGuarantorProcess = () => {
                   error={!!errors.guardianName}
                   helperText={errors.guardianName}
                   placeholder="Enter your guardian name"
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <FormControl fullWidth>
+                <TextField
+                  label="Loan Amount *"
+                  name="loanAmount"
+                  value={formData.loanAmount}
+                  onChange={handleChange}
+                  error={!!errors.loanAmount}
+                  helperText={errors.loanAmount}
+                  placeholder="Enter your loan amount"
                 />
               </FormControl>
             </Grid>
@@ -382,68 +390,13 @@ export const AddGuarantorProcess = () => {
                 {errors.gender && <FormHelperText sx={{ color: 'red' }}>{errors.gender}</FormHelperText>}
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FormControl fullWidth>
-                <InputLabel id="Relation With Borrower">Relation With Borrower</InputLabel>
-                <Select
-                  labelId="Relation With Borrower"
-                  id="relation-select"
-                  name="relation"
-                  value={formData.relation}
-                  onChange={handleChange}
-                  label="Relation With Borrower"
-                  MenuProps={{
-                    PaperProps: {
-                      style: {
-                        maxHeight: 300,
-                        overflowY: 'auto'
-                      }
-                    }
-                  }}
-                >
-                  <MenuItem value="select">--Select--</MenuItem>
-                  <MenuItem value="father">Father</MenuItem>
-                  <MenuItem value="mother">Mother</MenuItem>
-                  <MenuItem value="brother">Brother</MenuItem>
-                  <MenuItem value="husband">Husband</MenuItem>
-                  <MenuItem value="daughter">Daughter</MenuItem>
-                  <MenuItem value="son">Son</MenuItem>
-                  <MenuItem value="sister">Sister</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </Select>
-                {errors.relation && <FormHelperText sx={{ color: 'red' }}>{errors.relation}</FormHelperText>}
-              </FormControl>
-            </Grid>
+     
+       
+      
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <TextField
-                  label="Religion *"
-                  name="religion"
-                  value={formData.religion}
-                  onChange={handleChange}
-                  error={!!errors.religion}
-                  helperText={errors.religion}
-                  placeholder="Enter your Religion"
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FormControl fullWidth>
-                <TextField
-                  label="Caste *"
-                  name="caste"
-                  value={formData.caste}
-                  onChange={handleChange}
-                  error={!!errors.caste}
-                  helperText={errors.caste}
-                  placeholder="Enter your Caste"
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FormControl fullWidth>
-                <TextField
-                  label="Aadhar No *"
+                  label="Coborrower Aadhar No *"
                   name="aadhar"
                   type="number"
                   value={formData.aadhar}
@@ -454,7 +407,7 @@ export const AddGuarantorProcess = () => {
                   }}
                   error={!!errors.aadhar}
                   helperText={errors.aadhar}
-                  placeholder="Enter your Aadhar No"
+                  placeholder="Enter your Coborrower Aadhar No"
                   inputProps={{ maxLength: 12 }} // Add maxLength restriction
                 />
               </FormControl>
@@ -462,20 +415,20 @@ export const AddGuarantorProcess = () => {
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <TextField
-                  label="PAN No *"
+                  label="Coborrower PAN No *"
                   name="pan"
                   value={formData.pan}
                   onChange={handleChange}
                   error={!!errors.pan}
                   helperText={errors.pan}
-                  placeholder="Enter your Pan No"
+                  placeholder="Enter your Coborrower Pan No"
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <TextField
-                  label="Mobile No *"
+                  label="Coborrower Mobile No *"
                   name="mobile"
                   type="number"
                   value={formData.mobile}
@@ -486,7 +439,7 @@ export const AddGuarantorProcess = () => {
                   }}
                   error={!!errors.mobile}
                   helperText={errors.mobile}
-                  placeholder="Enter your Mobile No"
+                  placeholder="Enter your Coborrower Mobile No"
                   inputProps={{ maxLength: 10 }}
                 />
               </FormControl>
@@ -494,11 +447,11 @@ export const AddGuarantorProcess = () => {
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <TextField
-                  label="Voter ID"
+                  label="Coborrower Voter ID"
                   name="voterId"
                   value={formData.voterId}
                   onChange={handleChange}
-                  placeholder="Enter your Voter ID"
+                  placeholder="Enter your Coborrower Voter ID"
                 />
               </FormControl>
             </Grid>
@@ -506,48 +459,25 @@ export const AddGuarantorProcess = () => {
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <TextField
-                  label="Permanent Address-1 *"
+                  label="Address *"
                   name="address1"
                   value={formData.address1}
                   onChange={handleChange}
                   error={!!errors.address1}
                   helperText={errors.address1}
-                  placeholder="Enter your Permanent Address-1"
+                  placeholder="Enter your Address"
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FormControl fullWidth>
-                <TextField
-                  label="Permanent Address-2 *"
-                  name="address2"
-                  value={formData.address2}
-                  onChange={handleChange}
-                  error={!!errors.address2}
-                  helperText={errors.address2}
-                  placeholder="Enter your Permanent Address-2"
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FormControl fullWidth>
-                <TextField
-                  name="address3"
-                  value={formData.address3}
-                  onChange={handleChange}
-                  label="Permanent Address-3 *"
-                  placeholder="Enter your Permanent Address-3"
-                />
-              </FormControl>
-            </Grid>
+         
             <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth error={!!errors.city}>
                 <TextField
-                  label="Permanent City *"
+                  label="City *"
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  placeholder="Enter your Permanent City"
+                  placeholder="Enter your City"
                 />
                 {errors.city && <FormHelperText sx={{ color: 'red' }}>{errors.city}</FormHelperText>}
               </FormControl>
@@ -606,35 +536,6 @@ export const AddGuarantorProcess = () => {
                   placeholder="Enter your Pin"
                   inputProps={{ maxLength: 6 }} // Add maxLength restriction
                 />
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={3}>
-              <FormControl fullWidth error={!!errors.file}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    border: '1px dashed #ccc',
-                    borderRadius: 1,
-                    p: 1.7,
-                    cursor: 'pointer',
-                    '&:hover': { backgroundColor: '#f9fafc' }
-                  }}
-                  onClick={() => document.getElementById('file-upload-inline')?.click()}
-                >
-                  <UploadFileIcon sx={{ mr: 1, color: '#1976d2' }} />
-                  <Typography variant="body2" color="text.secondary">
-                    {file ? file.name : 'Click or drag a file here to upload'}
-                  </Typography>
-                </Box>
-                <input type="file" id="file-upload-inline" hidden onChange={handleFileChange} />
-                {errors.file && <FormHelperText>{errors.file}</FormHelperText>}
-                {file && (
-                  <Button variant="outlined" startIcon={<DeleteIcon />} color="error" onClick={handleRemoveFile} sx={{ mt: 1 }}>
-                    Remove File
-                  </Button>
-                )}
               </FormControl>
             </Grid>
 

@@ -4,14 +4,12 @@ import axios from 'axios';
 const axiosInstance = axios.create({
   baseURL: 'https://apiuat.paisalo.in:4015/admin/api/Masters'
 });
-
 // Use a function to get the token securely, this can be updated to your case
 const getToken = () => {
   // Example: Replace this with your actual logic to retrieve the token or set it directly for testing
- const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjE1OSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJTQVRJU0ggTUFVUllBICIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImRvdG5ldGRldjFAcGFpc2Fsby5pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTU5IiwiQ3JlYXRvciI6IlZIREVMSEkiLCJFbXBDb2RlIjoiUDAwMDAwMTUzNSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJhdGlvbiI6IkphbiBTYXQgMjUgMjAyNSAwNToxOToyNyBBTSIsIm5iZiI6MTczNzY5NTk2NywiZXhwIjoxNzM3NzgyMzY3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTg4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzE4OCJ9.I2YQqfb5HpuSjoK8DMyjv_GKjcgrxhYtlGZ7ueJhO2A'; // Sample Token
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjE1OSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJTQVRJU0ggTUFVUllBICIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImRvdG5ldGRldjFAcGFpc2Fsby5pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMTU5IiwiQ3JlYXRvciI6IlZIREVMSEkiLCJFbXBDb2RlIjoiUDAwMDAwMTUzNSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJhdGlvbiI6IkphbiBTYXQgMjUgMjAyNSAwNToxOToyNyBBTSIsIm5iZiI6MTczNzY5NTk2NywiZXhwIjoxNzM3NzgyMzY3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTg4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzE4OCJ9.I2YQqfb5HpuSjoK8DMyjv_GKjcgrxhYtlGZ7ueJhO2A'; // Sample Token
   return token;
 };
-
 // Request interceptor to dynamically attach the token to each request
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -25,7 +23,6 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 // Response interceptor for error handling
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -34,5 +31,4 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 export default axiosInstance;

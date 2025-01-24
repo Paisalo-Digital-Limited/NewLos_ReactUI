@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { Check as CheckIcon } from '@mui/icons-material';
 import MainCard from 'components/MainCard';
-import ComponentSkeleton from '../component-overview/ComponentSkeleton';
+import ComponentSkeleton from 'pages/component-overview/ComponentSkeleton';
 import axios from 'axios';
 
 const columns = [

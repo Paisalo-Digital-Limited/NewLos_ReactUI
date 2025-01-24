@@ -69,17 +69,18 @@ const DownloadOnePager = () => {
       });
       
       const { statuscode, message, data } = response.data;
-      if (statuscode === 20) {
+      if (statuscode === 200) {
         const pdfFilePath = data.pdfOnePager; 
         const urlRegex = /https?:\/\/[^\s'"]+/;
         const extractedUrl = pdfFilePath.match(urlRegex)[0];
         window.open(extractedUrl, '_blank', 'noopener,noreferrer');
        
       } else {
-        console.error(
-          "Error in API response:",
-          response.data.message || "Unknown error"
-        );
+        alert(response.data.message);
+        // console.error(
+        //   "Error in API response:",
+        //   response.data.message || "Unknown error"
+        // );
       }
     } catch (error) {
       console.error("Error in handlePersonalInfoClick:", error);

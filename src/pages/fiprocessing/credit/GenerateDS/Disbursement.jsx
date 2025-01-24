@@ -47,8 +47,8 @@ const Disbursement = () => {
   const getBranchDropdown = async (creator) => {
     try {
       debugger;
-      //const response = await apiClient.get("https://localhost:5238/api/Masters/GetBranchCodeByCreator", {
-        const response = await axios.get("http://localhost:5238/api/Masters/GetBranchCodeByCreator", {
+        const response = await apiClient.get("https://apiuat.paisalo.in:4015/admin/api/Masters/GetBranchCodeByCreator", {
+        //const response = await axios.get("http://localhost:5238/api/Masters/GetBranchCodeByCreator", {
         params: {
           Creator: creator
       },
@@ -82,15 +82,45 @@ const Disbursement = () => {
     const selectedBranch = event.target.value;
     setBranchCode(selectedBranch);
   }
-  const handleDownloadDisbursementSheet = () => {
-    debugger;
-    Creator:creator;
-    BranchCode:branchCode;
-    GroupCode:groupCode
-      // Split the branchCode to extract the first part
-      const branchNumber = branchCode.split('-')[0]; // This will give you "002"
-
-  }
+  
+    const handleDownloadDisbursementSheet = async () => {
+      debugger;
+      //setLoading(true);
+      BranchCode:branchCode;
+      const branchNumber = branchCode.split('-')[0];
+      const HouseVisitVM = {
+        Creator: creator,
+        GroupCode: groupCode,
+        BranchCode: '007',
+        Type: 'DsSheetReport',
+        DbName: 'PDLERP',
+      };
+  
+      try {
+        const response = await axios.post(
+          'https://apiuat.paisalo.in:4015/PDLDocReports/api/DocGen/GetDocument',
+          HouseVisitVM
+        );
+        debugger;
+        const { code, message, data } = response.data;
+        if (code === 200) {
+          const pdfFilePath = data; 
+          const fileName = pdfFilePath.split(':').pop(); 
+          const pdfUrl = `https://predeptest.paisalo.in:8084/${fileName}`; 
+          window.open(pdfUrl, '_blank', 'noopener,noreferrer');
+          
+        } else if (code === 201) {
+          alert('No Data Found');
+        } else {
+          alert('Error');
+        }
+      } catch (error) {
+        console.error('Error fetching the report:', error);
+        alert('Request Failed');
+      } finally {
+        //setLoading(false);
+      }
+    };
 
   const handleSearch = () => {
     handleDownloadDisbursementSheet();
@@ -106,7 +136,7 @@ const Disbursement = () => {
       className="rmui-card"
     >
       <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-        Cam Generation
+        Disbursement Sheet  
       </Typography>
 
       <Grid container spacing={2} mb={2}>
@@ -143,14 +173,7 @@ const Disbursement = () => {
                     ))}
                   </Select>
                 </FormControl>
-          {/* <FormControl fullWidth>
-            <InputLabel id="sub-menu-label">Branch Code</InputLabel>
-            <Select
-              label="Sub Menu"
-              labelId="sub-menu-label"
-              id="sub-menu-select"
-            ></Select>
-          </FormControl> */}
+         
         </Grid>
         <Grid item xs={12} sm={5} md={3}>
           <TextField variant="outlined" label="Group Code" fullWidth 

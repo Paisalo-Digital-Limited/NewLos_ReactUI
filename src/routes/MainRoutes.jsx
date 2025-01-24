@@ -39,6 +39,7 @@ const MoveToAuditquery = Loadable(lazy(() => import('pages/fiprocessing/Audit/Mo
 const Postsanction = Loadable(lazy(() => import('pages/fiprocessing/Branch/postsanction/postsanction')));
 const AddGuarantor = Loadable(lazy(() => import('pages/fiprocessing/Branch/addguarantor/index')));
 const Generate = Loadable(lazy(() => import('pages/fiprocessing/credit/GenerateDS/Master')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {

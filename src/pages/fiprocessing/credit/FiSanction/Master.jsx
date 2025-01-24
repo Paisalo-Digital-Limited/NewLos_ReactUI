@@ -4,6 +4,7 @@ import UpdateScheme from './SchemeCode';
 import ModifyLoanAmount from './LoanAmount';
 import ModifySanctionPage from './ModifySanction';
 import SanctionUpdate from './SanctionUpdate';
+import ForCloseAmount from './ForCloseAmount';
 
 export default function Master() {
   const [selectedPage, setSelectedPage] = useState('schemeCode');
@@ -33,8 +34,9 @@ export default function Master() {
               {[
                 { value: 'schemeCode', label: 'Update Scheme Code' },
                 { value: 'loanAmount', label: 'Loan Amount' },
-                { value: 'modifySanction', label: 'Modify Sanction' },
-                { value: 'sanctionUpdate', label: 'Sanction Update' }
+                // { value: 'modifySanction', label: 'Modify Sanction' },
+                { value: 'sanctionUpdate', label: 'Sanction Update' },
+                { value: 'forCloseAmount', label: 'For Close Amount' }
               ].map((option) => (
                 <FormControlLabel
                   key={option.value}
@@ -93,8 +95,9 @@ export default function Master() {
         >
           {selectedPage === 'schemeCode' && <UpdateScheme />}
           {selectedPage === 'loanAmount' && <ModifyLoanAmount />}
-          {selectedPage === 'modifySanction' && <ModifySanctionPage />}
+          {/* {selectedPage === 'modifySanction' && <ModifySanctionPage />} */}
           {selectedPage === 'sanctionUpdate' && <SanctionUpdate />}
+          {selectedPage === 'forCloseAmount' && <ForCloseAmount/>}
         </Card>
       </Box>
     </>

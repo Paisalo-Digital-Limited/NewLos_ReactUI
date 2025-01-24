@@ -1,4 +1,3 @@
-
 import React, {  useState } from "react";
 import {
   Card,
@@ -12,15 +11,12 @@ import {
 import DownloadOnePager from "./DownloadOnePager";
 import Cam from "./Cam";
 import Disbursement from "./Disbursement";
-
-
+import Download60 from "./Download60";
 export default function UserAccess() {
   const [selectedPage, setSelectedPage] = useState("downloadPager");
-
   const handlePageChange = (event) => {
     setSelectedPage(event.target.value);
   };
-
   return (
     <>
       <Box sx={{ margin: "0 auto" }}>
@@ -35,7 +31,6 @@ export default function UserAccess() {
         <Typography variant="h6" sx={{ marginBottom: "20px", fontWeight: "bold", fontSize:'20px' }}>
           User Access
         </Typography>
-
         {/* Radio Buttons */}
         <FormControl component="fieldset" fullWidth>
           <RadioGroup
@@ -48,6 +43,7 @@ export default function UserAccess() {
               { value: "downloadPager", label: "Download One Pager" },
               { value: "cam", label: "Cam Generation" },
               { value: "disbursementSheet", label: "Disbursement Sheet" },
+              { value: "download60", label: "Download From60" },
             ].map((option) => (
               <FormControlLabel
                 key={option.value}
@@ -95,7 +91,6 @@ export default function UserAccess() {
           </RadioGroup>
         </FormControl>
       </Card>
-
       <Card
         sx={{
           boxShadow: "none",
@@ -107,9 +102,9 @@ export default function UserAccess() {
         {selectedPage === "downloadPager" && <DownloadOnePager />}
         {selectedPage === "cam" && <Cam />}
         {selectedPage === "disbursementSheet" && <Disbursement />}
+        {selectedPage === "download60" && <Download60 />}
       </Card>
       </Box>
       </>
   );
 }
-

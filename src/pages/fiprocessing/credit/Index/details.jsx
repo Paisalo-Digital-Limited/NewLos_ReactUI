@@ -374,80 +374,82 @@ const Details = ({ ficode, creator }) => {
 
   return (
     <Card
-      sx={{
-        boxShadow: 'none',
-        borderRadius: '7px',
-        padding: { xs: '16px', sm: '24px', lg: '32px' }
-      }}
+    sx={{
+      boxShadow: 'none',
+      borderRadius: '7px',
+      padding: { xs: '16px', sm: '24px', lg: '32px' },
+    }}
     >
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={3} md={2} style={{ display: 'flex' }}>
-          <Tabs orientation="vertical" value={activeTab} onChange={handleTabChange} sx={{ borderRight: 1, borderColor: 'divider' }}>
-            <Tab label="General Details" />
-            <Tab label="Personal Details" />
-            <Tab label="Financial Details" />
-            <Tab label="Co-Borrower Details" />
-            <Tab label="Top Up Details" />
-          </Tabs>
-        </Grid>
-        <Grid item xs={12} sm={9} md={10}>
-          {renderTabContent()}
-        </Grid>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={3} md={2} style={{ display: 'flex' }}>
+        <Tabs orientation="vertical" value={activeTab} onChange={handleTabChange} sx={{ borderRight: 1, borderColor: 'divider' }}>
+          <Tab label="General Details" />
+          <Tab label="Personal Details" />
+          <Tab label="Financial Details" />
+          <Tab label="Co-Borrower Details" />
+          <Tab label="Top Up Details" />
+        </Tabs>
       </Grid>
-        <Box
-      sx={{
-        position: 'fixed',
-        top: '50%', // center vertically
-        right: 0,
-        transform: 'translateY(-50%)',
-        backgroundColor: '#fff',
-        boxShadow: 2,
-        borderRadius: '8px 0 0 8px',
-        padding: 2,
-        zIndex: 1000,
-        width: isHovered ? '150px' : '60px', // Width changes based on hover state
-        transition: 'width 0.3s ease', // Smooth transition for width change
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {isHovered && ( // Show buttons only when hovered
-        <>
-          <AnimateButton>
-            <Button variant="contained" color="primary" fullWidth sx={{ marginBottom: '10px' }}>
-              <AddCircleOutline sx={{ marginRight: 1 }} />
-              Add
-            </Button>
-          </AnimateButton>
-          <AnimateButton>
-            <Button
-              variant="contained"
-              color="success"
-              fullWidth
-              sx={{ marginBottom: '10px' }}
-              onClick={() => setIsEditable((prev) => !prev)}
-            >
-              <Edit sx={{ marginRight: 1 }} />
-              Edit
-            </Button>
-          </AnimateButton>
-          <AnimateButton>
-            <Button variant="contained" color="secondary" fullWidth sx={{ marginBottom: '10px' }}>
-              <Delete sx={{ marginRight: 1 }} />
-              Delete
-            </Button>
-          </AnimateButton>
-          <AnimateButton>
-            <Button variant="contained" color="info" fullWidth sx={{ marginBottom: '10px' }} onClick={handleUpdateButtonClick}>
-              <Update sx={{ marginRight: 1 }} />
-              Update
-            </Button>
-          </AnimateButton>
-        </>
-      )}
+      <Grid item xs={12} sm={9} md={10}>
+        {renderTabContent()}
+      </Grid>
+    </Grid>
+    <Box   
+  sx={{
+    position: 'fixed',
+    top: '50%', // center vertically
+    right: 0,
+    transform: 'translateY(-50%)',
+    backgroundColor: '#fff',
+    boxShadow: 2,
+    borderRadius: '8px 0 0 8px',
+    padding: 2,
+    zIndex: 1000,
+    width: isHovered ? '130px' : '60px', 
+    transition: 'width 0.3s ease', 
+  }}
+  onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setIsHovered(false)} 
+>
+  {isHovered ? (
+    <Box display="flex" flexDirection="column" alignItems="center">
+      <Button variant="contained" color="primary" fullWidth sx={{ marginBottom: { xs: '5px', md: '10px' } }}>
+        <AddCircleOutline sx={{ marginRight: 1, fontSize: { xs: '20px', md: '24px' } }} />
+        <Typography variant="body2" sx={{ display: { xs: 'none', md: 'inline' } }}>Add</Typography>
+      </Button>
+      <Button
+        variant="contained"
+        color="success"
+        fullWidth
+        sx={{ marginBottom: { xs: '5px', md: '10px' } }}
+        onClick={() => setIsEditable((prev) => !prev)}
+      >
+        <Edit sx={{ marginRight: 1, fontSize: { xs: '20px', md: '24px' } }} />
+        <Typography variant="body2" sx={{ display: { xs: 'none', md: 'inline' } }}>Edit</Typography>
+      </Button>
+      <Button variant="contained" color="secondary" fullWidth sx={{ marginBottom: { xs: '5px', md: '10px' } }}>
+        <Delete sx={{ marginRight: 1, fontSize: { xs: '20px', md: '24px' } }} />
+        <Typography variant="body2" sx={{ display: { xs: 'none', md: 'inline' } }}>Delete</Typography>
+      </Button>
+      <Button variant="contained" color="info" fullWidth sx={{ marginBottom: { xs: '5px', md: '10px' } }} onClick={handleUpdateButtonClick}>
+        <Update sx={{ marginRight: 1, fontSize: { xs: '20px', md: '24px' } }} />
+        <Typography variant="body2" sx={{ display: { xs: 'none', md: 'inline' } }}>Update</Typography>
+      </Button>
     </Box>
+  ) : (
+    <Box display="flex" flexDirection="column" alignItems="center">
+      <Button color="primary" sx={{ fontSize: { xs: '20px', md: '24px' } }}><AddCircleOutline /></Button>
+      <Button color="success" sx={{ fontSize: { xs: '20px', md: '24px' } }}><Edit /></Button>
+      <Button color="secondary" sx={{ fontSize: { xs: '20px', md: '24px' } }}><Delete /></Button>
+      <Button color="info" sx={{ fontSize: { xs: '20px', md: '24px' } }}><Update /></Button>
+    </Box>
+  )}
+</Box>
     </Card>
   );
 };
 
 export default Details;
+
+
+

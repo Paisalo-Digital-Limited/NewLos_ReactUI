@@ -40,6 +40,7 @@ import axios from 'axios';
 import axiosInstance from "./axiosInstance";
 import Swal from "sweetalert2"; 
 import { fetchCreatorsApi } from "api/apiCreator";
+import './index.css';
 
 
 

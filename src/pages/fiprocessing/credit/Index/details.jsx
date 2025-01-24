@@ -11,12 +11,14 @@ const Details = ({ ficode, creator }) => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
+ // Assuming this is part of your component's state
   const [isEditable, setIsEditable] = useState(false); // State to toggle edit mode
   const [formValues, setFormValues] = useState({
     ID: 10094, // Assuming this is known
-    Bank_Ac: '3746786234',
-    Bank_IFCS: '8324686234',
-    Bank_address: ''
+    Bank_Ac: "3746786234",
+    Bank_IFCS: "8324686234",
+    Bank_address: "",
   });
 
   const handleUpdateButtonClick = async () => {
@@ -24,19 +26,16 @@ const Details = ({ ficode, creator }) => {
 
     try {
       // First API Call - GET
-      const fiCurrentStatusResponse = await axios.get(
-        `https://apiuat.paisalo.in:4015/fi/api/FIIndex/FiCurrentStatus?creator=${creator}&ficode=${ficode}`,
-        {
-          params: {
-            Id: formValues.ID
-          }
-        }
-      );
+      const fiCurrentStatusResponse = await axios.get(`https://apiuat.paisalo.in:4015/fi/api/FIIndex/FiCurrentStatus?creator=${creator}&ficode=${ficode}`, {
+        params: {
+          Id: formValues.ID,
+        },
+      });
 
       if (fiCurrentStatusResponse.status === 200) {
         const data = JSON.parse(fiCurrentStatusResponse.data.data)[0]; // Parse the response data
         console.log(data); // You can see the response
-
+        
         // Prepare payload for the second API call
         const payload = {
           Id: formValues.ID, // Same ID from the previous response
@@ -90,7 +89,9 @@ const Details = ({ ficode, creator }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`/FIIndex/FiMasterData?ficode=${ficode}&creator=${creator}`);
+        const response = await axiosInstance.get(
+          `/FIIndex/FiMasterData?ficode=${ficode}&creator=${creator}`
+        );
         if (response.status === 200) {
           const data = JSON.parse(response.data.data)[0]; // Assuming the data is an array
           setFormData(data);
@@ -104,10 +105,10 @@ const Details = ({ ficode, creator }) => {
 
     // Fetch data only if ficode and creator are provided
     if (ficode && creator) {
-      fetchData();
+      fetchData();                                  
     }
   }, [ficode, creator]);
-
+  
   // General Details Fields
   const generalDetailsFields = [
     { label: 'Full Name', name: 'FNAME', type: 'text' },
@@ -393,53 +394,58 @@ const Details = ({ ficode, creator }) => {
           {renderTabContent()}
         </Grid>
       </Grid>
-      <Box
-        sx={{
-          position: 'fixed',
-          top: '50%', // center vertically
-          right: 0,
-          transform: 'translateY(-50%)',
-          backgroundColor: '#fff',
-          boxShadow: 2,
-          borderRadius: '8px 0 0 8px',
-          padding: 2,
-          zIndex: 1000
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <AnimateButton>
-          <Button variant="contained" color="primary" fullWidth sx={{ marginBottom: '10px' }}>
-            <AddCircleOutline sx={{ marginRight: 1 }} />
-            Add
-          </Button>
-        </AnimateButton>
-        <AnimateButton>
-          <Button
-            variant="contained"
-            color="success"
-            fullWidth
-            sx={{ marginBottom: '10px' }}
-            onClick={() => setIsEditable((prev) => !prev)}
-          >
-            {/* {isEditable ? "Save Changes" : "Edit"} */}
-            <Edit sx={{ marginRight: 1 }} />
-            Edit
-          </Button>
-        </AnimateButton>
-        <AnimateButton>
-          <Button variant="contained" color="secondary" fullWidth sx={{ marginBottom: '10px' }}>
-            <Delete sx={{ marginRight: 1 }} />
-            Delete
-          </Button>
-        </AnimateButton>
-        <AnimateButton>
-          <Button variant="contained" color="info" fullWidth sx={{ marginBottom: '10px' }} onClick={handleUpdateButtonClick}>
-            <Update sx={{ marginRight: 1 }} />
-            Update
-          </Button>
-        </AnimateButton>
-      </Box>
+        <Box
+      sx={{
+        position: 'fixed',
+        top: '50%', // center vertically
+        right: 0,
+        transform: 'translateY(-50%)',
+        backgroundColor: '#fff',
+        boxShadow: 2,
+        borderRadius: '8px 0 0 8px',
+        padding: 2,
+        zIndex: 1000,
+        width: isHovered ? '150px' : '60px', // Width changes based on hover state
+        transition: 'width 0.3s ease', // Smooth transition for width change
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {isHovered && ( // Show buttons only when hovered
+        <>
+          <AnimateButton>
+            <Button variant="contained" color="primary" fullWidth sx={{ marginBottom: '10px' }}>
+              <AddCircleOutline sx={{ marginRight: 1 }} />
+              Add
+            </Button>
+          </AnimateButton>
+          <AnimateButton>
+            <Button
+              variant="contained"
+              color="success"
+              fullWidth
+              sx={{ marginBottom: '10px' }}
+              onClick={() => setIsEditable((prev) => !prev)}
+            >
+              <Edit sx={{ marginRight: 1 }} />
+              Edit
+            </Button>
+          </AnimateButton>
+          <AnimateButton>
+            <Button variant="contained" color="secondary" fullWidth sx={{ marginBottom: '10px' }}>
+              <Delete sx={{ marginRight: 1 }} />
+              Delete
+            </Button>
+          </AnimateButton>
+          <AnimateButton>
+            <Button variant="contained" color="info" fullWidth sx={{ marginBottom: '10px' }} onClick={handleUpdateButtonClick}>
+              <Update sx={{ marginRight: 1 }} />
+              Update
+            </Button>
+          </AnimateButton>
+        </>
+      )}
+    </Box>
     </Card>
   );
 };

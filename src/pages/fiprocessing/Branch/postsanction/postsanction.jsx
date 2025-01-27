@@ -475,7 +475,7 @@ const PostSanction = () => {
   const [newRemarks, setNewRemarks] = useState('');
   const [file, setFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [openImageModal, setOpenImageModal] = useState(false);
+ 
   const [Creatorlist, setCreatorlist] = useState([]);
   const [PronoteDocopen, setPronoteDocopen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
@@ -483,11 +483,11 @@ const PostSanction = () => {
   const [openmodelForAddDoc, setopenmodelForAddDoc] = useState(false);
   const [remarks, setRemarks] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
-  const [pronoteuploaded, setPronoteuploaded] = useState(false);
+ 
   const [DocID, setDocID] = useState(null);
   const [docname, setdocname] = useState(null);
   const [errorsearch, setErrorsearch] = useState({ fiCode: '', creator: '' });
-  const [selectedItemForDoc, setSelectedItemForDoc] = useState(null);
+ 
 
   // Handle filter change
   const handleFilterChange = (event) => {
@@ -763,12 +763,7 @@ const PostSanction = () => {
       if (response.status === 200) {
         const apipinfoData = JSON.parse(response.data.data || '[]');
         // setSelectedItem(apipinfoData);
-        pinfoData.map((item, index) => {
-          debugger;
-          if (item.Document == 'Pronote' && item.CheckListId != null) {
-            setPronoteuploaded(true);
-          }
-        });
+         
         //     apipinfoData.forEach((item)=>{
         //     if(item.Document=="Pronote" && item.CheckListId !=null){
         //         setPronoteuploaded(true);

@@ -47,19 +47,7 @@ import SendIcon from '@mui/icons-material/Send';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 
 // Document details with icons
-const documentDetails = [
-  { docName: 'Document Application Form Front', icon: <Description /> },
-  { docName: 'Document Application Form Back', icon: <AccountBox /> },
-  { docName: 'Group Loan Application Front', icon: <AccountBox /> },
-  { docName: 'Borrower Aadhar', icon: <Fingerprint /> },
-  { docName: 'Borrower Bank Passbook', icon: <Folder /> },
-  { docName: 'Voter ID Borrower', icon: <Fingerprint /> },
-  { docName: 'Signed Disbursement Sheet', icon: <AccountBox /> },
-  { docName: 'Pronote', icon: <Description /> },
-  { docName: 'CAM', icon: <AccountBox /> },
-  { docName: 'End Use Certificate', icon: <AccountBox /> },
-  { docName: 'Aadhar ID Back', icon: <Fingerprint /> }
-];
+
 
 const style = {
   position: 'absolute',
@@ -97,18 +85,7 @@ const ReadyForAudit = () => {
   const [Creatorlist, setCreatorlist] = useState([]);
 
   //--------model open--------
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [modalData, setModalData] = useState('');
-  const [pinfoData, setPinfoData] = useState([]);
-  const [selectedRowData, setSelectedRowData] = useState(null);
-  const [pinInfopen, setPinInfopen] = useState(false);
-  const [IncomeDataopen, setIncomeopen] = useState(false);
-  const [PronoteDocopen, setPronoteDocopen] = useState(false);
-  const [selectedType, setSelectedType] = useState('borrower');
-  const [selectedDocument, setSelectedDocument] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
-  const [documents, setDocuments] = useState([]);
-  const [GetAllDocopen, setGetAllDocopen] = useState(false);
+ 
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10); // Default rows per page

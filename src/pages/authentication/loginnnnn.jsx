@@ -377,7 +377,7 @@ const Login = () => {
   async function login() {
     try {
       const response = await apiClient.post(
-        '/User/GetToken',
+        'admin/api/User/GetToken',
         {
           emailId: email,
           password: password,

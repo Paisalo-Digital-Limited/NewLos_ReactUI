@@ -81,10 +81,10 @@ const MainRoutes = {
       path: 'vehicledetails',
       element: <Vechicles />
     },
-    // {
-    //   path: 'menu',
-    //   element: <Menu />
-    // },
+    {
+      path: 'menu',
+      element: <Menu />
+    },
     {
       path: 'groupmaster',
       element: <Groupmaster />

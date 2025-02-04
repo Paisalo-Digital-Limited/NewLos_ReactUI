@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
-
-// material-ui
+import { useRef, useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
 import CardContent from '@mui/material/CardContent';
@@ -16,62 +14,78 @@ import Tabs from '@mui/material/Tabs';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
-// project import
 import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
 import Avatar from 'components/@extended/Avatar';
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
-
-// assets
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import avatar1 from 'assets/images/users/avatar-1.png';
-
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
   return (
-    <div role="tabpanel" hidden={value !== index} id={`profile-tabpanel-${index}`} aria-labelledby={`profile-tab-${index}`} {...other}>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`profile-tabpanel-${index}`}
+      aria-labelledby={`profile-tab-${index}`}
+      {...other}
+    >
       {value === index && children}
     </div>
   );
 }
-
 function a11yProps(index) {
   return {
     id: `profile-tab-${index}`,
     'aria-controls': `profile-tabpanel-${index}`
   };
 }
-
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
-
 export default function Profile() {
   const theme = useTheme();
-
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [value, setValue] = useState(0);
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
-
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
     setOpen(false);
   };
-
-  const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   const iconBackColorOpen = 'grey.100';
-
+  function getCookieValue(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`); // Double '='
+    if (parts.length === 2) {
+      return parts.pop().split(';').shift();
+    }
+    return null;
+  }
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const emailId = localStorage.getItem('EmailId');
+    const name = localStorage.getItem('Name');
+    const roleName = localStorage.getItem('RoleName');
+    const someCookieValue = getCookieValue('yourCookieName'); // Replace with your actual cookie name
+    // Set user data from local storage and cookie
+    setUserData({
+      token,
+      emailId,
+      name,
+      roleName,
+      someCookieValue // Add the cookie value here, if needed
+    });
+  }, []);
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
@@ -91,7 +105,7 @@ export default function Profile() {
         <Stack direction="row" spacing={1.25} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={avatar1} size="sm" />
           <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
-            Saurav
+            {userData ? userData.name : 'Guest'} {/* Conditional rendering */}
           </Typography>
         </Stack>
       </ButtonBase>
@@ -124,9 +138,9 @@ export default function Profile() {
                         <Stack direction="row" spacing={1.25} alignItems="center">
                           <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                           <Stack>
-                            <Typography variant="h6">Saurav</Typography>
+                            <Typography variant="h6">{userData ? userData.name : 'Guest'}</Typography> {/* Conditional rendering */}
                             <Typography variant="body2" color="text.secondary">
-                              UI/UX Designer
+                              {userData ? userData.emailId : 'No Email'} {/* Conditional rendering */}
                             </Typography>
                           </Stack>
                         </Stack>
@@ -140,7 +154,6 @@ export default function Profile() {
                       </Grid>
                     </Grid>
                   </CardContent>
-
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
                       <Tab
@@ -184,5 +197,9 @@ export default function Profile() {
     </Box>
   );
 }
-
-TabPanel.propTypes = { children: PropTypes.node, value: PropTypes.number, index: PropTypes.number, other: PropTypes.any };
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  value: PropTypes.number,
+  index: PropTypes.number,
+  other: PropTypes.any
+};

@@ -3,8 +3,11 @@ import { Box, Card, Grid, Tabs, Tab, TextField, Typography, Divider, MenuItem, B
 import { AddCircleOutline, Edit, Delete, Update } from '@mui/icons-material';
 import AnimateButton from 'components/@extended/AnimateButton';
 import axios from 'axios';
-import axiosInstance from './axiosInstance';
+
 import Swal from 'sweetalert2';
+import apiClient from 'network/apiClient';
+import Index from './index';
+//import AddNewFiModal from "./AddNewFiInsert";
 
 const Details = ({ ficode, creator }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -12,6 +15,7 @@ const Details = ({ ficode, creator }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+  
  // Assuming this is part of your component's state
   const [isEditable, setIsEditable] = useState(false); // State to toggle edit mode
   const [formValues, setFormValues] = useState({
@@ -21,64 +25,73 @@ const Details = ({ ficode, creator }) => {
     Bank_address: "",
   });
 
-  const handleUpdateButtonClick = async () => {
-    setLoading(true);
-
-    try {
-      // First API Call - GET
-      const fiCurrentStatusResponse = await axios.get(`https://apiuat.paisalo.in:4015/fi/api/FIIndex/FiCurrentStatus?creator=${creator}&ficode=${ficode}`, {
-        params: {
-          Id: formValues.ID,
-        },
-      });
-
-      if (fiCurrentStatusResponse.status === 200) {
-        const data = JSON.parse(fiCurrentStatusResponse.data.data)[0]; // Parse the response data
-        console.log(data); // You can see the response
-        
-        // Prepare payload for the second API call
-        const payload = {
-          Id: formValues.ID, // Same ID from the previous response
-          Bank_Ac: formValues.Bank_Ac,
-          Bank_address: formValues.Bank_address,
-          Bank_IFCS: formValues.Bank_IFCS
-        };
-
-        // Second API Call - POST
-        const updateResponse = await axios.post('https://apiuat.paisalo.in:4015/fi/api/FIIndex/UpdateBeforeSecondESign', payload);
-
-        if (updateResponse.data.statuscode === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Record Updated Successfully!',
-            text: 'The record has been successfully updated.',
-            confirmButtonText: 'OK'
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Update Failed',
-            text: 'An error occurred while updating the record. Please try again.'
-          });
-        }
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed to Fetch Current Status',
-          text: 'Unable to fetch current status from the server.'
-        });
-      }
-    } catch (error) {
-      console.error('Error during update:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Update Failed',
-        text: 'An error occurred while updating the record. Please try again.'
-      });
-    } finally {
-      setLoading(false);
-    }
+  
+  const handleOpenModal = () => {
+    setModalOpen(true);
   };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  // const handleUpdateButtonClick = async () => {
+  //   setLoading(true);
+
+  //   try {
+  //     // First API Call - GET
+  //     const fiCurrentStatusResponse = await apiClient.get(`fi/api/FIIndex/FiCurrentStatus?creator=${creator}&ficode=${ficode}`, {
+  //       params: {
+  //         Id: formValues.ID,
+  //       },
+  //     });
+
+  //     if (fiCurrentStatusResponse.status === 200) {
+  //       const data = JSON.parse(fiCurrentStatusResponse.data.data)[0]; // Parse the response data
+  //       console.log(data); // You can see the response
+        
+  //       // Prepare payload for the second API call
+  //       const payload = {
+  //         Id: formValues.ID, // Same ID from the previous response
+  //         Bank_Ac: formValues.Bank_Ac,
+  //         Bank_address: formValues.Bank_address,
+  //         Bank_IFCS: formValues.Bank_IFCS
+  //       };
+
+  //       // Second API Call - POST
+  //       const updateResponse = await axios.post('https://apiuat.paisalo.in:4015/fi/api/FIIndex/UpdateBeforeSecondESign', payload);
+
+  //       if (updateResponse.data.statuscode === 200) {
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: 'Record Updated Successfully!',
+  //           text: 'The record has been successfully updated.',
+  //           confirmButtonText: 'OK'
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: 'Update Failed',
+  //           text: 'An error occurred while updating the record. Please try again.'
+  //         });
+  //       }
+  //     } else {
+  //       Swal.fire({
+  //         icon: 'error',
+  //         title: 'Failed to Fetch Current Status',
+  //         text: 'Unable to fetch current status from the server.'
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during update:', error);
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Update Failed',
+  //       text: 'An error occurred while updating the record. Please try again.'
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // Handle Tab Change
   const handleTabChange = (event, newValue) => {
@@ -89,12 +102,18 @@ const Details = ({ ficode, creator }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(
-          `/FIIndex/FiMasterData?ficode=${ficode}&creator=${creator}`
+        const response = await apiClient.get(
+          `fi/api/FIIndex/FiMasterData?ficode=${ficode}&creator=${creator}`
         );
         if (response.status === 200) {
-          const data = JSON.parse(response.data.data)[0]; // Assuming the data is an array
-          setFormData(data);
+          const data = JSON.parse(response.data.data)[0];
+          const dobParts = data.DOB.split('/'); // Split to get day, month, year
+          const formattedDOB = `${dobParts[2]}-${dobParts[1]}-${dobParts[0]}`; // Convert to YYYY-MM-DD
+ 
+          setFormData({
+            ...data,
+            DOB: formattedDOB, // Add formatted date here
+          });
         }
       } catch (err) {
         setError('Failed to fetch data');
@@ -102,8 +121,6 @@ const Details = ({ ficode, creator }) => {
         setLoading(false);
       }
     };
-
-    // Fetch data only if ficode and creator are provided
     if (ficode && creator) {
       fetchData();                                  
     }
@@ -431,14 +448,26 @@ const Details = ({ ficode, creator }) => {
         <Delete sx={{ marginRight: 1, fontSize: { xs: '20px', md: '24px' } }} />
         <Typography variant="body2" sx={{ display: { xs: 'none', md: 'inline' } }}>Delete</Typography>
       </Button>
-      <Button variant="contained" color="info" fullWidth sx={{ marginBottom: { xs: '5px', md: '10px' } }} onClick={handleUpdateButtonClick}>
+      {/* <Button variant="contained" color="info" fullWidth sx={{ marginBottom: { xs: '5px', md: '10px' } }} onClick={handleUpdateButtonClick}>
         <Update sx={{ marginRight: 1, fontSize: { xs: '20px', md: '24px' } }} />
         <Typography variant="body2" sx={{ display: { xs: 'none', md: 'inline' } }}>Update</Typography>
-      </Button>
+      </Button> */}
     </Box>
   ) : (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Button color="primary" sx={{ fontSize: { xs: '20px', md: '24px' } }}><AddCircleOutline /></Button>
+      {/* <Button 
+        color="primary" 
+        sx={{ fontSize: { xs: '20px', md: '24px' } }} 
+        onClick={handleOpenModal}
+      >
+        <AddCircleOutline />
+      </Button>
+      
+      <AddNewFiModal 
+        isOpen={modalOpen} 
+        onClose={handleCloseModal} 
+      /> */}
       <Button color="success" sx={{ fontSize: { xs: '20px', md: '24px' } }}><Edit /></Button>
       <Button color="secondary" sx={{ fontSize: { xs: '20px', md: '24px' } }}><Delete /></Button>
       <Button color="info" sx={{ fontSize: { xs: '20px', md: '24px' } }}><Update /></Button>
